@@ -1,7 +1,8 @@
 #include <iostream>
 #include <math.h>
 #include <fstream>
-enum Piezas { VACIO = 0, PEON, TORRE, ALFIL, CABALLO, REY, REINA };
+#include "Piezas/pieza.h"
+// enum Piezas { VACIO = 0, PEON, TORRE, ALFIL, CABALLO, REY, REINA };
 
 using namespace std;
 
@@ -51,6 +52,8 @@ public:
 		}
 		(*file).close();
 	}
+
+	void definirTablero();
 	void print()
 	{
 		for (int i = 0; i < dim_x; i++)
@@ -63,12 +66,25 @@ public:
 		}
 		cout << endl;
 	}
+	void updateTablero(); // Actualiza las posiciones de todas las piezas
 private:
 	// Dimensiones del tablero
 	int dim_x;
 	int dim_y;
 	// Matriz del tablero
 	int** tab;
+	pieza** tablero;
 	// El tablero puede ser una matriz de enteros donde cada valor represente una pieza
 	// Por ejemplo, se puede tomar valores negativos para piezas negras y valores positivos para blancas, con 0 como casilla en blanco
 };
+void Tablero::updateTablero()
+{
+	// Recorre la matriz de piezas y actualiza la posición de cada una
+	for (int i = 0; i < dim_x; i++)
+	{
+		for (int j = 0; j < dim_y; j++)
+		{
+			tablero[i][j].updatePosPosibles();
+		}
+	}
+}
