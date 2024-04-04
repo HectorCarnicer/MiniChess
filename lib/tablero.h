@@ -2,6 +2,8 @@
 #include <math.h>
 #include <fstream>
 #include "Piezas/pieza.h"
+
+#define tam 4
 // enum Piezas { VACIO = 0, PEON, TORRE, ALFIL, CABALLO, REY, REINA };
 
 using namespace std;
