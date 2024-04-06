@@ -11,14 +11,6 @@ using namespace std;
 class Tablero
 {
 public:
-	// Dimensiones del tablero
-	int dim_x;
-	int dim_y;
-	// Matriz del tablero
-	int** tab;
-	pieza** tablero;
-	void printPosibles();
-
 	//Declaración de la matriz del tablero
 	Tablero(int x, int y) : dim_x (x), dim_y(y) 
 	{
@@ -36,9 +28,6 @@ public:
 			}
 		}
 	}
-
-	void printPosibles();
-	/*
 	Tablero(ifstream* file)
 	{
 		// Declara el tablero y lee un archivo. A partir de este inicializa la matriz del tablero.
@@ -65,7 +54,7 @@ public:
 		}
 		(*file).close();
 	}
-	
+
 	void definirTablero();
 	void print()
 	{
@@ -79,17 +68,17 @@ public:
 		}
 		cout << endl;
 	}
-	*/
-
-
-
-void updateTablero(); // Actualiza las posiciones de todas las piezas
+	void updateTablero(); // Actualiza las posiciones de todas las piezas
 private:
-	
+	// Dimensiones del tablero
+	int dim_x;
+	int dim_y;
+	// Matriz del tablero
+	int** tab;
+	pieza** tablero;
 	// El tablero puede ser una matriz de enteros donde cada valor represente una pieza
 	// Por ejemplo, se puede tomar valores negativos para piezas negras y valores positivos para blancas, con 0 como casilla en blanco
 };
-
 void Tablero::updateTablero()
 {
 	// Recorre la matriz de piezas y actualiza la posición de cada una
@@ -100,20 +89,4 @@ void Tablero::updateTablero()
 			tablero[i][j].updatePosPosibles();
 		}
 	}
-}
- 
-//tras calcular las posibles movimientos, los muestra en el tablero
-//para que el jugador sepa donde es posible arrastra la pieza
-void printPosibles() {
-
-	for (int i = 0; i < dim_x; i++)
-	{
-		for (int j = 0; j < dim_y; j++)
-		{
-			cout << tab[i][j];
-		}
-	}
-
-
-
 }
