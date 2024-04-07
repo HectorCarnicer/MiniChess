@@ -79,8 +79,13 @@ public:
 		*/
 		for (int i = 0; i < dim_x; i++) {
 			for (int j = 0; j < dim_y; j++) {			
-				if (j < dim_y && i == 0) {
-					tab[i][j] = -6 + j;
+				if (j < dim_y && i == 0){
+					if (modo == "baby") {
+						tab[i][j] = -6 + j;
+					}
+					else if (modo = "gardner") {
+						tab[i][j] = -2 - j;
+					}
 				}
 				else if (j < dim_y && i == 1) {
 					tab[i][j] = -1;
