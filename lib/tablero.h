@@ -58,39 +58,18 @@ public:
 	// Parámetros del tablero
 	int dim_x, dim_y;
 	
-	void definirTablero() {
-		/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
-			0: vacío
-			1: peón
-			2: torre
-			3: caballo
-			4: alfil
-			5: reina
-			6: rey
-		Ojo: la fila vacía ya está inicializada a cero en: (línea 23) Tablero(int x, int y) : dim_x (x), dim_y(y)
-		*/
-		for (int i = 0; i < dim_x; i++) {
-			for (int j = 0; j < dim_y; j++) {			
-				if (j < dim_y && i == 0){
-					if (modo == "baby") {
-						mat[i][j] = -6 + j;
-					}
-					else if (modo == "gardner") {
-						mat[i][j] = -2 - j;
-					}
-				}
-				else if (j < dim_y && i == 1) {
-					mat[i][j] = -1;
-				}
-				else if (j < dim_y && i == 3) {
-					mat[i][j] = 1;
-				}
-				else if (j < dim_y && i == 4) {
-					mat[i][j] = 2 + j;
-				}
-			}
-		}
-	}
+	// Colocar piezas en posiciones iniciales
+	void definirTablero();
+	/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
+		0: vacío
+		1: peón
+		2: torre
+		3: caballo
+		4: alfil
+		5: reina
+		6: rey
+	*/
+		
 	
 private:
 	std::string modo;
@@ -103,6 +82,34 @@ bool Tablero::posValid(int x, int y)
 	bool y_valid = (y < dim_y && x>0);
 	return x_valid && y_valid;
 }
+
+void Tablero::definirTablero() {
+	for (int i = 0; i < dim_x; i++) {
+		for (int j = 0; j < dim_y; j++) {
+			if (j < dim_y && i == 0) {
+				if (modo == "baby") {
+					mat[i][j] = -6 + j;
+				}
+				else if (modo == "gardner") {
+					mat[i][j] = -2 - j;
+				}
+			}
+			else if (j < dim_y && i == 1) {
+				mat[i][j] = -1;
+			}
+			else if (j < dim_y && i == 2) {
+				mat[i][j] = 0;
+			}
+			else if (j < dim_y && i == 3) {
+				mat[i][j] = 1;
+			}
+			else if (j < dim_y && i == 4) {
+				mat[i][j] = 2 + j;
+			}
+		}
+	}
+}
+
 std::ostream& operator << (std::ostream& o, Tablero tab)
 {
 	for (int i = 0; i < tab.dim_x; i++)
