@@ -1,10 +1,9 @@
 #include <iostream>
-#include <iostream>
 
 /*
-Esta clase es una librería para trabajar con matrices. Esto sirve para que puedas igualar matrices, imprimirlas con un cout y tal automáticamente
+Esta clase es una librerï¿½a para trabajar con matrices. Esto sirve para que puedas igualar matrices, imprimirlas con un cout y tal automï¿½ticamente
 
-De momento no tiene uso, pero puede ser útil e un futuro
+De momento no tiene uso, pero puede ser ï¿½til e un futuro
 
 */
 
@@ -13,7 +12,7 @@ De momento no tiene uso, pero puede ser útil e un futuro
 template <class T> class matrix
 {
 public:
-	// Constructor de una matriz genérica
+	// Constructor de una matriz genï¿½rica
 	matrix <class T>(int dim_x, int dim_y) : dim_x(dim_x), dim_y (dim_y)
 	{
 		mat = new T*[dim_x];
@@ -25,13 +24,12 @@ public:
 	// Sobercarga de la igualadad para igualar matrices
 	template <class U> void operator=(const matrix<U>& m2);
 private:
-	// Parámetros básicos de la matriz: array y dimensiones
+	// Parï¿½metros bï¿½sicos de la matriz: array y dimensiones
 	T** mat const;
 	int dim_x const;
 	int dim_y const;
 
 }; 
-
 
 template <class T> std::ostream& operator<< (std::ostream & o, matrix<T> mat)
 {
@@ -46,6 +44,7 @@ template <class T> std::ostream& operator<< (std::ostream & o, matrix<T> mat)
 	}
 	return o << a;
 }
+
 template <class T> template <class U> void matrix<T>::operator=(const matrix<U>& m2)
 {
 }

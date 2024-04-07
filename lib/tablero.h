@@ -4,7 +4,7 @@
 #include "Basic/matrix.h"
 
 /*
-La idea de la clase tablero es que contenga la información del tablero, que luego las piezas puedan leer y escribir
+La idea de la clase tablero es que contenga la informaciï¿½n del tablero, que luego las piezas puedan leer y escribir
 desde la clase juego, que es la que realmente contiene las piezas
 */
 
@@ -14,11 +14,11 @@ public:
 	// Matriz del tablero
 	int** mat;
 
-	// Parámetros del tablero
+	// Parï¿½metros del tablero
 	int dim_x, dim_y;
 
 	// Constructor del tablero en forma de matriz
-	Tablero(int dim_x, int dim_y) : dim_x(dim_x), dim_y(dim_y) 
+	Tablero(int dim_x, int dim_y); /*: dim_x(dim_x), dim_y(dim_y)
 	{
 		mat = new int * [dim_x];
 		for (int i = 0; i < dim_x; i++)
@@ -33,20 +33,20 @@ public:
 	// De momento no funciona
 	Tablero(std::ifstream* file); // TODO: Lectura de archivos
 
-	// Comprobación de que una posición es válida
+	// Comprobaciï¿½n de que una posiciï¿½n es vï¿½lida
 	bool posValid(int x, int y);
 	
-	// Definición del tablero inicial en función del modo de juego
+	// Definiciï¿½n del tablero inicial en funciï¿½n del modo de juego
 	void definirTablero() {
 		/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
-			0: vacío
-			1: peón
+			0: vacï¿½o
+			1: peï¿½n
 			2: torre
 			3: caballo
 			4: alfil
 			5: reina
 			6: rey
-		Ojo: la fila vacía ya está inicializada a cero en: (línea 23) Tablero(int x, int y) : dim_x (x), dim_y(y)
+		Ojo: la fila vacï¿½a ya estï¿½ inicializada a cero en: (lï¿½nea 23) Tablero(int x, int y) : dim_x (x), dim_y(y)
 		*/
 		for (int i = 0; i < dim_x; i++) {
 			for (int j = 0; j < dim_y; j++) {			
@@ -106,6 +106,34 @@ bool Tablero::posValid(int x, int y)
 	bool y_valid = (y < dim_y && x>0);
 	return x_valid && y_valid;
 }
+
+void Tablero::definirTablero() {
+	for (int i = 0; i < dim_x; i++) {
+		for (int j = 0; j < dim_y; j++) {
+			if (j < dim_y && i == 0) {
+				if (modo == "baby") {
+					mat[i][j] = -6 + j;
+				}
+				else if (modo == "gardner") {
+					mat[i][j] = -2 - j;
+				}
+			}
+			else if (j < dim_y && i == 1) {
+				mat[i][j] = -1;
+			}
+			else if (j < dim_y && i == 2) {
+				mat[i][j] = 0;
+			}
+			else if (j < dim_y && i == 3) {
+				mat[i][j] = 1;
+			}
+			else if (j < dim_y && i == 4) {
+				mat[i][j] = 2 + j;
+			}
+		}
+	}
+}
+
 std::ostream& operator << (std::ostream& o, Tablero tab)
 {
 	for (int i = 0; i < tab.dim_x; i++)
