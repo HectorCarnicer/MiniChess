@@ -5,6 +5,7 @@ para mayor eficiencia
 
 */
 
+// De momento no tiene uso
 // Probablemente no vale la pena usarla
 
 class Posicion

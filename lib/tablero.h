@@ -2,14 +2,21 @@
 #include <math.h>
 #include <fstream>
 #include "Basic/matrix.h"
-#include <fstream>
 
-// La idea de la clase tablero es que contenga la información del tablero, que luego las piezas puedan leer y escribir
-// desde la clase juego, que es la que realmente contiene las piezas
+/*
+La idea de la clase tablero es que contenga la información del tablero, que luego las piezas puedan leer y escribir
+desde la clase juego, que es la que realmente contiene las piezas
+*/
 
 class Tablero
 {
 public:
+	// Matriz del tablero
+	int** mat;
+
+	// Parámetros del tablero
+	int dim_x, dim_y;
+
 	// Constructor del tablero en forma de matriz
 	Tablero(int dim_x, int dim_y) : dim_x(dim_x), dim_y(dim_y) 
 	{
@@ -19,45 +26,17 @@ public:
 			mat[i] = new int[dim_y];
 		}
 	}
+
 	// Constructor del tablero desde un archivo
-	//Tablero(ifstream* file); // TODO: Lectura de archivos
-	/* {
-		// Declara el tablero y lee un archivo. A partir de este inicializa la matriz del tablero.
-		// El formato del tablero es (todo separado por espacios) : dim_x, dim_y, valores de la matriz
-		int dim_x, dim_y;
-		if (!(*file).is_open())
-		{
-			std::cout << "Error en la apertura del archivo" << std::endl;
-		}
-		*file >> dim_x;
-		*file >> dim_y;
-		mat = new matrix<int>(dim_x, dim_y);
-		tab = new int* [dim_x];
-		for (int i = 0; i < dim_x; i++)
-		{
-			*(tab + i) = new int[dim_y];
-		}
-		int prov = 0;
-		for (int i = 0; i < dim_x; i++)
-		{
-			for (int j = 0; j < dim_y; j++)
-			{
-				*file >> prov;
-				tab[i][j] = prov;
-			}
-		}
-		(*file).close();
-	}*/
+	// Declara el tablero y lee un archivo.A partir de este inicializa la matriz del tablero.
+	// El formato del tablero es (todo separado por espacios) : dim_x, dim_y, valores de la matriz
+	// De momento no funciona
+	Tablero(std::ifstream* file); // TODO: Lectura de archivos
 
 	// Comprobación de que una posición es válida
 	bool posValid(int x, int y);
-
-	// Matriz del tablero
-	int** mat;
-
-	// Parámetros del tablero
-	int dim_x, dim_y;
 	
+	// Definición del tablero inicial en función del modo de juego
 	void definirTablero() {
 		/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
 			0: vacío
@@ -96,7 +75,31 @@ private:
 	std::string modo;
 };
 
-
+Tablero::Tablero(std::ifstream* file)
+{
+	int dim_x, dim_y;
+	if (!(*file).is_open())
+	{
+		std::cout << "Error en la apertura del archivo" << std::endl;
+	}
+	*file >> dim_x;
+	*file >> dim_y;
+	int** tab = new int* [dim_x];
+	for (int i = 0; i < dim_x; i++)
+	{
+		*(tab + i) = new int[dim_y];
+	}
+	int prov = 0;
+	for (int i = 0; i < dim_x; i++)
+	{
+		for (int j = 0; j < dim_y; j++)
+		{
+			*file >> prov;
+			mat[i][j] = prov;
+		}
+	}
+	(*file).close();
+}
 bool Tablero::posValid(int x, int y)
 {
 	bool x_valid = (x < dim_x && x>0);
