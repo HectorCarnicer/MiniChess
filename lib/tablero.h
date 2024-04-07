@@ -18,7 +18,7 @@ public:
 	int dim_x, dim_y;
 
 	// Constructor del tablero en forma de matriz
-	Tablero(int dim_x, int dim_y); /*: dim_x(dim_x), dim_y(dim_y)
+	Tablero(int dim_x, int dim_y) : dim_x(dim_x), dim_y(dim_y)
 	{
 		mat = new int * [dim_x];
 		for (int i = 0; i < dim_x; i++)
@@ -36,7 +36,7 @@ public:
 	// Comprobaci�n de que una posici�n es v�lida
 	bool posValid(int x, int y);
 	
-	// Definici�n del tablero inicial en funci�n del modo de juego
+	// Definición del tablero inicial en funci�n del modo de juego
 	void definirTablero() {
 		/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
 			0: vac�o
