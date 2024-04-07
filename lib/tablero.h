@@ -64,10 +64,38 @@ public:
 			}
 		}
 		(*file).close();
-	}
+	}*/
 	
-	void definirTablero();
-	void print()
+	void definirTablero() {
+		/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
+			0: vacío
+			1: peón
+			2: torre
+			3: caballo
+			4: alfil
+			5: reina
+			6: rey
+		Ojo: la fila vacía ya está inicializada a cero en: (línea 23) Tablero(int x, int y) : dim_x (x), dim_y(y)
+		*/
+		for (int i = 0; i < dim_x; i++) {
+			for (int j = 0; j < dim_y; j++) {			
+				if (j < dim_y && i == 0) {
+					tab[i][j] = -6 + j;
+				}
+				else if (j < dim_y && i == 1) {
+					tab[i][j] = -1;
+				}
+				else if (j < dim_y && i == 3) {
+					tab[i][j] = 1;
+				}
+				else if (j < dim_y && i == 4) {
+					tab[i][j] = 2 + j;
+				}
+			}
+		}
+	}
+
+	/*void print()
 	{
 		for (int i = 0; i < dim_x; i++)
 		{
