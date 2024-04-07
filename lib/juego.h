@@ -2,8 +2,7 @@
 #include "tablero.h"
 #include <iostream>
 
-// La idea de esta clase es que contiene el vector de fichas que consituyen el juego
-// 
+// La idea de esta clase es que contiene el vector de fichas que constituyen el juego
 // De este modo, no hay conflicto con los #include: todas las clases obtienen información de tablero.h
 // y la usan como parámetro
 
@@ -33,7 +32,7 @@ void juego::updatePosPosibles()
 
 bool juego::moverPieza(int x1, int y1, int x2, int y2)
 {
-	// Mueve una ficah a otra posición
+	// Mueve una ficha a otra posición
 	// Devuelve 0 si la posición es in
 	if (tab.mat.mat[x1][y1] == 0)
 	{

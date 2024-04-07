@@ -16,6 +16,7 @@ public:
 	int dim_x const;
 	int dim_y const;
 }; 
+
 template <class T> std::ostream& operator<< (std::ostream & o, matrix<T> mat)
 {
 	std::ostream a;
@@ -29,6 +30,7 @@ template <class T> std::ostream& operator<< (std::ostream & o, matrix<T> mat)
 	}
 	return o << a;
 }
+
 template <class T> template <class U> void matrix<T>::operator=(const matrix<U>& m2)
 {
 }

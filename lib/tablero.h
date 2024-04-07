@@ -10,15 +10,23 @@
 class Tablero
 {
 public:
+	
+	// Matriz del tablero
+	int** mat;
+
+	// Parámetros del tablero
+	int dim_x, dim_y;
+
 	// Constructor del tablero en forma de matriz
-	Tablero(int dim_x, int dim_y) : dim_x(dim_x), dim_y(dim_y) 
+	Tablero(int dim_x, int dim_y); /*: dim_x(dim_x), dim_y(dim_y)
 	{
 		mat = new int * [dim_x];
 		for (int i = 0; i < dim_x; i++)
 		{
 			mat[i] = new int[dim_y];
 		}
-	}
+	}*/
+
 	// Constructor del tablero desde un archivo
 	//Tablero(ifstream* file); // TODO: Lectura de archivos
 	/* {
@@ -51,12 +59,6 @@ public:
 
 	// Comprobación de que una posición es válida
 	bool posValid(int x, int y);
-
-	// Matriz del tablero
-	int** mat;
-
-	// Parámetros del tablero
-	int dim_x, dim_y;
 	
 	// Colocar piezas en posiciones iniciales
 	void definirTablero();
@@ -76,6 +78,13 @@ private:
 };
 
 
+Tablero::Tablero(int dim_x, int dim_y) : dim_x(dim_x), dim_y(dim_y) {
+	mat = new int* [dim_x];
+	for (int i = 0; i < dim_x; i++)
+	{
+		mat[i] = new int[dim_y];
+	}
+}
 bool Tablero::posValid(int x, int y)
 {
 	bool x_valid = (x < dim_x && x>0);
