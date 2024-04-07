@@ -103,7 +103,7 @@ Tablero::Tablero(std::ifstream* file)
 bool Tablero::posValid(int x, int y)
 {
 	bool x_valid = (x < dim_x && x>0);
-	bool y_valid = (y < dim_y && x>0);
+	bool y_valid = (y < dim_y && y>0); //Cambio de x>0 por y>0
 	return x_valid && y_valid;
 }
 
