@@ -8,7 +8,7 @@ int main()
 {
 	ifstream archivo;
 	archivo.open("..\data\tablero1.txt");
-	Tablero tab(&archivo);
+	//Tablero tab(&archivo);
 	return 0;
 }
 
