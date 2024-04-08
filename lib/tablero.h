@@ -7,11 +7,25 @@ La idea de la clase tablero es que contenga la informaci�n del tablero, que lu
 desde la clase juego, que es la que realmente contiene las piezas
 */
 
+using namespace std;
+
 class Tablero
 {
 public:
 	// Matriz del tablero
-	int** mat;
+	int** mat{}; 
+	Tablero() {};
+
+	int defTablero[8][8] =
+	{ -2,-3,-4,-5,-6,-5,-4,-3,-2
+	 - 1,-1,-1,-1,-1,-1,-1,-1,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  1, 1, 1, 1, 1, 1, 1, 1,
+	  2, 3, 4, 5, 6, 4, 3, 2
+	};
 
 	// Par�metros del tablero
 	int dim_x, dim_y;
@@ -103,8 +117,40 @@ Tablero::Tablero(std::ifstream* file)
 bool Tablero::posValid(int x, int y)
 {
 	bool x_valid = (x < dim_x && x>0);
-	bool y_valid = (y < dim_y && x>0);
+	bool y_valid = (y < dim_y && y>0); //Cambio de x>0 por y>0
 	return x_valid && y_valid;
+}
+
+
+void Tablero::printTab(int pos_x,int pos_y) {
+
+	for (int i = 0; i < 8; i++) {
+		cout << "\n";
+		for (int j = 0; j < 8; j++) {
+			if (defTablero[i][j] < 0) {
+				cout << "|" << defTablero[i][j] << "|";
+			}
+			else {
+				cout << "|" << " " << defTablero[i][j] << "|";
+
+
+			}
+		}
+	}
+
+
+}
+
+void Tablero::printPosibles(int x, int y){
+
+	for (int i = 0; i < dim_x; i++) {
+		cout << "\n";
+		for (int j = 0; j < dim_y; j++) {
+			defTablero[x][y] = 9;
+			cout << "|" << defTablero[i][j] << "|";
+
+		}
+	}
 }
 
 

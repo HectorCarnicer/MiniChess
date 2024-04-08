@@ -1,16 +1,14 @@
 #include "pieza.h"
-#include "tablero.h"
 
 class caballo : pieza
 {
 public:
 
-	int x, y; //pos inicial del caballo
-	int** tab;
-	int dim_x, dim_y;
+	void updatePosPosibles(Tablero Tablero); 
 
-	void updatePosPosibles(Tablero Tablero) {
+};
 
+	void caballo::updatePosPosibles(Tablero tab){
 		int movimientospos[8][2] = { {2,1}, {2,-1}, {1,2}, {1,-2}
 									,{-1,2}, {-1,-2}, {-2,1}, {-2,-1} };
 
@@ -21,10 +19,10 @@ public:
 
 			//comprueba que no están fuera del tablero
 
-			if (posposiblex >= 0 && posposiblex < dim_x && posposibley >= 0 && posposibley < dim_y) {
+			if (posposiblex >= 0 && posposiblex < tab.dim_x && posposibley >= 0 && posposibley < tab.dim_y) {
 				//comprueba que este vacía
-				if (tab[posposiblex][posposibley] == 0) {
-					Tablero.printPosibles(posposiblex, posposibley);
+				if (tab.mat[posposiblex][posposibley] <= 0) {
+					tab.printPosibles(posposiblex, posposibley);
 				}
 			}
 		}
@@ -35,4 +33,3 @@ public:
 
 
 
-};
