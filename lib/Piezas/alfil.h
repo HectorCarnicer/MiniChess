@@ -27,6 +27,8 @@ public:
         for (int i = x + 1, j = y - 1; i < 8 && j >= 0; i++, j--) {
             if (tablero.mat[i][j] == 0) {
                 tablero.printPosibles(i, j);
+                posiciones_validas[i][j] = true;
+
                 system("cls");
             }
             else if (tablero.mat[i][j] < 0 && !foundEnemy) {
@@ -38,6 +40,7 @@ public:
         foundEnemy = false;
         for (int i = x - 1, j = y + 1; i >= 0 && j < 8; i--, j++) {
             if (tablero.mat[i][j] == 0) {
+                posiciones_validas[i][j] = true;
 
                 tablero.printPosibles(i, j);
                 system("cls");
@@ -50,6 +53,8 @@ public:
         foundEnemy = false;
         for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
             if (tablero.mat[i][j] == 0) {
+                posiciones_validas[i][j] = true;
+
 
                 tablero.printPosibles(i, j);
                 system("cls");
