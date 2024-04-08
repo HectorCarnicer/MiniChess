@@ -1,7 +1,6 @@
 #include <iostream>
 #include <math.h>
 #include <fstream>
-#include "Basic/matrix.h"
 
 /*
 La idea de la clase tablero es que contenga la informaci�n del tablero, que luego las piezas puedan leer y escribir
@@ -18,61 +17,61 @@ public:
 	int dim_x, dim_y;
 
 	// Constructor del tablero en forma de matriz
-	Tablero(int dim_x, int dim_y) : dim_x(dim_x), dim_y(dim_y)
+	Tablero(int dim_x, int dim_y, int modo) : dim_x(dim_x), dim_y(dim_y), modo (modo)
 	{
-		mat = new int * [dim_x];
+		mat = new int* [dim_x];
 		for (int i = 0; i < dim_x; i++)
 		{
 			mat[i] = new int[dim_y];
+		}
+		switch (modo)
+		{
+		case 0:
+			mat = new int* [dim_x];
+			for (int i = 0; i < dim_x; i++)
+			{
+				mat[i] = new int[dim_y];
+			}
+		case 1:
+			this->dim_x = 8;
+			this->dim_y = 8;
+			int aux[8][8] =
+					{-2,-3,-4,-5,-6,-4,-3,-2,
+					-1,-1,-1,-1,-1,-1,-1,-1,
+					0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0,
+					1, 1, 1, 1, 1, 1, 1, 1,
+					2, 3, 4, 5, 6, 4, 3, 2 };
+			for (int i = 0; i < dim_x; i++)
+			{
+				for (int j = 0; j < dim_x; j++)
+				{
+					mat[i][j] = aux [i][j];
+				}
+			}
+		case 2:
+
+		default:
+			break;
 		}
 	}
 
 	// Constructor del tablero desde un archivo
 	// Declara el tablero y lee un archivo.A partir de este inicializa la matriz del tablero.
 	// El formato del tablero es (todo separado por espacios) : dim_x, dim_y, valores de la matriz
-	// De momento no funciona
+	// De momento no funciona  pero puede ser útil en el futuro
 	Tablero(std::ifstream* file); // TODO: Lectura de archivos
 
 	// Comprobaci�n de que una posici�n es v�lida
 	bool posValid(int x, int y);
 	
-	// Definición del tablero inicial en funci�n del modo de juego
-	void definirTablero() {
-		/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
-			0: vac�o
-			1: pe�n
-			2: torre
-			3: caballo
-			4: alfil
-			5: reina
-			6: rey
-		Ojo: la fila vac�a ya est� inicializada a cero en: (l�nea 23) Tablero(int x, int y) : dim_x (x), dim_y(y)
-		*/
-		for (int i = 0; i < dim_x; i++) {
-			for (int j = 0; j < dim_y; j++) {			
-				if (j < dim_y && i == 0){
-					if (modo == "baby") {
-						mat[i][j] = -6 + j;
-					}
-					else if (modo == "gardner") {
-						mat[i][j] = -2 - j;
-					}
-				}
-				else if (j < dim_y && i == 1) {
-					mat[i][j] = -1;
-				}
-				else if (j < dim_y && i == 3) {
-					mat[i][j] = 1;
-				}
-				else if (j < dim_y && i == 4) {
-					mat[i][j] = 2 + j;
-				}
-			}
-		}
-	}
+	// Definir el tablero
+	void definirTablero(int modo);
 	
 private:
-	std::string modo;
+	int modo;
 };
 
 Tablero::Tablero(std::ifstream* file)
@@ -100,6 +99,7 @@ Tablero::Tablero(std::ifstream* file)
 	}
 	(*file).close();
 }
+
 bool Tablero::posValid(int x, int y)
 {
 	bool x_valid = (x < dim_x && x>0);
@@ -107,32 +107,6 @@ bool Tablero::posValid(int x, int y)
 	return x_valid && y_valid;
 }
 
-void Tablero::definirTablero() {
-	for (int i = 0; i < dim_x; i++) {
-		for (int j = 0; j < dim_y; j++) {
-			if (j < dim_y && i == 0) {
-				if (modo == "baby") {
-					mat[i][j] = -6 + j;
-				}
-				else if (modo == "gardner") {
-					mat[i][j] = -2 - j;
-				}
-			}
-			else if (j < dim_y && i == 1) {
-				mat[i][j] = -1;
-			}
-			else if (j < dim_y && i == 2) {
-				mat[i][j] = 0;
-			}
-			else if (j < dim_y && i == 3) {
-				mat[i][j] = 1;
-			}
-			else if (j < dim_y && i == 4) {
-				mat[i][j] = 2 + j;
-			}
-		}
-	}
-}
 
 std::ostream& operator << (std::ostream& o, Tablero tab)
 {

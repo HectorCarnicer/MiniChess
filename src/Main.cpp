@@ -1,14 +1,17 @@
 #include <stdio.h>
-#include "..\lib\tablero.h"
 #include <fstream>
+#include "../lib/juego.h"
 
 using namespace std;
 
 int main()
 {
-	ifstream archivo;
-	archivo.open("..\data\tablero1.txt");
-	//Tablero tab(&archivo);
-	return 0;
+
+	juego j;
+	// Bucle del juego
+	while (j.nuevaJugada() == 0)
+	{
+
+	}
 }
 
