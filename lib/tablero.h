@@ -8,11 +8,25 @@ La idea de la clase tablero es que contenga la informaci�n del tablero, que lu
 desde la clase juego, que es la que realmente contiene las piezas
 */
 
+using namespace std;
+
 class Tablero
 {
 public:
 	// Matriz del tablero
-	int** mat;
+	int** mat{}; 
+	Tablero() {};
+
+	int defTablero[8][8] =
+	{ -2,-3,-4,-5,-6,-5,-4,-3,-2
+	 - 1,-1,-1,-1,-1,-1,-1,-1,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  0, 0, 0, 0, 0, 0, 0, 0,
+	  1, 1, 1, 1, 1, 1, 1, 1,
+	  2, 3, 4, 5, 6, 4, 3, 2
+	};
 
 	// Par�metros del tablero
 	int dim_x, dim_y;
@@ -37,7 +51,7 @@ public:
 	bool posValid(int x, int y);
 	
 	// Definición del tablero inicial en funci�n del modo de juego
-	void definirTablero() {
+	void definirTablero();
 		/*Definir piezas del tablero, de momento con numeros, blancas positivas, negras negativas
 			0: vac�o
 			1: pe�n
@@ -48,29 +62,10 @@ public:
 			6: rey
 		Ojo: la fila vac�a ya est� inicializada a cero en: (l�nea 23) Tablero(int x, int y) : dim_x (x), dim_y(y)
 		*/
-		for (int i = 0; i < dim_x; i++) {
-			for (int j = 0; j < dim_y; j++) {			
-				if (j < dim_y && i == 0){
-					if (modo == "baby") {
-						mat[i][j] = -6 + j;
-					}
-					else if (modo == "gardner") {
-						mat[i][j] = -2 - j;
-					}
-				}
-				else if (j < dim_y && i == 1) {
-					mat[i][j] = -1;
-				}
-				else if (j < dim_y && i == 3) {
-					mat[i][j] = 1;
-				}
-				else if (j < dim_y && i == 4) {
-					mat[i][j] = 2 + j;
-				}
-			}
-		}
-	}
-	
+
+	///////////////////77
+	void printPosibles(int x, int y);
+	void printTab(int pos_x, int pos_y);
 private:
 	std::string modo;
 };
@@ -133,6 +128,38 @@ void Tablero::definirTablero() {
 		}
 	}
 }
+
+void Tablero::printTab(int pos_x,int pos_y) {
+
+	for (int i = 0; i < 8; i++) {
+		cout << "\n";
+		for (int j = 0; j < 8; j++) {
+			if (defTablero[i][j] < 0) {
+				cout << "|" << defTablero[i][j] << "|";
+			}
+			else {
+				cout << "|" << " " << defTablero[i][j] << "|";
+
+
+			}
+		}
+	}
+
+
+}
+
+void Tablero::printPosibles(int x, int y){
+
+	for (int i = 0; i < dim_x; i++) {
+		cout << "\n";
+		for (int j = 0; j < dim_y; j++) {
+			defTablero[x][y] = 9;
+			cout << "|" << defTablero[i][j] << "|";
+
+		}
+	}
+}
+
 
 std::ostream& operator << (std::ostream& o, Tablero tab)
 {

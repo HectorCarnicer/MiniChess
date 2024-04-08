@@ -1,12 +1,12 @@
 #include <iostream>
-
 /*
+
 Esta clase es una librer�a para trabajar con matrices. Esto sirve para que puedas igualar matrices, imprimirlas con un cout y tal autom�ticamente
 
 De momento no tiene uso, pero puede ser �til e un futuro
 
 */
-
+/*
 
 
 template <class T> class matrix
@@ -48,3 +48,4 @@ template <class T> std::ostream& operator<< (std::ostream & o, matrix<T> mat)
 template <class T> template <class U> void matrix<T>::operator=(const matrix<U>& m2)
 {
 }
+*/
