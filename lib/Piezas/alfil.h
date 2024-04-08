@@ -6,7 +6,6 @@ class alfil
 public:
     void updatePosPosibles(Tablero& tablero) {
         int x = 4, y = 4; // Posición inicial del alfil
-        int cont = 1;
         bool foundEnemy = false; // Bandera para seguir si se ha encontrado una pieza enemiga
 
         // Recorre el tablero en las diagonales
@@ -14,6 +13,7 @@ public:
 
             if (tablero.mat[i][j] == 0) {
                 tablero.printPosibles(i, j);
+                posiciones_validas[i][j] = true;
                 system("cls");
             }
 
