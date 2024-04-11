@@ -1,4 +1,18 @@
 #include "../tablero.h"
+
+#define PEON_B 1
+#define PEON_N -1
+#define TORRE_B 2
+#define TORRE_N -2
+#define CABALLO_B 3
+#define CABALLO_N -3
+#define ALFIL_B 4
+#define ALFIL_N -4
+#define REINA_B 5
+#define REINA_N -5
+#define REY_B 6
+#define REY_N -6
+
 /*
 Clase base de todas las piezas, que contiene los métodos y los parámetros comunes a todas
 */

@@ -21,7 +21,7 @@ public:
 
 			if (posposiblex >= 0 && posposiblex < tab.dim_x && posposibley >= 0 && posposibley < tab.dim_y) {
 				//comprueba que este vacía
-				if (tab.mat[posposiblex][posposibley] <= 0) {
+				if (tab.defTablero[posposiblex][posposibley] <= 0) {
 					tab.printPosibles(posposiblex, posposibley);
 				}
 			}
