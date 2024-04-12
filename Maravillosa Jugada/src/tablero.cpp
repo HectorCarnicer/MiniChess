@@ -1,6 +1,6 @@
 // tablero.cpp
 
-#include "tablero.h"
+#include "../lib/tablero.h"
 #include <iostream>
 #include <vector>
 #include <iomanip>

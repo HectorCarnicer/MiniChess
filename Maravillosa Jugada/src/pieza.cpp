@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Pieza.h"
+#include "../lib/Pieza.h"
 
 // Asumiendo que el tamaño del tablero es 8x8
 const int TAMANO_TABLERO = 8;

@@ -1,7 +1,7 @@
-#include "../lib/mundo.h"
+#include "motor.h"
 
 // Función para verificar si la posición está ocupada por otra pieza
-bool Mundo::posicionOcupada(int x, int y) {
+bool posicionOcupada(const std::vector<Pieza*>& piezas,int x, int y) {
     for (const auto& pieza : piezas) {
         int posX, posY;
         pieza->obtenerPosicion(posX, posY);
@@ -13,7 +13,7 @@ bool Mundo::posicionOcupada(int x, int y) {
 }
 
 // Función para "comer" la pieza en la posición dada
-void Mundo::comerPieza(int x, int y) {
+void comerPieza(std::vector<Pieza*>& piezas,int x, int y) {
     for (auto it = piezas.begin(); it != piezas.end(); ) {
         int posX, posY;
         (*it)->obtenerPosicion(posX, posY);
@@ -26,9 +26,8 @@ void Mundo::comerPieza(int x, int y) {
         }
     }
 }
-
 // Función para verificar si el camino está libre para el movimiento de la pieza
-bool Mundo::caminoLibre(Pieza* pieza, int xFinal, int yFinal) {
+bool caminoLibre(const std::vector<Pieza*>& piezas,Pieza* pieza, int xFinal, int yFinal) {
     // Implementar la lógica específica para cada tipo de pieza
     // Por ejemplo, para un peón, solo necesitas verificar la casilla final
     // Para piezas como la torre, alfil o reina, necesitas verificar todas las casillas en el camino

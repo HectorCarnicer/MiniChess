@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Peon.h"
+#include "../lib/peon.h"
 
 //int main() {
 //    // Crear varios peones en diferentes posiciones

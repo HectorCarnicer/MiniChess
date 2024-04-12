@@ -5,10 +5,13 @@
 #include "../lib/Rey.h"
 #include "../lib/tablero.h"
 #include "../lib/motor.h"
+#include "../lib/mundo.h"
 
 int main() {
-    // Crear un vector para almacenar las piezas
+    // Crear un vector para almacenar las pieza
+
     std::vector<Pieza*> piezas;
+    //Mundo(piezas);
 
     // Agregar piezas al vector con su color correspondiente
     // Piezas blancas
