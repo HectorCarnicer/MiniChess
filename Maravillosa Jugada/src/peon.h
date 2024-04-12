@@ -6,16 +6,35 @@
 class Peon : public Pieza {
 public:
     // Constructor que utiliza el constructor de la clase base Pieza
-    Peon(int posX, int posY) : Pieza(posX, posY) {}
+    Peon(int posX, int posY, Color color) : Pieza(posX, posY, color) {}
 
-    // Puedes agregar métodos específicos de Peon aquí
-    // Por ejemplo, un movimiento especial para el peón
-    bool moverPeon(int nuevoX, int nuevoY) {
-        // Implementa las reglas de movimiento específicas del peón
-        // Por ejemplo, solo permitir mover hacia adelante y capturar en diagonal
-        // Asegúrate de llamar al método mover de la clase base para la lógica común
-        return true; // Retorna verdadero si el movimiento es válido
+    // Método para mover el peón con validación de movimiento
+    bool mover(int nuevoX, int nuevoY) override {
+        // El peón solo puede moverse hacia adelante una casilla
+        // y capturar en diagonal una casilla
+        int deltaX = nuevoX - x;
+        int deltaY = nuevoY - y;
+
+        // Mover hacia adelante
+        if (color == BLANCO && deltaY == 1 && deltaX == 0) {
+            return Pieza::mover(nuevoX, nuevoY);
+        }
+        else if (color == NEGRO && deltaY == -1 && deltaX == 0) {
+            return Pieza::mover(nuevoX, nuevoY);
+        }
+
+        // Capturar en diagonal
+        if ((color == BLANCO && deltaY == 1 && abs(deltaX) == 1) ||
+            (color == NEGRO && deltaY == -1 && abs(deltaX) == 1)) {
+            // Aquí deberías verificar si hay una pieza enemiga en la nueva posición
+            // Si es así, puedes capturar
+            return Pieza::mover(nuevoX, nuevoY);
+        }
+
+        // Si no es ninguno de los movimientos válidos, retorna falso
+        return false;
     }
+
     std::string nombreDeClase() const override {
         return "Peon";
     }
