@@ -18,6 +18,9 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="src\mundo.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
     <ClCompile Include="src\pieza.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -39,7 +42,7 @@
     <ClCompile Include="src\tablero.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="mundo.cpp">
+    <ClCompile Include="src\Gardner.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,23 +53,34 @@
     <ClInclude Include="lib\freeglut.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\motor.h">
+    <ClInclude Include="lib\motor.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\peon.h">
+    <ClInclude Include="lib\mundo.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\pieza.h">
+    <ClInclude Include="lib\peon.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\rey.h">
+    <ClInclude Include="lib\pieza.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\tablero.h">
+    <ClInclude Include="lib\rey.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="mundo.h">
+    <ClInclude Include="lib\tablero.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="lib\Gardner.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\ETSIDI.lib">
+      <Filter>Archivos de encabezado</Filter>
+    </Library>
+    <Library Include="lib\freeglut.lib">
+      <Filter>Archivos de encabezado</Filter>
+    </Library>
   </ItemGroup>
 </Project>

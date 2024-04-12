@@ -18,6 +18,33 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Gardner.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mundo.cpp" />
+    <ClCompile Include="src\pieza.cpp" />
+    <ClCompile Include="src\principal.cpp" />
+    <ClCompile Include="src\prueba_main_tablero.cpp" />
+    <ClCompile Include="src\prueba_peon.cpp" />
+    <ClCompile Include="src\prueba_pieza .cpp" />
+    <ClCompile Include="src\pueba_rey.cpp" />
+    <ClCompile Include="src\tablero.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\ETSIDI.h" />
+    <ClInclude Include="lib\freeglut.h" />
+    <ClInclude Include="lib\Gardner.h" />
+    <ClInclude Include="lib\motor.h" />
+    <ClInclude Include="lib\mundo.h" />
+    <ClInclude Include="lib\peon.h" />
+    <ClInclude Include="lib\pieza.h" />
+    <ClInclude Include="lib\rey.h" />
+    <ClInclude Include="lib\tablero.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\ETSIDI.lib" />
+    <Library Include="lib\freeglut.lib" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,27 +153,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="mundo.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\pieza.cpp" />
-    <ClCompile Include="src\principal.cpp" />
-    <ClCompile Include="src\prueba_main_tablero.cpp" />
-    <ClCompile Include="src\prueba_peon.cpp" />
-    <ClCompile Include="src\prueba_pieza .cpp" />
-    <ClCompile Include="src\pueba_rey.cpp" />
-    <ClCompile Include="src\tablero.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="lib\ETSIDI.h" />
-    <ClInclude Include="lib\freeglut.h" />
-    <ClInclude Include="mundo.h" />
-    <ClInclude Include="src\motor.h" />
-    <ClInclude Include="src\peon.h" />
-    <ClInclude Include="src\pieza.h" />
-    <ClInclude Include="src\rey.h" />
-    <ClInclude Include="src\tablero.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
