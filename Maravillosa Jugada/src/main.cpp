@@ -1,17 +1,17 @@
 #include <iostream>
 #include <vector>
-#include "Pieza.h"
-#include "Peon.h"
-#include "Rey.h"
-#include "tablero.h"
-#include "motor.h"
+#include "../lib/Pieza.h"
+#include "../lib/Peon.h"
+#include "../lib/Rey.h"
+#include "../lib/tablero.h"
+#include "../lib/motor.h"
 
 int main() {
     // Crear un vector para almacenar las piezas
     std::vector<Pieza*> piezas;
 
     // Agregar piezas al vector con su color correspondiente
-// Piezas blancas
+    // Piezas blancas
     //piezas.push_back(new Torre(0, 0, BLANCO));
     //piezas.push_back(new Caballo(1, 0, BLANCO));
     //piezas.push_back(new Alfil(2, 0, BLANCO));
