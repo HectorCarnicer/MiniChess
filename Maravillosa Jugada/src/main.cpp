@@ -3,7 +3,6 @@
 #include "../lib/Pieza.h"
 #include "../lib/Peon.h"
 #include "../lib/Rey.h"
-#include "../lib/tablero.h"
 #include "../lib/mundo.h"
 
 int main() {
@@ -43,8 +42,9 @@ int main() {
     //Primer turno es blanco
     Color turnoActual = BLANCO; // Comenzar con el turno de las piezas blancas
 
+    // Bucle que genera nuevas jugadas
     while (true) {
-        imprimirTablero(mundo.piezas);
+        mundo.imprimirTablero();
         mundo.nuevaJugada(turnoActual);
     }
 

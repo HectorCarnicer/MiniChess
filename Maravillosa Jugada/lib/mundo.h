@@ -14,7 +14,7 @@ public:
 	void comerPieza(int x, int y);
 	bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
 	// virtual void inicializa();
-	void dibuja();
+	void imprimirTablero();
 	void nuevaJugada(Color turnoActual);
 	std::vector<Pieza*>& piezas;
 };

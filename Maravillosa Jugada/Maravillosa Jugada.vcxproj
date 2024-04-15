@@ -28,7 +28,6 @@
     <ClCompile Include="src\prueba_peon.cpp" />
     <ClCompile Include="src\prueba_pieza .cpp" />
     <ClCompile Include="src\pueba_rey.cpp" />
-    <ClCompile Include="src\tablero.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\ETSIDI.h" />
@@ -38,7 +37,6 @@
     <ClInclude Include="lib\peon.h" />
     <ClInclude Include="lib\pieza.h" />
     <ClInclude Include="lib\rey.h" />
-    <ClInclude Include="lib\tablero.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\ETSIDI.lib" />

@@ -37,6 +37,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int xFinal, int yFinal) {
     return true; // Por defecto, asumimos que el camino está libre
 }
 
+// Función que genera una nueva jugada en consola
 void Mundo::nuevaJugada(Color turnoActual)
 {
     int eleccion, nuevoX, nuevoY;
@@ -71,5 +72,31 @@ void Mundo::nuevaJugada(Color turnoActual)
     }
     else {
         std::cout << "Elección inválida o no es el turno de esa pieza.\n";
+    }
+}
+
+void Mundo::imprimirTablero()
+{
+    // Crear un tablero vacío
+    std::string tablero[8][8];
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            tablero[i][j] = ".";
+        }
+    }
+
+    // Colocar las iniciales de las piezas en el tablero
+    for (const auto& pieza : piezas) {
+        int x, y;
+        pieza->obtenerPosicion(x, y); // Asumiendo que tienes un método para obtener la posición
+        tablero[y][x] = pieza->nombreDeClase().substr(0, 1); // Usa la primera letra del nombre de la clase
+    }
+
+    // Imprimir el tablero
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            std::cout << tablero[i][j] << " ";
+        }
+        std::cout << std::endl;
     }
 }
