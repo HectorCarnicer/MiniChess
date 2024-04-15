@@ -13,9 +13,9 @@ public:
 	bool posicionOcupada(int x, int y);
 	void comerPieza(int x, int y);
 	bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
-	virtual void inicializa();
+	// virtual void inicializa();
 	void dibuja();
-private:
+	void nuevaJugada(Color turnoActual);
 	std::vector<Pieza*>& piezas;
 };
 
