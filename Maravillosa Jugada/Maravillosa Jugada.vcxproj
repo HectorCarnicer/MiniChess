@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="motor.cpp" />
     <ClCompile Include="src\Gardner.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mundo.cpp" />
@@ -35,7 +34,6 @@
     <ClInclude Include="lib\ETSIDI.h" />
     <ClInclude Include="lib\freeglut.h" />
     <ClInclude Include="lib\Gardner.h" />
-    <ClInclude Include="lib\motor.h" />
     <ClInclude Include="lib\mundo.h" />
     <ClInclude Include="lib\peon.h" />
     <ClInclude Include="lib\pieza.h" />

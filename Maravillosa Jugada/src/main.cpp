@@ -4,7 +4,6 @@
 #include "../lib/Peon.h"
 #include "../lib/Rey.h"
 #include "../lib/tablero.h"
-#include "../lib/motor.h"
 #include "../lib/mundo.h"
 
 int main() {
