@@ -4,6 +4,6 @@ class Gardner : Mundo
 {
 
 public:
-	void inicializa() override;
+	//void inicializa() override;
 };
 
