@@ -100,9 +100,3 @@ void Mundo::imprimirTablero()
         std::cout << std::endl;
     }
 }
-
-// Función que agrega una nueva pieza al tablero
-void Mundo::nuevaPieza(Pieza* p)
-{
-    piezas.push_back(p);
-}

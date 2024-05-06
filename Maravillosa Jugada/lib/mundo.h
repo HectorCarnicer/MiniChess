@@ -4,6 +4,7 @@
 #include <vector>
 #include "pieza.h"
 
+// Interfaz del mundo, de ella heredan los distintos modos de juego
 class Mundo
 {
 public:
@@ -12,15 +13,15 @@ public:
 
 	bool posicionOcupada(int x, int y);
 	void comerPieza(int x, int y);
-	bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
-	virtual void inicializa() {}
-	virtual void imprimirTablero();
 	void nuevaJugada(Color turnoActual);
-	void nuevaPieza(Pieza* p);
-	void printTam() { std::cout << TAMANO_TABLERO << std::endl; }
+	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
+
+	// Métodos que se sobrescriben aguas abajo
+	virtual bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
+	virtual void inicializa() = 0;
+	virtual void imprimirTablero() = 0;
+	virtual int getTam() = 0;
 	std::vector<Pieza*>& piezas;
-private:
-	const int TAMANO_TABLERO = 8;
 };
 
 #endif MUNDO_H

@@ -3,14 +3,14 @@
 #include "../lib/Pieza.h"
 #include "../lib/Peon.h"
 #include "../lib/Rey.h"
-#include "../lib/mundo.h"
+#include "../lib/gardner.h"
+#include "../lib/gardner.h"
 
 int main() {
     // Crear un vector para almacenar las pieza
 
     std::vector<Pieza*> piezas;
-    Mundo mundo(piezas);
-    mundo.printTam();
+    Gardner gardner(piezas);
 
     // Agregar piezas al vector con su color correspondiente
     // Piezas blancas
@@ -18,12 +18,12 @@ int main() {
     //piezas.push_back(new Caballo(1, 0, BLANCO));
     //piezas.push_back(new Alfil(2, 0, BLANCO));
     //piezas.push_back(new Reina(3, 0, BLANCO));
-    mundo.nuevaPieza(new Rey(4, 0, BLANCO));
+    gardner.nuevaPieza(new Rey(2, 4, BLANCO));
     //piezas.push_back(new Alfil(5, 0, BLANCO));
     //piezas.push_back(new Caballo(6, 0, BLANCO));
     //piezas.push_back(new Torre(7, 0, BLANCO));
-    for (int i = 0; i < 8; ++i) {
-        mundo.nuevaPieza(new Peon(i, 1, BLANCO));
+    for (int i = 0; i < 5; ++i) {
+        gardner.nuevaPieza(new Peon(i, 1, BLANCO));
     }
 
     // Piezas negras
@@ -31,12 +31,12 @@ int main() {
     //piezas.push_back(new Caballo(1, 7, NEGRO));
     //piezas.push_back(new Alfil(2, 7, NEGRO));
     //piezas.push_back(new Reina(3, 7, NEGRO));
-    mundo.nuevaPieza(new Rey(4, 7, NEGRO));
+    gardner.nuevaPieza(new Rey(2, 0, NEGRO));
     //piezas.push_back(new Alfil(5, 7, NEGRO));
     //piezas.push_back(new Caballo(6, 7, NEGRO));
     //piezas.push_back(new Torre(7, 7, NEGRO));
-    for (int i = 0; i < 8; ++i) {
-       mundo.nuevaPieza(new Peon(i, 6, NEGRO));
+    for (int i = 0; i < 5; ++i) {
+       gardner.nuevaPieza(new Peon(i, 3, NEGRO));
     }
 
 
@@ -45,8 +45,8 @@ int main() {
 
     // Bucle que genera nuevas jugadas
     while (true) {
-        mundo.imprimirTablero();
-        mundo.nuevaJugada(turnoActual);
+        gardner.imprimirTablero();
+        gardner.nuevaJugada(turnoActual);
     }
 
     // Limpiar el vector de piezas
