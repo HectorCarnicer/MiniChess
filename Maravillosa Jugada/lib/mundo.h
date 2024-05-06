@@ -21,6 +21,7 @@ public:
 	virtual void inicializa() = 0;
 	virtual void imprimirTablero() = 0;
 	virtual int getTam() = 0;
+	virtual ~Mundo() {}
 	std::vector<Pieza*>& piezas;
 };
 
