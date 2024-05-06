@@ -7,7 +7,7 @@
 class Rey : public Pieza {
 public:
     // Constructor que utiliza el constructor de la clase base Pieza
-    Rey(int posX, int posY, Color color) : Pieza(posX, posY, color) {}
+    Rey(int posX, int posY, Color color, int TAM_TAB) : Pieza(posX, posY, color, TAM_TAB) {}
 
     // Método para mover el rey con validación de movimiento
     bool mover(int nuevoX, int nuevoY) override {

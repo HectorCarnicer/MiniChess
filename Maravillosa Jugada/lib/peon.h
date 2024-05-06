@@ -6,7 +6,7 @@
 class Peon : public Pieza {
 public:
     // Constructor que utiliza el constructor de la clase base Pieza
-    Peon(int posX, int posY, Color color) : Pieza(posX, posY, color) {}
+    Peon(int posX, int posY, Color color, int TAM_TAB) : Pieza(posX, posY, color, TAM_TAB) {}
 
     // Método para mover el peón con validación de movimiento
     bool mover(int nuevoX, int nuevoY) override {

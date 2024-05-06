@@ -31,9 +31,6 @@ public:
 	// Getter de tamaño
 	int getTam() { return TAMANO_TABLERO; }
 
-	// Posición válida
-	bool posValid(int x, int y) { return (x >= 0) && (y >= 0) && (x < TAMANO_TABLERO) && (y < TAMANO_TABLERO); }
-	
 	//Nueva Jugada
 	void nuevaJugada(Color turnoActual) override;
 private: 

@@ -40,14 +40,14 @@ void Gardner::imprimirTablero()
 void Gardner::inicializa()
 {
     // Creación de piezas blancas
-    this->nuevaPieza(new Rey(2, 4, BLANCO));
+    this->nuevaPieza(new Rey(2, 4, BLANCO, TAMANO_TABLERO));
     for (int i = 0; i < TAMANO_TABLERO; ++i) {
-        this->nuevaPieza(new Peon(i, 1, BLANCO));
+        this->nuevaPieza(new Peon(i, 1, BLANCO, TAMANO_TABLERO));
     }
     // Creación de piezas negras
-    this->nuevaPieza(new Rey(2, 0, NEGRO));
+    this->nuevaPieza(new Rey(2, 0, NEGRO, TAMANO_TABLERO));
     for (int i = 0; i < 5; ++i) {
-        this->nuevaPieza(new Peon(i, 3, NEGRO));
+        this->nuevaPieza(new Peon(i, 3, NEGRO, TAMANO_TABLERO));
     }
 }
 
@@ -57,7 +57,7 @@ void Gardner::nuevaJugada(Color turnoActual)
     int eleccion, nuevoX, nuevoY;
     // Mostrar las piezas y pedir al usuario que elija una
     std::cout << "Turno de " << (turnoActual == BLANCO ? "Blanco" : "Negro") << ". Seleccione una pieza para mover:\n";
-    for (int i = 0; i < piezas.size(); i++) {
+    for (int i = 0; i < piezas.size(); ++i) {
         if (piezas[i]->obtenerColor() == turnoActual) {
             std::cout << i + 1 << ". " << piezas[i]->nombreDeClase() << " en posición ";
             piezas[i]->mostrarPosicion();
@@ -75,7 +75,7 @@ void Gardner::nuevaJugada(Color turnoActual)
 
         // Verificar si la posición está ocupada antes de mover la pieza
         if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-            if (posValid(nuevoX, nuevoY)) {
+            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                 // Cambiar el turno si el movimiento es exitoso
                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
             }
