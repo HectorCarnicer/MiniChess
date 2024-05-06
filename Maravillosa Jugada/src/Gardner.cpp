@@ -1,5 +1,5 @@
 #include "../lib/gardner.h"
-/*
+
 void Gardner::imprimirTablero()
 {
     // Crear un tablero vacío
@@ -25,4 +25,3 @@ void Gardner::imprimirTablero()
         std::cout << std::endl;
     }
 }
-*/

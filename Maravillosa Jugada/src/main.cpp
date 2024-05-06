@@ -10,6 +10,7 @@ int main() {
 
     std::vector<Pieza*> piezas;
     Mundo mundo(piezas);
+    mundo.printTam();
 
     // Agregar piezas al vector con su color correspondiente
     // Piezas blancas

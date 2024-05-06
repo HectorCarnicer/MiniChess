@@ -6,7 +6,7 @@ class Gardner : public Mundo
 {
 
 public:
-	//void inicializa() override;
+	void inicializa() override {}
 	void imprimirTablero() override;
 private: 
 	static const int TAMANO_TABLERO = 5;

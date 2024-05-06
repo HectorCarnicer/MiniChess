@@ -13,10 +13,11 @@ public:
 	bool posicionOcupada(int x, int y);
 	void comerPieza(int x, int y);
 	bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
-	//virtual void inicializa();
+	virtual void inicializa() {}
 	virtual void imprimirTablero();
 	void nuevaJugada(Color turnoActual);
 	void nuevaPieza(Pieza* p);
+	void printTam() { std::cout << TAMANO_TABLERO << std::endl; }
 	std::vector<Pieza*>& piezas;
 private:
 	const int TAMANO_TABLERO = 8;
