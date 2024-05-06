@@ -1,7 +1,10 @@
-#include "../lib/gardner.h"
+#include "../lib/baby.h"
+#include "../lib/peon.h"
+#include "../lib/rey.h"
+
 
 // Destructor de objetos Gardner
-Gardner::~Gardner()
+Baby::~Baby()
 {
     for (Pieza* pieza : piezas) {
         delete pieza;
@@ -10,7 +13,7 @@ Gardner::~Gardner()
 }
 
 // Impresor del tablero Gardner
-void Gardner::imprimirTablero()
+void Baby::imprimirTablero()
 {
     // Crear un tablero vacío
     std::string tablero[TAMANO_TABLERO][TAMANO_TABLERO];
@@ -37,7 +40,7 @@ void Gardner::imprimirTablero()
 }
 
 // Inicializador del tablero Gardner
-void Gardner::inicializa()
+void Baby::inicializa()
 {
     // TODO: Añadir piezas que faltan
 
@@ -54,7 +57,7 @@ void Gardner::inicializa()
 }
 
 // Nueva Jugada
-void Gardner::nuevaJugada(Color turnoActual)
+void Baby::nuevaJugada(Color turnoActual)
 {
     int eleccion, nuevoX, nuevoY;
     // Mostrar las piezas y pedir al usuario que elija una
