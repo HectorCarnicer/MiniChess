@@ -4,7 +4,7 @@
 #include "../lib/Peon.h"
 #include "../lib/Rey.h"
 #include "../lib/gardner.h"
-#include "../lib/gardner.h"
+
 
 int main() {
     // Crear un vector para almacenar las pieza

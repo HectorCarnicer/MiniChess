@@ -11,9 +11,10 @@ public:
 	// Constructor
 	Mundo(std::vector<Pieza*>& piezas) : piezas(piezas){}
 
+	// Métodos globales
 	bool posicionOcupada(int x, int y);
 	void comerPieza(int x, int y);
-	void nuevaJugada(Color turnoActual);
+	
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
 
 	// Métodos que se sobrescriben aguas abajo
@@ -21,7 +22,11 @@ public:
 	virtual void inicializa() = 0;
 	virtual void imprimirTablero() = 0;
 	virtual int getTam() = 0;
+	virtual bool posValid(int x, int y) = 0;
 	virtual ~Mundo() {}
+	virtual void nuevaJugada(Color turnoActual) = 0;
+
+	// Vector que contiene las piezas
 	std::vector<Pieza*>& piezas;
 };
 
