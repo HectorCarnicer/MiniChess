@@ -1,6 +1,6 @@
 #pragma once
 #include "mundo.h"
-class Gardner : Mundo
+class Gardner : public Mundo
 {
 
 public:

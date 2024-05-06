@@ -16,6 +16,7 @@ public:
 	// virtual void inicializa();
 	void imprimirTablero();
 	void nuevaJugada(Color turnoActual);
+	void nuevaPieza(Pieza* p);
 	std::vector<Pieza*>& piezas;
 };
 

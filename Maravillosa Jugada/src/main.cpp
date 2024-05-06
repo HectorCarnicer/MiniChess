@@ -17,12 +17,12 @@ int main() {
     //piezas.push_back(new Caballo(1, 0, BLANCO));
     //piezas.push_back(new Alfil(2, 0, BLANCO));
     //piezas.push_back(new Reina(3, 0, BLANCO));
-    mundo.piezas.push_back(new Rey(4, 0, BLANCO));
+    mundo.nuevaPieza(new Rey(4, 0, BLANCO));
     //piezas.push_back(new Alfil(5, 0, BLANCO));
     //piezas.push_back(new Caballo(6, 0, BLANCO));
     //piezas.push_back(new Torre(7, 0, BLANCO));
     for (int i = 0; i < 8; ++i) {
-        mundo.piezas.push_back(new Peon(i, 1, BLANCO));
+        mundo.nuevaPieza(new Peon(i, 1, BLANCO));
     }
 
     // Piezas negras
@@ -30,12 +30,12 @@ int main() {
     //piezas.push_back(new Caballo(1, 7, NEGRO));
     //piezas.push_back(new Alfil(2, 7, NEGRO));
     //piezas.push_back(new Reina(3, 7, NEGRO));
-    mundo.piezas.push_back(new Rey(4, 7, NEGRO));
+    mundo.nuevaPieza(new Rey(4, 7, NEGRO));
     //piezas.push_back(new Alfil(5, 7, NEGRO));
     //piezas.push_back(new Caballo(6, 7, NEGRO));
     //piezas.push_back(new Torre(7, 7, NEGRO));
     for (int i = 0; i < 8; ++i) {
-       mundo.piezas.push_back(new Peon(i, 6, NEGRO));
+       mundo.nuevaPieza(new Peon(i, 6, NEGRO));
     }
 
 

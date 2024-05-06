@@ -15,7 +15,7 @@ de las piezas con el resto del código.
 
 EL calificador virtual implica que se usa el enlace dinámico aka que se pueden redefinir las funciones
 en las clases derivadas sin problema. EL calificador override en las funciones redefinidas de la clase 
-derivada hace que lo compruebe y funcione correctamente.
+derivada hace que lo compruebe y funcione correctamente. 
 El = 0 en las funciones implica que cada clase que herede de Pieza debe redefinir la función mover().
     
 */

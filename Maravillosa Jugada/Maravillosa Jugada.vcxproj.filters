@@ -62,7 +62,7 @@
     <ClInclude Include="lib\rey.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="lib\Gardner.h">
+    <ClInclude Include="lib\gardner.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
