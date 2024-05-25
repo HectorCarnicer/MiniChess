@@ -2,12 +2,12 @@
 #define PEON_H
 
 #include "Pieza.h"
+#include "Gardner.h"
 
 class Peon : public Pieza {
 public:
     // Constructor que utiliza el constructor de la clase base Pieza
     Peon(int posX, int posY, Color color, int TAM_TAB) : Pieza(posX, posY, color, TAM_TAB) {}
-
     // Método para mover el peón con validación de movimiento
     bool mover(int nuevoX, int nuevoY) override {
         // El peón solo puede moverse hacia adelante una casilla
@@ -28,6 +28,7 @@ public:
         
         if ((color == BLANCO && deltaY == 1 && abs(deltaX) == 1) ||
             (color == NEGRO && deltaY == -1 && abs(deltaX) == 1)) {
+
                 return Pieza::mover(nuevoX, nuevoY);
            
         }

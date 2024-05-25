@@ -30,6 +30,7 @@ void Pieza::moverPiezaUsuario() {
     std::cin >> nuevoY;
 
     if (!mover(nuevoX, nuevoY)) {
+        system("cls");
         std::cout << "Movimiento no realizado. Intente de nuevo." << std::endl;
     }
 }

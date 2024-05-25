@@ -28,12 +28,30 @@ void Mundo::comerPieza(int x, int y) {
 }
 
 // Función para verificar si el camino está libre para el movimiento de la pieza
-bool Mundo::caminoLibre(Pieza* pieza, int xFinal, int yFinal) {
+bool Mundo::caminoLibre(Pieza* pieza, int x, int y) {
     // Implementar la lógica específica para cada tipo de pieza
     // Por ejemplo, para un peón, solo necesitas verificar la casilla final
     // Para piezas como la torre, alfil o reina, necesitas verificar todas las casillas en el camino
     // ...
 
+    if (pieza->nombreDeClase() == "Peon") {
+
+    }
+    if (pieza->nombreDeClase() == "Alfil") {
+
+    }
+    if (pieza->nombreDeClase() == "Rey") {
+
+    }
+    if (pieza->nombreDeClase() == "Reina") {
+
+    }
+    if (pieza->nombreDeClase() == "Torre") {
+
+    }
+    if (pieza->nombreDeClase() == "Caballo") {
+
+    }
     return true; // Por defecto, asumimos que el camino está libre
 }
 

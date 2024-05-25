@@ -5,7 +5,6 @@
 #include <string>
 
 
-#include "mundo.h"
 
 // Enumeración para los colores de las piezas
 enum Color { BLANCO, NEGRO };
@@ -52,8 +51,7 @@ public:
     // Método para obtener el color de la pieza
     Color obtenerColor() const;
     void moverPiezaUsuario();
-}
-;
+};
 
 
 

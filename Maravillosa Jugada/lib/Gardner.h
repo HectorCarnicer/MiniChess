@@ -5,10 +5,8 @@
 #include "../lib/pieza.h"
 #include "../lib/peon.h"
 #include "alfil.h"
-
 #include "../lib/alfil.h"
 
-#include "mundo.h"
 
 /*
 * Esta clase hereda de mundo e implementa el modo de juego Gardner con sus reglas específicas
