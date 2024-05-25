@@ -75,7 +75,61 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
         }
 
     }
+
     if (pieza->nombreDeClase() == "Rey") {
+        int x, y;
+        pieza->obtenerPosicion(x, y);
+        if (nuevoX > x) {
+            for (int i = x + 1; i <= nuevoX; i++) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        else if (nuevoX < x) {
+            for (int i = x - 1; i >= nuevoX; i--) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        else if (nuevoY > y) {
+            for (int j = y + 1; j <= nuevoY; j++) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }
+        else if (nuevoY < y) {
+            for (int j = y - 1; j >= nuevoY; j--) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }
+        if (nuevoX > x && nuevoY > y) {
+            for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX < x && nuevoY > y) {
+            for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX > x && nuevoY < y) {
+            for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX < x && nuevoY < y) {
+            for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+
+        return true;
+
 
     }
     if (pieza->nombreDeClase() == "Reina") {
