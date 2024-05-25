@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Gardner.cpp" />
+    <ClCompile Include="src\baby.cpp" />
+    <ClCompile Include="src\gardner.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mundo.cpp" />
     <ClCompile Include="src\pieza.cpp" />
@@ -30,9 +31,10 @@
     <ClCompile Include="src\pueba_rey.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\baby.h" />
     <ClInclude Include="lib\ETSIDI.h" />
     <ClInclude Include="lib\freeglut.h" />
-    <ClInclude Include="lib\Gardner.h" />
+    <ClInclude Include="lib\gardner.h" />
     <ClInclude Include="lib\mundo.h" />
     <ClInclude Include="lib\peon.h" />
     <ClInclude Include="lib\pieza.h" />

@@ -39,7 +39,10 @@
     <ClCompile Include="src\pueba_rey.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\Gardner.cpp">
+    <ClCompile Include="src\gardner.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\baby.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +65,10 @@
     <ClInclude Include="lib\rey.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="lib\Gardner.h">
+    <ClInclude Include="lib\gardner.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\baby.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
