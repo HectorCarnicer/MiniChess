@@ -2,6 +2,8 @@
 #define PEON_H
 
 #include "Pieza.h"
+#include "mundo.h"
+#include "Gardner.h"
 
 class Peon : public Pieza {
 public:
@@ -28,12 +30,23 @@ public:
             (color == NEGRO && deltaY == -1 && abs(deltaX) == 1)) {
             // Aquí deberías verificar si hay una pieza enemiga en la nueva posición
             // Si es así, puedes capturar
+            
+            /*necesito un tablero que almacene las piezas, para preguntar 
+            si en esa posición hay una pieza que se pueda comer, esto no
+            lo tenemos*/
+
+
+
+            
+
             return Pieza::mover(nuevoX, nuevoY);
         }
 
         // Si no es ninguno de los movimientos válidos, retorna falso
         return false;
     }
+
+  
 
     std::string nombreDeClase() const override {
         return "Peon";

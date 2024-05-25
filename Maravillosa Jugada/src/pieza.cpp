@@ -5,7 +5,7 @@
 
 // Implementación del método mover de Pieza
 bool Pieza::mover(int nuevoX, int nuevoY) {
-    if (nuevoX >= 0 && nuevoX < TAMANO_TABLERO && nuevoY >= 0 && nuevoY < TAMANO_TABLERO) {
+    if (nuevoX >= 0 && nuevoX < TAMANO_TABLERO-1 && nuevoY >= 0 && nuevoY < TAMANO_TABLERO-1) {
         x = nuevoX;
         y = nuevoY;
         return true;
@@ -18,15 +18,20 @@ bool Pieza::mover(int nuevoX, int nuevoY) {
 
 // Implementación del método mostrarPosicion de Pieza
 void Pieza::mostrarPosicion() {
-    std::cout << "Posición actual: (" << x << ", " << y << ")" << std::endl;
+    std::cout << "Posicion actual: (" << x << ", " << y << ")" << std::endl;
 }
 
 // Función para mover la pieza con entrada del usuario
+/*
+-------------------------------------------------------
+    No es necesaria, se hace en gardner.cpp línea 73
+--------------------------------------------------------
+*/
 void Pieza::moverPiezaUsuario() {
     int nuevoX, nuevoY;
-    std::cout << "Ingrese la nueva posición X (0 a " << TAMANO_TABLERO - 1 << "): ";
+    std::cout << "Ingrese la nueva posicion X (0 a " << TAMANO_TABLERO - 1 << "): ";
     std::cin >> nuevoX;
-    std::cout << "Ingrese la nueva posición Y (0 a " << TAMANO_TABLERO - 1 << "): ";
+    std::cout << "Ingrese la nueva posicion Y (0 a " << TAMANO_TABLERO - 1 << "): ";
     std::cin >> nuevoY;
 
     if (!mover(nuevoX, nuevoY)) {

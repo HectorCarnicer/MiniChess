@@ -2,6 +2,7 @@
 
 // Función para verificar si la posición está ocupada por otra pieza
 bool Mundo::posicionOcupada(int x, int y) {
+    //revisa las posiciones de todas las piezas, si alguna conincide con la posición a la que te mueves, retorna true
     for (const auto& pieza : piezas) {
         int posX, posY;
         pieza->obtenerPosicion(posX, posY);
