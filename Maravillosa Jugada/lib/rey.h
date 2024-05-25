@@ -23,6 +23,8 @@ public:
         }
 
         // Si no es un movimiento válido, retorna falso
+        system("cls");
+
         return false;
     }
 

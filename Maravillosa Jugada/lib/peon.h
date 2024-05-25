@@ -32,7 +32,7 @@ public:
                 return Pieza::mover(nuevoX, nuevoY);
            
         }
-
+        system("cls");
         // Si no es ninguno de los movimientos válidos, retorna falso
         return false;
     }
