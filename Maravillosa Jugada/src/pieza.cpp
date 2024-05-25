@@ -35,7 +35,6 @@ void Pieza::moverPiezaUsuario() {
         std::cout << "Movimiento no realizado. Intente de nuevo." << std::endl;
     }
 }
-
 // Método para obtener el color de la pieza
 Color Pieza::obtenerColor() const {
     return color;
