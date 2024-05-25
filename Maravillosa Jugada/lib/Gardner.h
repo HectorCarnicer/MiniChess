@@ -6,6 +6,9 @@
 #include "../lib/peon.h"
 #include "alfil.h"
 #include "../lib/alfil.h"
+#include "torre.h"
+#include "caballo.h"
+#include "reina.h"
 
 
 /*

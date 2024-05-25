@@ -26,7 +26,7 @@ class Pieza {
 protected:
     int x, y; // Posición de la pieza en un tablero bidimensional
     Color color; // Color de la pieza
-    int TAMANO_TABLERO = 8; // Tamaño del tablero
+    int TAMANO_TABLERO = 5; // Tamaño del tablero
 
 public:
     // Constructor que inicializa la posición de la pieza y el color
