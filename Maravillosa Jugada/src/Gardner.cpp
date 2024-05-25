@@ -55,6 +55,7 @@ void Gardner::inicializa()
     this->nuevaPieza(new Alfil(2, 2, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Reina(0, 0, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Caballo(0, 4, BLANCO, TAMANO_TABLERO));
 }
 
 // Nueva Jugada
