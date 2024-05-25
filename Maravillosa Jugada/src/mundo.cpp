@@ -28,27 +28,144 @@ void Mundo::comerPieza(int x, int y) {
 }
 
 // Función para verificar si el camino está libre para el movimiento de la pieza
-bool Mundo::caminoLibre(Pieza* pieza, int x, int y) {
+bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
     // Implementar la lógica específica para cada tipo de pieza
     // Por ejemplo, para un peón, solo necesitas verificar la casilla final
     // Para piezas como la torre, alfil o reina, necesitas verificar todas las casillas en el camino
     // ...
 
     if (pieza->nombreDeClase() == "Peon") {
-
+        int x, y;
+        pieza->obtenerPosicion(x, y);
     }
     if (pieza->nombreDeClase() == "Alfil") {
+        if (pieza->nombreDeClase() == "Alfil") {
+            int x, y;
+            pieza->obtenerPosicion(x, y);
+
+            if (nuevoX > x && nuevoY > y) {
+                for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
+                    if (posicionOcupada(i, j))
+                        return false;
+                }
+            }
+            else if (nuevoX < x && nuevoY > y) {
+                for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
+                    if (posicionOcupada(i, j))
+                        return false;
+                }
+            }
+            else if (nuevoX > x && nuevoY < y) {
+                for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
+                    if (posicionOcupada(i, j))
+                        return false;
+                }
+            }
+            else if (nuevoX < x && nuevoY < y) {
+                for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
+                    if (posicionOcupada(i, j))
+                        return false;
+                }
+            }
+
+            return true;
+        }
 
     }
     if (pieza->nombreDeClase() == "Rey") {
 
     }
     if (pieza->nombreDeClase() == "Reina") {
+        int x, y;
+        pieza->obtenerPosicion(x, y);
+
+
+        if (nuevoX > x) {
+            for (int i = x + 1; i <= nuevoX; i++) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        else if (nuevoX < x) {
+            for (int i = x - 1; i >= nuevoX; i--) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        else if (nuevoY > y) {
+            for (int j = y + 1; j <= nuevoY; j++) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }
+        else if (nuevoY < y) {
+            for (int j = y - 1; j >= nuevoY; j--) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }
+
+        if (nuevoX > x && nuevoY > y) {
+            for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX < x && nuevoY > y) {
+            for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX > x && nuevoY < y) {
+            for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX < x && nuevoY < y) {
+            for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+
+        return true;
+
 
     }
     if (pieza->nombreDeClase() == "Torre") {
+        int x, y;
+        pieza->obtenerPosicion(x, y);
+        if (nuevoX > x) {
+            for (int i = x + 1; i <= nuevoX; i++) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        else if (nuevoX < x) {
+            for (int i = x - 1; i >= nuevoX; i--) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        else if (nuevoY > y) {
+            for (int j = y + 1; j <= nuevoY; j++) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }
+        else if (nuevoY < y) {
+            for (int j = y - 1; j >= nuevoY; j--) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }
 
+        return true;
     }
+
+
     if (pieza->nombreDeClase() == "Caballo") {
 
     }

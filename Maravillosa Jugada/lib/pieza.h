@@ -51,6 +51,7 @@ public:
     // Método para obtener el color de la pieza
     Color obtenerColor() const;
     void moverPiezaUsuario();
+
 };
 
 
