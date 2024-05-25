@@ -47,7 +47,7 @@ void Gardner::inicializa()
     //   this->nuevaPieza(new Peon(i, 1, BLANCO, TAMANO_TABLERO));
     //}
     //// Creación de piezas negras
-    //this->nuevaPieza(new Rey(2, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Rey(2, 0, NEGRO, TAMANO_TABLERO));
     //for (int i = 0; i < 5; ++i) {
     //    this->nuevaPieza(new Peon(i, 3, NEGRO, TAMANO_TABLERO));
     //}
@@ -84,12 +84,17 @@ void Gardner::nuevaJugada(Color turnoActual)
 
         // Verificar si la posición está ocupada antes de mover la pieza
         if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
+            if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+               
                 // Cambiar el turno si el movimiento es exitoso
                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                 system("cls");
-
             }
+            else if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
+                turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                system("cls");
+        }
+        
         }
         else {
             system("cls");

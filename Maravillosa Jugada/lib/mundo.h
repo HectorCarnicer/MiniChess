@@ -15,7 +15,7 @@ public:
 	bool posicionOcupada(int x, int y);
 	void comerPieza(int x, int y);
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
-
+	bool atacarPieza(Color color,int x, int y);
 	// Métodos que se sobrescriben aguas abajo
 	virtual bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
 	virtual void inicializa() = 0;

@@ -12,6 +12,20 @@ bool Mundo::posicionOcupada(int x, int y) {
     return false;
 }
 
+bool Mundo::atacarPieza(Color color,int x, int y) {
+    for (const auto& pieza : piezas) {
+        int posX, posY;
+        pieza->obtenerPosicion(posX, posY);
+        int color2 = pieza->obtenerColor();
+
+        if (posX == x && posY == y && color != color2) {
+            comerPieza(x, y);
+            return true;
+        }
+        else return false;
+    }
+}
+
 // Función para "comer" la pieza en la posición dada
 void Mundo::comerPieza(int x, int y) {
     for (auto it = piezas.begin(); it != piezas.end(); ) {
