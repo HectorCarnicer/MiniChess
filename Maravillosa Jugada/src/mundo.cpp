@@ -42,25 +42,29 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
         if (pieza->nombreDeClase() == "Alfil") {
             int x, y;
             pieza->obtenerPosicion(x, y);
-
+            // esto seria la diagonal arriba derecha
             if (nuevoX > x && nuevoY > y) {
                 for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
                     if (posicionOcupada(i, j))
                         return false;
                 }
             }
+            
+            // esto seria la diagonal izq arriba
             else if (nuevoX < x && nuevoY > y) {
                 for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
                     if (posicionOcupada(i, j))
                         return false;
                 }
             }
+            // esto la diagonal derecha abajo
             else if (nuevoX > x && nuevoY < y) {
                 for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
                     if (posicionOcupada(i, j))
                         return false;
                 }
             }
+            //esto la diagonal abajo izq
             else if (nuevoX < x && nuevoY < y) {
                 for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
                     if (posicionOcupada(i, j))
