@@ -57,7 +57,7 @@ void Baby::inicializa()
 }
 
 // Nueva Jugada
-void Baby::nuevaJugada(Color turnoActual)
+void Baby::nuevaJugada(Color& turnoActual)
 {
     int eleccion, nuevoX, nuevoY;
     // Mostrar las piezas y pedir al usuario que elija una

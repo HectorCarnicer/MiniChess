@@ -24,7 +24,7 @@ public:
 	int getTam() { return TAMANO_TABLERO; }
 
 	//Nueva Jugada
-	void nuevaJugada(Color turnoActual) override;
+	void nuevaJugada(Color& turnoActual) override;
 private:
 	// El tamaño del tablero Baby
 	static const int TAMANO_TABLERO = 5;

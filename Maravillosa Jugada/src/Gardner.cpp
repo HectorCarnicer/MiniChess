@@ -56,10 +56,11 @@ void Gardner::inicializa()
     this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Reina(0, 0, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Caballo(0, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Reina(4, 0, NEGRO, TAMANO_TABLERO));
 }
 
 // Nueva Jugada
-void Gardner::nuevaJugada(Color turnoActual)
+void Gardner::nuevaJugada(Color& turnoActual)
 {
     int eleccion, nuevoX, nuevoY;
     // Mostrar las piezas y pedir al usuario que elija una
@@ -79,7 +80,6 @@ void Gardner::nuevaJugada(Color turnoActual)
         std::cin >> nuevoX;
         std::cout << "Ingrese la nueva posición Y (0 a 7): ";
         std::cin >> nuevoY;
-
 
 
         // Verificar si la posición está ocupada antes de mover la pieza

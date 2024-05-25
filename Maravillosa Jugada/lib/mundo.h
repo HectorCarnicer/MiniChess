@@ -22,7 +22,7 @@ public:
 	virtual void imprimirTablero() = 0;
 	virtual int getTam() = 0;
 	virtual ~Mundo() {}
-	virtual void nuevaJugada(Color turnoActual) = 0;
+	virtual void nuevaJugada(Color& turnoActual) = 0;
 
 	// Vector que contiene las piezas
 	std::vector<Pieza*>& piezas;
