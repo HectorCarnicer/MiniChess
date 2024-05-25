@@ -71,7 +71,6 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
                         return false;
                 }
             }
-
             return true;
         }
 
@@ -83,25 +82,31 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
         int x, y;
         pieza->obtenerPosicion(x, y);
 
-
+        // posiciones a la derecha
         if (nuevoX > x) {
             for (int i = x + 1; i <= nuevoX; i++) {
                 if (posicionOcupada(i, y))
                     return false;
             }
         }
+        // posiciones a la izq
+
         else if (nuevoX < x) {
             for (int i = x - 1; i >= nuevoX; i--) {
                 if (posicionOcupada(i, y))
                     return false;
             }
         }
+        // posiciones encima
+
         else if (nuevoY > y) {
             for (int j = y + 1; j <= nuevoY; j++) {
                 if (posicionOcupada(x, j))
                     return false;
             }
-        }
+        }        
+        // posiciones debajo
+
         else if (nuevoY < y) {
             for (int j = y - 1; j >= nuevoY; j--) {
                 if (posicionOcupada(x, j))
