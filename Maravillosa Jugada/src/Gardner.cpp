@@ -51,6 +51,9 @@ void Gardner::inicializa()
     for (int i = 0; i < 5; ++i) {
         this->nuevaPieza(new Peon(i, 3, NEGRO, TAMANO_TABLERO));
     }
+    this->nuevaPieza(new Alfil(3, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Alfil(3, 4, BLANCO, TAMANO_TABLERO));
+
 }
 
 // Nueva Jugada

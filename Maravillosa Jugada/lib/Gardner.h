@@ -4,6 +4,9 @@
 #include "../lib/rey.h"
 #include "../lib/pieza.h"
 #include "../lib/peon.h"
+#include "alfil.h"
+
+#include "../lib/alfil.h"
 
 #include "mundo.h"
 

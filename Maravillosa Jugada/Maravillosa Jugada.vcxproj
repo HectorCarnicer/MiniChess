@@ -31,14 +31,18 @@
     <ClCompile Include="src\pueba_rey.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\alfil.h" />
     <ClInclude Include="lib\baby.h" />
+    <ClInclude Include="lib\caballo.h" />
     <ClInclude Include="lib\ETSIDI.h" />
     <ClInclude Include="lib\freeglut.h" />
     <ClInclude Include="lib\gardner.h" />
     <ClInclude Include="lib\mundo.h" />
     <ClInclude Include="lib\peon.h" />
     <ClInclude Include="lib\pieza.h" />
+    <ClInclude Include="lib\reina.h" />
     <ClInclude Include="lib\rey.h" />
+    <ClInclude Include="lib\torre.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\ETSIDI.lib" />

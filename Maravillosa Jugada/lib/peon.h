@@ -23,6 +23,7 @@ public:
             return Pieza::mover(nuevoX, nuevoY);
         }
 
+
         // Capturar en diagonal
         if ((color == BLANCO && deltaY == 1 && abs(deltaX) == 1) ||
             (color == NEGRO && deltaY == -1 && abs(deltaX) == 1)) {
