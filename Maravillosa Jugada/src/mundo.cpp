@@ -18,12 +18,13 @@ bool Mundo::atacarPieza(Color color,int x, int y) {
         pieza->obtenerPosicion(posX, posY);
         int color2 = pieza->obtenerColor();
 
-        if (posX == x && posY == y && color != color2) {
+        if (posX == x && posY == y && color2 != color) {
             comerPieza(x, y);
             return true;
         }
-        else return false;
     }
+    return false;
+
 }
 
 // Función para "comer" la pieza en la posición dada
@@ -206,7 +207,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
                     return false;
             }
         }
-
+        
         return true;
 
 

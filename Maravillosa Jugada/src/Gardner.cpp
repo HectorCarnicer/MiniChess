@@ -84,17 +84,16 @@ void Gardner::nuevaJugada(Color turnoActual)
 
         // Verificar si la posición está ocupada antes de mover la pieza
         if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-            if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
-               
-                // Cambiar el turno si el movimiento es exitoso
+            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                 system("cls");
             }
-            else if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
-                turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                system("cls");
-        }
         
+        }
+        else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+            piezaSeleccionada->mover(nuevoX, nuevoY);
+            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+            system("cls");
         }
         else {
             system("cls");
