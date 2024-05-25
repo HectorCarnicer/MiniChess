@@ -25,11 +25,11 @@ public:
 
 
         // Capturar en diagonal
+        
         if ((color == BLANCO && deltaY == 1 && abs(deltaX) == 1) ||
             (color == NEGRO && deltaY == -1 && abs(deltaX) == 1)) {
-            // Aquí deberías verificar si hay una pieza enemiga en la nueva posición
-            // Si es así, puedes capturar
-            return Pieza::mover(nuevoX, nuevoY);
+                return Pieza::mover(nuevoX, nuevoY);
+           
         }
 
         // Si no es ninguno de los movimientos válidos, retorna falso

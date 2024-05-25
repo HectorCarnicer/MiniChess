@@ -78,18 +78,24 @@ void Gardner::nuevaJugada(Color turnoActual)
         std::cout << "Ingrese la nueva posición Y (0 a 7): ";
         std::cin >> nuevoY;
 
+
+
         // Verificar si la posición está ocupada antes de mover la pieza
         if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
             if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                 // Cambiar el turno si el movimiento es exitoso
                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                system("cls");
+
             }
         }
         else {
-            std::cout << "Movimiento inválido o posición ocupada.\n";
+            system("cls");
+            std::cout << "-----Movimiento inválido o posición ocupada-----\n";
         }
     }
     else {
+        system("cls");
         std::cout << "Elección inválida o no es el turno de esa pieza.\n";
     }
 }

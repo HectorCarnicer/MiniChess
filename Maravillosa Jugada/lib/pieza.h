@@ -4,6 +4,9 @@
 #include <iostream>
 #include <string>
 
+
+#include "mundo.h"
+
 // Enumeración para los colores de las piezas
 enum Color { BLANCO, NEGRO };
 
