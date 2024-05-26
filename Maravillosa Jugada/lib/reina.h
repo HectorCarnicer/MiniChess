@@ -54,6 +54,7 @@ public:
             if (i == nuevoX && j == nuevoY)
                 return Pieza::mover(i, j);
         }
+        system("cls");
 
         return false;
     }

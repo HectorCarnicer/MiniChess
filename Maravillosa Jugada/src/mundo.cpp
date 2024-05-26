@@ -17,10 +17,29 @@ bool Mundo::atacarPieza(Color color,int x, int y) {
         int posX, posY;
         pieza->obtenerPosicion(posX, posY);
         int color2 = pieza->obtenerColor();
+        if (pieza->nombreDeClase() != "Peon") {
+            if (posX == x && posY == y && color2 != color) {
+                comerPieza(x, y);
+                return true;
+            }
+        }
+        int deltaX = x - posX;
+        int deltaY = y - posY;
 
-        if (posX == x && posY == y && color2 != color) {
-            comerPieza(x, y);
-            return true;
+        if (pieza->nombreDeClase() != "Peon") {
+            if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
+                if (posX == x && posY == y && color2 != color) {
+                    comerPieza(x, y);
+                    return true;
+                }
+            }
+            if (pieza->obtenerColor() == NEGRO && deltaY == 1 && abs(deltaX) == 1) {
+                if (posX == x && posY == y && color2 != color) {
+                    comerPieza(x, y);
+                    return true;
+                }
+            }
+
         }
     }
     return false;
@@ -52,7 +71,6 @@ bool Mundo::detectarJaque(Color& turnoActual) {
    }
    for (const auto& pieza : piezas) {
         if (pieza->obtenerColor() != turnoActual) {
-            pieza->mostrarPosicion();
 
             if (!caminoLibre(pieza, posReyX, posReyY)) {
                 return true;
@@ -74,11 +92,29 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
     std::string nombre = pieza->nombreDeClase();
 
     if (nombre == "Peon") {
+        int x, y;
+        pieza->obtenerPosicion(x, y);
 
+        int deltaX = nuevoX - x;
+        int deltaY = nuevoY - y;
+        if (pieza->obtenerColor() == BLANCO && deltaY == -1 && deltaX == 0) {
+            if (posicionOcupada(nuevoX, nuevoY))
+                return false;
+        }
+        if (pieza->obtenerColor() == NEGRO && deltaY == 1 && deltaX == 0) {
+            if (posicionOcupada(nuevoX, nuevoY))
+                return false;
+        }
 
-
-
-        return true;
+        if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
+            if (posicionOcupada(nuevoX, nuevoY))
+                return false;
+        }
+        if (pieza->obtenerColor() == NEGRO && deltaY == 1 && abs(deltaX) == 1) {
+            if (posicionOcupada(nuevoX, nuevoY))
+                return false;
+        }
+            return true;
     }
     if (nombre == "Alfil") {
             int x, y;

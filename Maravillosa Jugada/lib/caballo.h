@@ -25,6 +25,7 @@ public:
                 return Pieza::mover(posposiblex, posposibley);
             }
 		}
+        system("cls");
         return false;
     }
 

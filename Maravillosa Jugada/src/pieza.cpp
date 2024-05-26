@@ -12,22 +12,22 @@ bool Pieza::mover(int nuevoX, int nuevoY) {
     }
     else {
         system("cls");
-        std::cout << "Movimiento inválido: la pieza debe permanecer dentro del tablero." << std::endl;
+        std::cout << "Movimiento invalido: la pieza debe permanecer dentro del tablero." << std::endl;
         return false;
     }
 }
 
 // Implementación del método mostrarPosicion de Pieza
 void Pieza::mostrarPosicion() {
-    std::cout << "Posición actual: (" << x << ", " << y << ")" << std::endl;
+    std::cout << "Posicion actual: (" << x << ", " << y << ")" << std::endl;
 }
 
 // Función para mover la pieza con entrada del usuario
 void Pieza::moverPiezaUsuario() {
     int nuevoX, nuevoY;
-    std::cout << "Ingrese la nueva posición X (0 a " << TAMANO_TABLERO - 1 << "): ";
+    std::cout << "Ingrese la nueva posicion X (0 a " << TAMANO_TABLERO - 1 << "): ";
     std::cin >> nuevoX;
-    std::cout << "Ingrese la nueva posición Y (0 a " << TAMANO_TABLERO - 1 << "): ";
+    std::cout << "Ingrese la nueva posicion Y (0 a " << TAMANO_TABLERO - 1 << "): ";
     std::cin >> nuevoY;
 
     if (!mover(nuevoX, nuevoY)) {

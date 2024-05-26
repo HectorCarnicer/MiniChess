@@ -33,6 +33,7 @@ public:
             if (j == nuevoY && x==nuevoX)
                 return Pieza::mover(x, j);
         }
+        system("cls");
 
         return false;
     }
