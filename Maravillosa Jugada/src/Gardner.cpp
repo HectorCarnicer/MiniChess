@@ -31,7 +31,7 @@ void Gardner::imprimirTablero()
     for (int i = 0; i < TAMANO_TABLERO; ++i) {
         for (int j = 0; j < TAMANO_TABLERO; ++j) {
             std::cout << tablero[i][j] << " ";
-        }
+        }   
         std::cout << std::endl;
     }
 }
@@ -56,7 +56,7 @@ void Gardner::inicializa()
     this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
     //this->nuevaPieza(new Reina(0, 0, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Caballo(0, 4, BLANCO, TAMANO_TABLERO));
-    this->nuevaPieza(new Reina(4, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Torre(4, 0, NEGRO, TAMANO_TABLERO));
 }
 
 // Nueva Jugada
