@@ -24,7 +24,6 @@ bool Mundo::atacarPieza(Color color,int x, int y) {
         }
     }
     return false;
-
 }
 
 // Función para "comer" la pieza en la posición dada
@@ -274,4 +273,25 @@ void Mundo::imprimirTablero()
         }
         std::cout << std::endl;
     }
+}
+
+
+bool Mundo::detectarJaque(Color& turnoActual) {
+    int posReyX, posReyY;
+    for (const auto& pieza : piezas) {
+        if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
+            pieza->obtenerPosicion(posReyX, posReyY);
+            break;
+        }
+    }
+    for (const auto& pieza : piezas) {
+        if (!caminoLibre(pieza, posReyX, posReyY)) {
+            return true;
+        }
+        else return false;
+
+    }
+    
+    
+
 }
