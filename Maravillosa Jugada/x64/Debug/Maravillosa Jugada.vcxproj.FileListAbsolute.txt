@@ -1,2 +1,3 @@
 C:\Users\ahouc\Desktop\GITHUBCHESS\MiniChess\Maravillosa Jugada\x64\Debug\Maravillosa Jugada.exe
 C:\Users\ahouc\Downloads\MINICHESS_SAMIR\MiniChess-main\Maravillosa Jugada\x64\Debug\Maravillosa Jugada.exe
+C:\Users\ahouc\Desktop\GitHub\MiniChess\Maravillosa Jugada\x64\Debug\Maravillosa Jugada.exe
