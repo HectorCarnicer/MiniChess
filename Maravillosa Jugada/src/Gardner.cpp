@@ -54,9 +54,9 @@ void Gardner::inicializa()
   //  this->nuevaPieza(new Alfil(3, 0, NEGRO, TAMANO_TABLERO));
     this->nuevaPieza(new Alfil(2, 2, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
-    this->nuevaPieza(new Reina(0, 0, BLANCO, TAMANO_TABLERO));
+    //this->nuevaPieza(new Reina(0, 0, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Caballo(0, 4, BLANCO, TAMANO_TABLERO));
-    //this->nuevaPieza(new Reina(4, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Reina(4, 0, NEGRO, TAMANO_TABLERO));
 }
 
 // Nueva Jugada
@@ -64,9 +64,9 @@ void Gardner::nuevaJugada(Color& turnoActual)
 {
     int eleccion, nuevoX, nuevoY;
     // Mostrar las piezas y pedir al usuario que elija una
-    /*if (detectarJaque(turnoActual)) {
+    if (detectarJaque(turnoActual)) {
         std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
-    }*/
+    }
     std::cout << "Turno de " << (turnoActual == BLANCO ? "Blanco" : "Negro") << ". Seleccione una pieza para mover:\n";
     for (int i = 0; i < piezas.size(); ++i) {
         if (piezas[i]->obtenerColor() == turnoActual) {
@@ -84,9 +84,7 @@ void Gardner::nuevaJugada(Color& turnoActual)
         std::cout << "Ingrese la nueva posición Y (0 a 7): ";
         std::cin >> nuevoY;
 
-
         // Verificar si la posición está ocupada antes de mover la pieza
-       
         if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
             if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
