@@ -4,8 +4,12 @@
 #include "../lib/rey.h"
 #include "../lib/pieza.h"
 #include "../lib/peon.h"
+#include "alfil.h"
+#include "../lib/alfil.h"
+#include "torre.h"
+#include "caballo.h"
+#include "reina.h"
 
-#include "mundo.h"
 
 /*
 * Esta clase hereda de mundo e implementa el modo de juego Gardner con sus reglas específicas
@@ -32,7 +36,7 @@ public:
 	int getTam() { return TAMANO_TABLERO; }
 
 	//Nueva Jugada
-	void nuevaJugada(Color turnoActual) override;
+	void nuevaJugada(Color& turnoActual) override;
 private: 
 	// El tamaño del tablero Gardner
 	static const int TAMANO_TABLERO = 5;

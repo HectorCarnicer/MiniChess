@@ -11,6 +11,7 @@ bool Pieza::mover(int nuevoX, int nuevoY) {
         return true;
     }
     else {
+        system("cls");
         std::cout << "Movimiento inválido: la pieza debe permanecer dentro del tablero." << std::endl;
         return false;
     }
@@ -35,10 +36,10 @@ void Pieza::moverPiezaUsuario() {
     std::cin >> nuevoY;
 
     if (!mover(nuevoX, nuevoY)) {
+        system("cls");
         std::cout << "Movimiento no realizado. Intente de nuevo." << std::endl;
     }
 }
-
 // Método para obtener el color de la pieza
 Color Pieza::obtenerColor() const {
     return color;

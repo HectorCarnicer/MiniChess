@@ -57,7 +57,7 @@ void Baby::inicializa()
 }
 
 // Nueva Jugada
-void Baby::nuevaJugada(Color turnoActual)
+void Baby::nuevaJugada(Color& turnoActual)
 {
     int eleccion, nuevoX, nuevoY;
     // Mostrar las piezas y pedir al usuario que elija una
@@ -78,18 +78,27 @@ void Baby::nuevaJugada(Color turnoActual)
         std::cout << "Ingrese la nueva posición Y (0 a 7): ";
         std::cin >> nuevoY;
 
+
         // Verificar si la posición está ocupada antes de mover la pieza
         if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
             if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
-                // Cambiar el turno si el movimiento es exitoso
                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                system("cls");
             }
+
+        }
+        else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+            piezaSeleccionada->mover(nuevoX, nuevoY);
+            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+            system("cls");
         }
         else {
-            std::cout << "Movimiento inválido o posición ocupada.\n";
+            system("cls");
+            std::cout << "-----Movimiento inválido o posición ocupada-----\n";
         }
     }
     else {
+        system("cls");
         std::cout << "Elección inválida o no es el turno de esa pieza.\n";
     }
 }
