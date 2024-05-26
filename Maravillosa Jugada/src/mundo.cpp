@@ -12,7 +12,22 @@ bool Mundo::posicionOcupada(int x, int y) {
     return false;
 }
 
-bool Mundo::atacarPieza(Color color,int x, int y) {
+// Función para "comer" la pieza en la posición dada
+void Mundo::comerPieza(int x, int y) {
+    for (auto it = piezas.begin(); it != piezas.end(); ) {
+        int posX, posY;
+        (*it)->obtenerPosicion(posX, posY);
+        if (posX == x && posY == y) {
+            delete* it; // Liberar la memoria de la pieza comida
+            it = piezas.erase(it); // Eliminar la pieza del vector y actualizar el iterador
+        }
+        else {
+            ++it; // Mover al siguiente elemento si no hay coincidencia
+        }
+    }
+}
+
+bool Mundo::atacarPieza(Color color, int x, int y) {
     for (const auto& pieza : piezas) {
         int posX, posY;
         pieza->obtenerPosicion(posX, posY);
@@ -38,41 +53,26 @@ bool Mundo::atacarPieza(Color color,int x, int y) {
                     comerPieza(x, y);
                     return true;
                 }
+
             }
-
         }
-    }
-    return false;
-}
-
-// Función para "comer" la pieza en la posición dada
-void Mundo::comerPieza(int x, int y) {
-    for (auto it = piezas.begin(); it != piezas.end(); ) {
-        int posX, posY;
-        (*it)->obtenerPosicion(posX, posY);
-        if (posX == x && posY == y) {
-            delete* it; // Liberar la memoria de la pieza comida
-            it = piezas.erase(it); // Eliminar la pieza del vector y actualizar el iterador
-        }
-        else {
-            ++it; // Mover al siguiente elemento si no hay coincidencia
-        }
+        return false;
     }
 }
 
 bool Mundo::detectarJaque(Color& turnoActual) {
-    int posReyX=0, posReyY=0;
+    int posreyx=0, posreyy=0;
 
    for (const auto& pieza : piezas) {
         if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
-            pieza->obtenerPosicion(posReyX, posReyY);
+            pieza->obtenerPosicion(posreyx, posreyy);
             break;
         }
    }
    for (const auto& pieza : piezas) {
         if (pieza->obtenerColor() != turnoActual) {
 
-            if (!caminoLibre(pieza, posReyX, posReyY)) {
+            if (!caminoLibre(pieza, posreyx, posreyy)) {
                 return true;
             }
         }
@@ -116,6 +116,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
         }
             return true;
     }
+
     if (nombre == "Alfil") {
             int x, y;
             pieza->obtenerPosicion(x, y);
