@@ -47,7 +47,7 @@ void Gardner::inicializa()
 	//   this->nuevaPieza(new Peon(i, 1, BLANCO, TAMANO_TABLERO));
 	//}
 	//// Creación de piezas negras
-	this->nuevaPieza(new Rey(2, 0, NEGRO, TAMANO_TABLERO));
+	this->nuevaPieza(new Rey(3, 0, NEGRO, TAMANO_TABLERO));
 	//for (int i = 0; i < 5; ++i) {
 	//    this->nuevaPieza(new Peon(i, 3, NEGRO, TAMANO_TABLERO));
 	//}
@@ -98,7 +98,21 @@ void Gardner::nuevaJugada(Color& turnoActual)
 		std::cout << "Ingrese la nueva posicion Y (0 a 7): ";
 		std::cin >> nuevoY;
 
-		// Verificar si la posición está ocupada antes de mover la pieza
+//detecta movimiento ilegal
+	/*	if (piezaSeleccionada->nombreDeClase()=="Rey") {
+			int posX=0, posY=0;
+			piezaSeleccionada->obtenerPosicion(posX, posY);
+			piezaSeleccionada->mover(nuevoX, nuevoY);
+			bool jaque = detectarJaque(turnoActual);
+			piezaSeleccionada->mover(posX, posY);
+
+			if (jaque) {
+				return;
+				std::cout << "MOVIMIENTO ILEGAL\n";
+
+			}
+			piezaSeleccionada->mover(posX, posY);
+		}*/
 
 		if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
 			if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
