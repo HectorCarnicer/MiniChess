@@ -2,7 +2,6 @@
 
 // Función para verificar si la posición está ocupada por otra pieza
 bool Mundo::posicionOcupada(int x, int y) {
-    //revisa las posiciones de todas las piezas, si alguna conincide con la posición a la que te mueves, retorna true
     for (const auto& pieza : piezas) {
         int posX, posY;
         pieza->obtenerPosicion(posX, posY);
@@ -27,7 +26,6 @@ bool Mundo::atacarPieza(Color color,int x, int y) {
     return false;
 }
 
-
 // Función para "comer" la pieza en la posición dada
 void Mundo::comerPieza(int x, int y) {
     for (auto it = piezas.begin(); it != piezas.end(); ) {
@@ -43,10 +41,9 @@ void Mundo::comerPieza(int x, int y) {
     }
 }
 
-
-
 bool Mundo::detectarJaque(Color& turnoActual) {
     int posReyX=0, posReyY=0;
+
     for (const auto& pieza : piezas) {
         if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
             pieza->obtenerPosicion(posReyX, posReyY);
@@ -54,16 +51,16 @@ bool Mundo::detectarJaque(Color& turnoActual) {
             break;
         }
     }
-    
-    for (const auto& pieza : piezas) {
+
+   for (const auto& pieza : piezas) {
         if (pieza->obtenerColor() != turnoActual) {
             if (!caminoLibre(pieza, posReyX, posReyY)) {
                 return true;
             }
-          
         }
-    }
-    return false;
+   }
+   return false;
+
 }
 
 
@@ -74,21 +71,16 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
     // Para piezas como la torre, alfil o reina, necesitas verificar todas las casillas en el camino
     // ...
 
-    std::string nombre = pieza->nombreDeClase();
-
-    if (nombre == "Peon") {
-        int x, y;
-        pieza->obtenerPosicion(x, y);
+    if (pieza->nombreDeClase() == "Peon") {
         return true;
     }
-    if (nombre == "Alfil") {
-
+    if (pieza->nombreDeClase() == "Alfil") {
             int x, y;
             pieza->obtenerPosicion(x, y);
             // esto seria la diagonal arriba derecha
             if (nuevoX > x && nuevoY > y) {
                 for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-                    if (posicionOcupada(i, j))
+                    if (posicionOcupada(i, j)) 
                         return false;
                 }
             }
@@ -117,42 +109,40 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
     }
 
     if (pieza->nombreDeClase() == "Rey") {
-        return true;
-    }
-    
-    if (nombre == "Torre") {
         int x, y;
         pieza->obtenerPosicion(x, y);
+
+        // posiciones a la derecha
         if (nuevoX > x) {
             for (int i = x + 1; i <= nuevoX; i++) {
                 if (posicionOcupada(i, y))
                     return false;
             }
         }
+        // posiciones a la izq
+
         else if (nuevoX < x) {
             for (int i = x - 1; i >= nuevoX; i--) {
                 if (posicionOcupada(i, y))
                     return false;
             }
         }
+        // posiciones encima
+
         else if (nuevoY > y) {
             for (int j = y + 1; j <= nuevoY; j++) {
                 if (posicionOcupada(x, j))
                     return false;
             }
         }
+        // posiciones debajo
+
         else if (nuevoY < y) {
             for (int j = y - 1; j >= nuevoY; j--) {
                 if (posicionOcupada(x, j))
                     return false;
             }
         }
-        else return true;
-    }
-
-    if (nombre == "Reina") {
-        int x, y;
-        pieza->obtenerPosicion(x, y);
 
         if (nuevoX > x && nuevoY > y) {
             for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
@@ -160,27 +150,94 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
                     return false;
             }
         }
-        // esto seria la diagonal izq arriba
         else if (nuevoX < x && nuevoY > y) {
             for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
                 if (posicionOcupada(i, j))
                     return false;
             }
         }
-        // esto la diagonal derecha abajo
         else if (nuevoX > x && nuevoY < y) {
             for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
                 if (posicionOcupada(i, j))
                     return false;
             }
         }
-        //esto la diagonal abajo izq
         else if (nuevoX < x && nuevoY < y) {
             for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
                 if (posicionOcupada(i, j))
                     return false;
             }
         }
+        return true;
+    }
+    if (pieza->nombreDeClase() == "Reina") {
+        int x, y;
+        pieza->obtenerPosicion(x, y);
+
+        // posiciones a la derecha
+        if (nuevoX > x) {
+            for (int i = x + 1; i <= nuevoX; i++) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        // posiciones a la izq
+
+        else if (nuevoX < x) {
+            for (int i = x - 1; i >= nuevoX; i--) {
+                if (posicionOcupada(i, y))
+                    return false;
+            }
+        }
+        // posiciones encima
+
+        else if (nuevoY > y) {
+            for (int j = y + 1; j <= nuevoY; j++) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }        
+        // posiciones debajo
+
+        else if (nuevoY < y) {
+            for (int j = y - 1; j >= nuevoY; j--) {
+                if (posicionOcupada(x, j))
+                    return false;
+            }
+        }
+
+        if (nuevoX > x && nuevoY > y) {
+            for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX < x && nuevoY > y) {
+            for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX > x && nuevoY < y) {
+            for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        else if (nuevoX < x && nuevoY < y) {
+            for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
+                if (posicionOcupada(i, j))
+                    return false;
+            }
+        }
+        
+        return true;
+
+
+    }
+    if (pieza->nombreDeClase() == "Torre") {
+        int x, y;
+        pieza->obtenerPosicion(x, y);
         if (nuevoX > x) {
             for (int i = x + 1; i <= nuevoX; i++) {
                 if (posicionOcupada(i, y))
@@ -206,11 +263,10 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
             }
         }
         return true;
-
-
-
     }
-    if (nombre == "Caballo") {
+
+
+    if (pieza->nombreDeClase() == "Caballo") {
 
     }
     return true; // Por defecto, asumimos que el camino está libre

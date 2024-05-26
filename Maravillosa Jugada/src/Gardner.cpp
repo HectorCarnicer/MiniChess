@@ -31,7 +31,7 @@ void Gardner::imprimirTablero()
     for (int i = 0; i < TAMANO_TABLERO; ++i) {
         for (int j = 0; j < TAMANO_TABLERO; ++j) {
             std::cout << tablero[i][j] << " ";
-        }   
+        }
         std::cout << std::endl;
     }
 }
@@ -54,9 +54,9 @@ void Gardner::inicializa()
   //  this->nuevaPieza(new Alfil(3, 0, NEGRO, TAMANO_TABLERO));
     this->nuevaPieza(new Alfil(2, 2, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
-    //this->nuevaPieza(new Reina(0, 0, BLANCO, TAMANO_TABLERO));
+   // this->nuevaPieza(new Reina(0, 0, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Caballo(0, 4, BLANCO, TAMANO_TABLERO));
-    this->nuevaPieza(new Torre(4, 0, NEGRO, TAMANO_TABLERO));
+    //this->nuevaPieza(new Reina(4, 0, NEGRO, TAMANO_TABLERO));
 }
 
 // Nueva Jugada
@@ -84,13 +84,14 @@ void Gardner::nuevaJugada(Color& turnoActual)
         std::cout << "Ingrese la nueva posición Y (0 a 7): ";
         std::cin >> nuevoY;
 
+
         // Verificar si la posición está ocupada antes de mover la pieza
+       
         if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
             if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                 system("cls");
             }
-        
         }
         else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
             piezaSeleccionada->mover(nuevoX, nuevoY);

@@ -17,7 +17,6 @@
 
 class Gardner : public Mundo
 {
-
 public:
 	// Constructor
 	Gardner(std::vector<Pieza*>& piezas) : Mundo(piezas) {}

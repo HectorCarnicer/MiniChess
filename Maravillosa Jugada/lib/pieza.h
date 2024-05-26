@@ -41,7 +41,7 @@ public:
 
     // Método virtual puro para obtener el nombre de la clase
     virtual std::string nombreDeClase() const = 0;
-    
+
     // Método para obtener la posición de la pieza
     void obtenerPosicion(int& posX, int& posY) const {
         posX = x;
@@ -53,6 +53,7 @@ public:
     void moverPiezaUsuario();
 
 };
+
 
 
 #endif // PIEZA_H
