@@ -48,12 +48,15 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
     // Para piezas como la torre, alfil o reina, necesitas verificar todas las casillas en el camino
     // ...
 
-    if (pieza->nombreDeClase() == "Peon") {
+    std::string nombre = pieza->nombreDeClase();
+
+    if (nombre == "Peon") {
         int x, y;
         pieza->obtenerPosicion(x, y);
+        return true;
     }
-    if (pieza->nombreDeClase() == "Alfil") {
-        if (pieza->nombreDeClase() == "Alfil") {
+    if (nombre == "Alfil" || nombre == "Reina") {
+
             int x, y;
             pieza->obtenerPosicion(x, y);
             // esto seria la diagonal arriba derecha
@@ -63,7 +66,6 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
                         return false;
                 }
             }
-            
             // esto seria la diagonal izq arriba
             else if (nuevoX < x && nuevoY > y) {
                 for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
@@ -86,11 +88,13 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
                 }
             }
             return true;
-        }
-
     }
 
     if (pieza->nombreDeClase() == "Rey") {
+        return true;
+    }
+    
+    if (nombre == "Torre" || nombre == "Reina") {
         int x, y;
         pieza->obtenerPosicion(x, y);
         if (nuevoX > x) {
@@ -117,131 +121,8 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
                     return false;
             }
         }
-        if (nuevoX > x && nuevoY > y) {
-            for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-        else if (nuevoX < x && nuevoY > y) {
-            for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-        else if (nuevoX > x && nuevoY < y) {
-            for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-        else if (nuevoX < x && nuevoY < y) {
-            for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-
-        return true;
-
-
-    }
-    if (pieza->nombreDeClase() == "Reina") {
-        int x, y;
-        pieza->obtenerPosicion(x, y);
-
-        // posiciones a la derecha
-        if (nuevoX > x) {
-            for (int i = x + 1; i <= nuevoX; i++) {
-                if (posicionOcupada(i, y))
-                    return false;
-            }
-        }
-        // posiciones a la izq
-
-        else if (nuevoX < x) {
-            for (int i = x - 1; i >= nuevoX; i--) {
-                if (posicionOcupada(i, y))
-                    return false;
-            }
-        }
-        // posiciones encima
-
-        else if (nuevoY > y) {
-            for (int j = y + 1; j <= nuevoY; j++) {
-                if (posicionOcupada(x, j))
-                    return false;
-            }
-        }        
-        // posiciones debajo
-
-        else if (nuevoY < y) {
-            for (int j = y - 1; j >= nuevoY; j--) {
-                if (posicionOcupada(x, j))
-                    return false;
-            }
-        }
-
-        if (nuevoX > x && nuevoY > y) {
-            for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-        else if (nuevoX < x && nuevoY > y) {
-            for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-        else if (nuevoX > x && nuevoY < y) {
-            for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-        else if (nuevoX < x && nuevoY < y) {
-            for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-                if (posicionOcupada(i, j))
-                    return false;
-            }
-        }
-        
-        return true;
-
-
-    }
-    if (pieza->nombreDeClase() == "Torre") {
-        int x, y;
-        pieza->obtenerPosicion(x, y);
-        if (nuevoX > x) {
-            for (int i = x + 1; i <= nuevoX; i++) {
-                if (posicionOcupada(i, y))
-                    return false;
-            }
-        }
-        else if (nuevoX < x) {
-            for (int i = x - 1; i >= nuevoX; i--) {
-                if (posicionOcupada(i, y))
-                    return false;
-            }
-        }
-        else if (nuevoY > y) {
-            for (int j = y + 1; j <= nuevoY; j++) {
-                if (posicionOcupada(x, j))
-                    return false;
-            }
-        }
-        else if (nuevoY < y) {
-            for (int j = y - 1; j >= nuevoY; j--) {
-                if (posicionOcupada(x, j))
-                    return false;
-            }
-        }
-
         return true;
     }
-
 
     if (pieza->nombreDeClase() == "Caballo") {
 

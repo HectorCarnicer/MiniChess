@@ -11,6 +11,7 @@ bool Pieza::mover(int nuevoX, int nuevoY) {
         return true;
     }
     else {
+        system("cls");
         std::cout << "Movimiento inválido: la pieza debe permanecer dentro del tablero." << std::endl;
         return false;
     }
