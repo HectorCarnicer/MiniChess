@@ -26,6 +26,7 @@ bool Mundo::atacarPieza(Color color,int x, int y) {
     return false;
 }
 
+
 // Función para "comer" la pieza en la posición dada
 void Mundo::comerPieza(int x, int y) {
     for (auto it = piezas.begin(); it != piezas.end(); ) {
@@ -40,6 +41,8 @@ void Mundo::comerPieza(int x, int y) {
         }
     }
 }
+
+
 
 bool Mundo::detectarJaque(Color& turnoActual) {
     int posReyX=0, posReyY=0;
