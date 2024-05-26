@@ -27,6 +27,7 @@ bool Mundo::atacarPieza(Color color,int x, int y) {
     return false;
 }
 
+
 // Función para "comer" la pieza en la posición dada
 void Mundo::comerPieza(int x, int y) {
     for (auto it = piezas.begin(); it != piezas.end(); ) {
@@ -41,6 +42,30 @@ void Mundo::comerPieza(int x, int y) {
         }
     }
 }
+
+
+
+bool Mundo::detectarJaque(Color& turnoActual) {
+    int posReyX=0, posReyY=0;
+    for (const auto& pieza : piezas) {
+        if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
+            pieza->obtenerPosicion(posReyX, posReyY);
+            pieza->mostrarPosicion();
+            break;
+        }
+    }
+    
+    for (const auto& pieza : piezas) {
+        if (pieza->obtenerColor() != turnoActual) {
+            if (!caminoLibre(pieza, posReyX, posReyY)) {
+                return true;
+            }
+          
+        }
+    }
+    return false;
+}
+
 
 // Función para verificar si el camino está libre para el movimiento de la pieza
 bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
@@ -158,22 +183,3 @@ void Mundo::imprimirTablero()
 }
 
 
-bool Mundo::detectarJaque(Color& turnoActual) {
-    int posReyX, posReyY;
-    for (const auto& pieza : piezas) {
-        if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
-            pieza->obtenerPosicion(posReyX, posReyY);
-            break;
-        }
-    }
-    for (const auto& pieza : piezas) {
-        if (!caminoLibre(pieza, posReyX, posReyY)) {
-            return true;
-        }
-        else return false;
-
-    }
-    
-    
-
-}
