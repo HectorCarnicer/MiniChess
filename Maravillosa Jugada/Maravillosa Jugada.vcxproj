@@ -37,6 +37,7 @@
     <ClInclude Include="lib\ETSIDI.h" />
     <ClInclude Include="lib\freeglut.h" />
     <ClInclude Include="lib\gardner.h" />
+    <ClInclude Include="lib\graficos.h" />
     <ClInclude Include="lib\mundo.h" />
     <ClInclude Include="lib\peon.h" />
     <ClInclude Include="lib\pieza.h" />
