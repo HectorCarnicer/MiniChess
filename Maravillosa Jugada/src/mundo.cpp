@@ -74,6 +74,10 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
     std::string nombre = pieza->nombreDeClase();
 
     if (nombre == "Peon") {
+
+
+
+
         return true;
     }
     if (nombre == "Alfil") {

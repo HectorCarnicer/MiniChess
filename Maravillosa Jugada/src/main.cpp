@@ -6,6 +6,8 @@
 #include "../lib/gardner.h"
 
 
+
+
 int main() {
     // Crear un vector para almacenar las pieza
 
@@ -21,6 +23,16 @@ int main() {
         gardner.nuevaJugada(turnoActual);
     }
     return 0;
+
+
+
+
+
+
+
+
+
+
 }
 
     
