@@ -1,5 +1,5 @@
 
-#ifndef REINA_H
+#/*ifndef REINA_H
 #define REINA_h
 
 #include "pieza.h"
@@ -66,4 +66,4 @@ public:
 
 
 
-#endif
+#endif*/
