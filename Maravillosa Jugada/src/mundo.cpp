@@ -62,8 +62,6 @@ bool Mundo::detectarJaque(Color& turnoActual) {
    return false;
 }
 
-
-
 // Función para verificar si el camino está libre para el movimiento de la pieza
 bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
     // Implementar la lógica específica para cada tipo de pieza

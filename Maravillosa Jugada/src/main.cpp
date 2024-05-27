@@ -1,45 +1,29 @@
-//#include <iostream>
-//#include <vector>
-//#include "../lib/Pieza.h"
-//#include "../lib/Peon.h"
-//#include "../lib/Rey.h"
-//#include "../lib/gardner.h"
-//
-//
-//
-//
-//int main() {
-//    // Crear un vector para almacenar las pieza
-//
-//    std::vector<Pieza*> piezas;
-//    Gardner gardner(piezas);
-//    gardner.inicializa();
-//    //Primer turno es blanco
-//    Color turnoActual = BLANCO; // Comenzar con el turno de las piezas blancas
-//
-//    // Bucle que genera nuevas jugadas
-//    while (true) {
-//        gardner.imprimirTablero();
-//        gardner.nuevaJugada(turnoActual);
-//    }
-//    return 0;
-//}
-
-#include "../lib/freeglut.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <thread>
+#include "../lib/freeglut.h"
 #include "../lib/Pieza.h"
 #include "../lib/Peon.h"
 #include "../lib/Rey.h"
+#include"../lib/Reina.h"
+#include "../lib/Caballo.h"
 #include "../lib/Gardner.h"
+#include "../lib/graficos.h"
+
+struct Coordenadas {
+    int x, y;
+    Coordenadas(int x, int y) : x(x), y(y) {}
+};
+
 #define TAMANO_TABLERO 5
+
 // Variables globales para el tablero y piezas
 std::vector<Pieza*> piezas;
 Gardner* gardner;
 std::vector<std::vector<std::string>> tablero;
 Color turnoActual = BLANCO; // Comienza el turno de las piezas blancas
+Pieza* piezaSeleccionada = nullptr;
 
 // Función para pintar el tablero
 std::vector<std::vector<std::string>> pintarTablero() {
@@ -102,12 +86,67 @@ void ejecutarComandoMovimiento() {
     }
 }
 
+void mouseClick(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        int squareSize = glutGet(GLUT_WINDOW_WIDTH) / TAMANO_TABLERO;
+        int col = x / squareSize;
+        int row = y / squareSize;
+
+        if (gardner->detectarJaque(turnoActual)) {
+            std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
+            return;
+        }
+
+        // Check if the click is within the bounds of the board
+        if (row >= 0 && row < TAMANO_TABLERO && col >= 0 && col < TAMANO_TABLERO) {
+            Coordenadas clickPos{ col, row };
+
+            if (piezaSeleccionada == nullptr) {
+                // Selecting a piece
+                for (Pieza* pieza : piezas) {
+                    int px, py;
+                    pieza->obtenerPosicion(px, py);
+                    if (px == col && py == row) {
+                        if (pieza->obtenerColor() == turnoActual) {
+                            piezaSeleccionada = pieza;
+                            std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
+                        }
+                        break;
+                    }
+                }
+            }
+            else {
+                // Moving the selected piece
+                int nuevoX = col;
+                int nuevoY = row;
+
+                if (!gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                    if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
+                        turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                        piezaSeleccionada = nullptr;
+                        std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
+                    }
+                }
+                else if (gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                    piezaSeleccionada->mover(nuevoX, nuevoY);
+                    turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                    piezaSeleccionada = nullptr;
+                    std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
+                }
+                else {
+                    std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                }
+                glutPostRedisplay();
+            }
+        }
+        else {
+            std::cout << "Click fuera del tablero\n";
+        }
+    }
+}
+
 int main(int argc, char** argv) {
-    piezas = {
-        // Inicializar tus piezas aquí
-        // new Peon(...),
-        // new Rey(...)
-    };
+   
     gardner = new Gardner(piezas);
     gardner->inicializa();
 
@@ -121,6 +160,7 @@ int main(int argc, char** argv) {
 
     glutDisplayFunc(display);
     glutIdleFunc(idle);
+    glutMouseFunc(mouseClick);
 
     tablero = pintarTablero();
 
@@ -135,15 +175,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-    
