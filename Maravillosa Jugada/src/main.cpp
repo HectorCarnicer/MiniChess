@@ -6,7 +6,7 @@
 #include "../lib/Pieza.h"
 #include "../lib/Peon.h"
 #include "../lib/Rey.h"
-//#include "../lib/Reina.h"
+#include"../lib/Reina.h"
 #include "../lib/Caballo.h"
 #include "../lib/Gardner.h"
 #include "../lib/graficos.h"
@@ -146,11 +146,7 @@ void mouseClick(int button, int state, int x, int y) {
 }
 
 int main(int argc, char** argv) {
-    piezas = {
-        // Inicializar tus piezas aquí
-        // new Peon(...),
-        // new Rey(...)
-    };
+   
     gardner = new Gardner(piezas);
     gardner->inicializa();
 

@@ -8,7 +8,7 @@
 #include "../lib/alfil.h"
 #include "torre.h"
 #include "caballo.h"
-//#include "reina.h"
+#include "reina.h"
 
 
 /*
