@@ -43,7 +43,13 @@ std::vector<std::vector<std::string>> pintarTablero() {
     for (const auto& pieza : piezas) {
         int x, y;
         pieza->obtenerPosicion(x, y);
-        tablero[y][x] = pieza->nombreDeClase().substr(0, 1);
+        if (pieza->obtenerColor() == BLANCO) {
+            tablero[y][x] = pieza->nombreDeClase()+"b";
+        }
+        else {
+            tablero[y][x] = pieza->nombreDeClase() + "n";
+        }
+
     }
 
     return tablero;
@@ -69,8 +75,9 @@ GLuint loadTexture(const char* filename) {
     return texture;
 }
 
+
 void loadPieceTextures() {
-    std::vector<std::string> pieces = { "r", "n", "b", "q", "k", "p", "R", "N", "B", "Q", "K", "P" };
+    std::vector<std::string> pieces = { "Reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","Reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
     for (const std::string& piece : pieces) {
         pieceTextures[piece] = loadTexture((piece + ".png").c_str());
     }
@@ -87,7 +94,7 @@ void drawPiece(int row, int col, const std::string& piece) {
     float x2 = x1 + (2.0f / TAMANO_TABLERO);
     float y2 = y1 - (2.0f / TAMANO_TABLERO);
 
-    glColor3f(1.0, 1.0, 1.0);
+    glColor4f(1.0, 1.0, 1.0, 1.0); // Asegurarse de que el color tenga un alfa de 1.0
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0); glVertex2f(x1, y1);
     glTexCoord2f(1.0, 0.0); glVertex2f(x2, y1);
@@ -97,6 +104,7 @@ void drawPiece(int row, int col, const std::string& piece) {
 
     glDisable(GL_TEXTURE_2D);
 }
+
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -203,6 +211,8 @@ void mouseClick(int button, int state, int x, int y) {
 
 void init() {
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Habilitar blending para transparencia
     loadPieceTextures();
 
     if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
@@ -213,6 +223,7 @@ void init() {
         std::cerr << "Failed to play background music" << std::endl;
     }
 }
+
 
 int main(int argc, char** argv) {
     gardner = new Gardner(piezas);
