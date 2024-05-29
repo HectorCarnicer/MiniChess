@@ -45,9 +45,11 @@ std::vector<std::vector<std::string>> pintarTablero() {
         pieza->obtenerPosicion(x, y);
         if (pieza->obtenerColor() == BLANCO) {
             tablero[y][x] = pieza->nombreDeClase()+"b";
+            //std::cout<< pieza->nombreDeClase()<< std::endl;
         }
-        else {
-            tablero[y][x] = pieza->nombreDeClase() + "n";
+        else if(pieza->obtenerColor() == NEGRO) {
+            tablero[y][x] = pieza->nombreDeClase()+"n";
+            //std::cout << pieza->nombreDeClase() << std::endl;
         }
 
     }
@@ -77,7 +79,7 @@ GLuint loadTexture(const char* filename) {
 
 
 void loadPieceTextures() {
-    std::vector<std::string> pieces = { "Reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","Reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
+    std::vector<std::string> pieces = { "reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
     for (const std::string& piece : pieces) {
         pieceTextures[piece] = loadTexture((piece + ".png").c_str());
     }
