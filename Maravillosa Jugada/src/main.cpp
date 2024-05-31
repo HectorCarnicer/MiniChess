@@ -221,9 +221,9 @@ void init() {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
     }
-    if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
+    /*if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
         std::cerr << "Failed to play background music" << std::endl;
-    }
+    }*/
 }
 
 
