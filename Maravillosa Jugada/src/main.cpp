@@ -4,6 +4,7 @@
 #include <thread>
 #include <unordered_map>
 #include "../lib/freeglut.h"
+#include "../lib/ETSIDI.h"
 #include "../lib/Pieza.h"
 #include "../lib/Peon.h"
 #include "../lib/Rey.h"
@@ -85,6 +86,30 @@ void loadPieceTextures() {
     }
 }
 
+void loadPieceTexturesMenu() {
+    //gluLookAt(0.0, 7.5, 30.0,  // posicion del ojo
+    //        0.0, 7.5, 0.0,      // hacia que punto mira  (0,0,0) 
+           /* 0.0, 1.0, 0.0);*/  // definimos hacia arriba (eje Y
+
+    loadTexture("fondo.png");
+
+    /*std::cout << "ha entrado para mirar fondo\n";
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,
+        ETSIDI::getTexture("fondo.png").id);
+    glDisable(GL_LIGHTING);
+    glBegin(GL_POLYGON);
+    glColor3f(1, 1, 1);
+    glTexCoord2d(0, 1); glVertex2d(-10, 0);
+    glTexCoord2d(1, 1); glVertex2d(10, 0);
+    glTexCoord2d(1, 0); glVertex2d(10, 15);
+    glTexCoord2d(0, 0); glVertex2d(-10, 15);
+    glEnd();
+    glEnable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);*/
+}
+
 void drawPiece(int row, int col, const std::string& piece) {
     if (pieceTextures.find(piece) == pieceTextures.end()) return;
 
@@ -107,13 +132,13 @@ void drawPiece(int row, int col, const std::string& piece) {
     glDisable(GL_TEXTURE_2D);
 }
 
-
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     float cellSize = 2.0f / TAMANO_TABLERO;
 
     for (int i = 0; i < TAMANO_TABLERO; ++i) {
         for (int j = 0; j < TAMANO_TABLERO; ++j) {
+            //casillas
             float x1 = -1.0f + j * cellSize;
             float y1 = 1.0f - i * cellSize;
             float x2 = x1 + cellSize;
@@ -132,6 +157,7 @@ void display() {
             glVertex2f(x1, y2);
             glEnd();
 
+            //piezas
             if (tablero[i][j] != ".") {
                 drawPiece(i, j, tablero[i][j]);
             }
@@ -141,9 +167,17 @@ void display() {
     glutSwapBuffers();
 }
 
+void displayMenu() {
+
+}
+
 void idle() {
     // Actualizar el tablero y redibujar
     tablero = pintarTablero();
+    glutPostRedisplay();
+}
+
+void idleMenu() {
     glutPostRedisplay();
 }
 
@@ -211,6 +245,10 @@ void mouseClick(int button, int state, int x, int y) {
     }
 }
 
+void mouseClickMenu(int button, int state, int x, int y) {
+
+}
+
 void init() {
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glEnable(GL_BLEND);
@@ -226,10 +264,30 @@ void init() {
     }*/
 }
 
+void initMenu() {
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Habilitar blending para transparencia
+    loadPieceTexturesMenu();
+
+    //?¿cambiar musica
+    if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
+        std::cerr << "Failed to initialize audio engine" << std::endl;
+        exit(1);
+    }
+    /*if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
+        std::cerr << "Failed to play background music" << std::endl;
+    }*/
+}
+
+//cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
+bool inicializarJuego();
 
 int main(int argc, char** argv) {
     gardner = new Gardner(piezas);
     gardner->inicializa();
+
+    bool mainMenuTablero = 0;
 
     std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
 
@@ -238,13 +296,24 @@ int main(int argc, char** argv) {
     glutInitWindowSize(600, 600);
     glutCreateWindow("Chess");
 
-    init();
+    if (mainMenuTablero == 0) {
+        //menu
+        //std::cout << "ha entrado en menu\n\n";
+        initMenu();
+        glutDisplayFunc(displayMenu);
+        glutIdleFunc(idleMenu);
+        glutMouseFunc(mouseClickMenu);
 
-    glutDisplayFunc(display);
-    glutIdleFunc(idle);
-    glutMouseFunc(mouseClick);
+    }
+    else if (mainMenuTablero == 1) {
+     //juego
+        init();
+        glutDisplayFunc(display);
+        glutIdleFunc(idle);
+        glutMouseFunc(mouseClick);
 
-    tablero = pintarTablero();
+        tablero = pintarTablero();
+    }
 
     glutMainLoop();
 
