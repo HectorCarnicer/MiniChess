@@ -28,6 +28,11 @@ struct Coordenadas {
 
 #define TAMANO_TABLERO 5
 
+//variables globales para menu
+GLuint backgroundTexture;
+int selectedOption = 0; // 0: ninguno, 1: Gardner, 2: Baby
+
+
 // Variables globales para el tablero y piezas
 std::vector<Pieza*> piezas;
 Gardner* gardner;
@@ -58,6 +63,43 @@ std::vector<std::vector<std::string>> pintarTablero() {
     return tablero;
 }
 
+GLuint loadTextureMenu(const char* filename) {
+    int width, height, channels;
+    unsigned char* data = stbi_load(filename, &width, &height, &channels, 0);
+    if (data == nullptr) {
+        return 0;
+    }
+
+    // Voltear la imagen verticalmente
+    int widthInBytes = width * channels;
+    unsigned char* top = nullptr;
+    unsigned char* bottom = nullptr;
+    unsigned char temp = 0;
+    int halfHeight = height / 2;
+
+    for (int row = 0; row < halfHeight; row++) {
+        top = data + row * widthInBytes;
+        bottom = data + (height - row - 1) * widthInBytes;
+        for (int col = 0; col < widthInBytes; col++) {
+            temp = *top;
+            *top = *bottom;
+            *bottom = temp;
+            top++;
+            bottom++;
+        }
+    }
+
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, (channels == 4) ? GL_RGBA : GL_RGB, width, height, 0, (channels == 4) ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_image_free(data);
+    return texture;
+}
+
 GLuint loadTexture(const char* filename) {
     int width, height, channels;
     unsigned char* data = stbi_load(filename, &width, &height, &channels, 4); // Cargar con 4 canales (RGBA)
@@ -78,7 +120,6 @@ GLuint loadTexture(const char* filename) {
     return texture;
 }
 
-
 void loadPieceTextures() {
     std::vector<std::string> pieces = { "reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
     for (const std::string& piece : pieces) {
@@ -86,28 +127,44 @@ void loadPieceTextures() {
     }
 }
 
-void loadPieceTexturesMenu() {
-    //gluLookAt(0.0, 7.5, 30.0,  // posicion del ojo
-    //        0.0, 7.5, 0.0,      // hacia que punto mira  (0,0,0) 
-           /* 0.0, 1.0, 0.0);*/  // definimos hacia arriba (eje Y
+// Función para dibujar texto
+void renderBitmapString(float x, float y, void* font, const char* string) {
+    const char* c;
+    glRasterPos2f(x, y);
+    for (c = string; *c != '\0'; c++) {
+        glutBitmapCharacter(font, *c);
+    }
+}
 
-    loadTexture("fondo.png");
-
-    /*std::cout << "ha entrado para mirar fondo\n";
-
+// Función para dibujar el fondo
+void drawBackground() {
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,
-        ETSIDI::getTexture("fondo.png").id);
-    glDisable(GL_LIGHTING);
-    glBegin(GL_POLYGON);
-    glColor3f(1, 1, 1);
-    glTexCoord2d(0, 1); glVertex2d(-10, 0);
-    glTexCoord2d(1, 1); glVertex2d(10, 0);
-    glTexCoord2d(1, 0); glVertex2d(10, 15);
-    glTexCoord2d(0, 0); glVertex2d(-10, 15);
+    glClearColor(1.0, 1.0, 1.0, 1.0); // Fondo blanco
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, backgroundTexture);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(1.0f, -1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(1.0f, 1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f, 1.0f);
     glEnd();
-    glEnable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);*/
+    glDisable(GL_TEXTURE_2D);
+}
+
+// Función para dibujar botones
+void drawButton(float x, float y, float width, float height, const char* label) {
+    // Dibujar el botón
+    glColor3f(0.0f, 0.0f, 0.0f); // Negro para el contorno
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(x, y);
+    glVertex2f(x + width, y);
+    glVertex2f(x + width, y - height);
+    glVertex2f(x, y - height);
+    glEnd();
+
+    // Dibujar el texto del botón
+    glColor3f(0.0f, 0.0f, 0.0f); // Negro para el texto
+    renderBitmapString(x + width / 4, y - height / 2, GLUT_BITMAP_HELVETICA_18, label);
 }
 
 void drawPiece(int row, int col, const std::string& piece) {
@@ -168,7 +225,38 @@ void display() {
 }
 
 void displayMenu() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Asegúrate de limpiar el buffer de profundidad también
 
+    // Habilitar y configurar la textura del fondo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, backgroundTexture);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); // Asegúrate de que la textura reemplace el color del fondo
+
+    // Dibujar el fondo
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(1.0f, -1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(1.0f, 1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f, 1.0f);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D); // Deshabilitar la textura después de usarla
+
+    // Dibujar botones
+    drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
+    drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
+
+    // Dibujar selección
+    if (selectedOption == 1) {
+        glColor3f(0.0f, 1.0f, 0.0f); // Verde para selección
+        drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
+    }
+    else if (selectedOption == 2) {
+        glColor3f(0.0f, 1.0f, 0.0f); // Verde para selección
+        drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
+    }
+
+    glutSwapBuffers();
 }
 
 void idle() {
@@ -177,8 +265,13 @@ void idle() {
     glutPostRedisplay();
 }
 
-void idleMenu() {
-    glutPostRedisplay();
+void reshapeMenu(int w, int h) {
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void ejecutarComandoMovimiento() {
@@ -246,7 +339,24 @@ void mouseClick(int button, int state, int x, int y) {
 }
 
 void mouseClickMenu(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        // Convertir coordenadas de ventana a coordenadas de OpenGL
+        float fx = (float)x / (glutGet(GLUT_WINDOW_WIDTH) / 2) - 1.0f;
+        float fy = 1.0f - (float)y / (glutGet(GLUT_WINDOW_HEIGHT) / 2);
 
+        // Verificar si se hizo clic en algún botón
+        if (fx >= -0.4f && fx <= 0.4f) {
+            if (fy <= 0.3f && fy >= 0.1f) {
+                selectedOption = 1;
+                std::cout << "gardner\n";
+            }
+            else if (fy <= -0.1f && fy >= -0.3f) {
+                selectedOption = 2;
+                std::cout << "baby\n";
+            }
+        }
+        glutPostRedisplay();
+    }
 }
 
 void init() {
@@ -265,10 +375,12 @@ void init() {
 }
 
 void initMenu() {
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Habilitar blending para transparencia
-    loadPieceTexturesMenu();
+    //carga del fondo 
+    backgroundTexture = loadTextureMenu("fondo.png");
+    if (backgroundTexture == 0) {
+        printf("Error loading background texture\n");
+        exit(EXIT_FAILURE);
+    }
 
     //?¿cambiar musica
     if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
@@ -284,12 +396,12 @@ void initMenu() {
 bool inicializarJuego();
 
 int main(int argc, char** argv) {
-    gardner = new Gardner(piezas);
-    gardner->inicializa();
+   /* gardner = new Gardner(piezas);
+    gardner->inicializa();*/
 
     bool mainMenuTablero = 0;
 
-    std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
+    //std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -298,10 +410,10 @@ int main(int argc, char** argv) {
 
     if (mainMenuTablero == 0) {
         //menu
-        //std::cout << "ha entrado en menu\n\n";
         initMenu();
         glutDisplayFunc(displayMenu);
-        glutIdleFunc(idleMenu);
+        glutReshapeFunc(reshapeMenu);
+        //glutIdleFunc(idleMenu);
         glutMouseFunc(mouseClickMenu);
 
     }
@@ -317,7 +429,7 @@ int main(int argc, char** argv) {
 
     glutMainLoop();
 
-    commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
+   // commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
 
     ma_engine_uninit(&engine);
 
