@@ -431,20 +431,24 @@ int main(int argc, char** argv) {
         glutDisplayFunc(displayMenu);
         glutReshapeFunc(reshapeMenu);
         glutMouseFunc(mouseClickMenu);
+        
+        if (mainMenuTablero == 1) {
+         //juego
+            std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
+            init();
+            glutDisplayFunc(display);
+            glutIdleFunc(idle);
+            glutMouseFunc(mouseClick);
 
+            tablero = pintarTablero();
+            glutMainLoop();
+        }
+
+        glutMainLoop();
     }
-    else if (mainMenuTablero == 1) {
-     //juego
-        std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
-        init();
-        glutDisplayFunc(display);
-        glutIdleFunc(idle);
-        glutMouseFunc(mouseClick);
+   
 
-        tablero = pintarTablero();
-    }
-
-    glutMainLoop();
+    
 
    // commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
 
