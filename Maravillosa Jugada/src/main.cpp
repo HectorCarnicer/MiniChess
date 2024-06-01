@@ -31,6 +31,7 @@ struct Coordenadas {
 //variables globales para menu
 GLuint backgroundTexture;
 int selectedOption = 0; // 0: ninguno, 1: Gardner, 2: Baby
+bool mainMenuTablero = 0;
 
 
 // Variables globales para el tablero y piezas
@@ -338,6 +339,21 @@ void mouseClick(int button, int state, int x, int y) {
     }
 }
 
+//cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
+bool inicializarJuego() {
+    if (selectedOption == 1) {
+        std::cout << "ha entrado en inicializaJuego gardner\n";
+        gardner = new Gardner(piezas);
+        gardner->inicializa();
+    }
+    else if (selectedOption == 2) {
+        std::cout << "ha entrado en inicializaJuego baby\n";
+        //meter baby
+    }
+    mainMenuTablero = 1;
+    return mainMenuTablero;
+}
+
 void mouseClickMenu(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         // Convertir coordenadas de ventana a coordenadas de OpenGL
@@ -349,10 +365,17 @@ void mouseClickMenu(int button, int state, int x, int y) {
             if (fy <= 0.3f && fy >= 0.1f) {
                 selectedOption = 1;
                 std::cout << "gardner\n";
+                std::cout << "valor de mainMenuTablero antes de inicilaizaJuego= "<<mainMenuTablero<<"\n";
+                inicializarJuego();
+                std::cout << "valor de mainMenuTablero depues de inicilaizaJuego= " << mainMenuTablero << "\n";
+               
             }
             else if (fy <= -0.1f && fy >= -0.3f) {
                 selectedOption = 2;
                 std::cout << "baby\n";
+                std::cout << "valor de mainMenuTblero antes de inicilaizaJuego= " << mainMenuTablero << "\n";
+                inicializarJuego();
+                std::cout << "valor de mainMenuTablero depues de inicilaizaJuego= " << mainMenuTablero << "\n";
             }
         }
         glutPostRedisplay();
@@ -392,16 +415,9 @@ void initMenu() {
     }*/
 }
 
-//cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
-bool inicializarJuego();
-
 int main(int argc, char** argv) {
-   /* gardner = new Gardner(piezas);
-    gardner->inicializa();*/
-
-    bool mainMenuTablero = 0;
-
-    //std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
+   
+   // std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -410,15 +426,16 @@ int main(int argc, char** argv) {
 
     if (mainMenuTablero == 0) {
         //menu
+        std::cout << "MENU: valor de mainMenuTblero antes de inicilaizaJuego= " << mainMenuTablero << "\n";
         initMenu();
         glutDisplayFunc(displayMenu);
         glutReshapeFunc(reshapeMenu);
-        //glutIdleFunc(idleMenu);
         glutMouseFunc(mouseClickMenu);
 
     }
     else if (mainMenuTablero == 1) {
      //juego
+        std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
         init();
         glutDisplayFunc(display);
         glutIdleFunc(idle);
