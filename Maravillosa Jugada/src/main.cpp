@@ -275,9 +275,17 @@ void displayMenu() {
     glDisable(GL_TEXTURE_2D); // Deshabilitar la textura después de usarla
 
     // Dibujar botones
-    drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
-    drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
-   
+    if (selectedOption == 0) {
+        drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
+        drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
+    }
+    if (selectedOption == 1) {
+        drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
+    }
+    if (selectedOption == 2) {
+        drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
+    }
+
     glutSwapBuffers();
 }
 
@@ -377,7 +385,7 @@ void inicializarJuego() {
 void cambiarValor(int x);
 
 void esperaPostSeleccion() {
-    
+    displayMenu(); //para poner a verde el botón
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
