@@ -160,10 +160,18 @@ void drawBackground() {
 }
 
 // Función para dibujar botones
-void drawButton(float x, float y, float width, float height, const char* label) {
+void drawButton(float x, float y, float width, float height , int type, const char* label ) {
+
     // Dibujar el botón
-    glColor3f(1.0f, 1.0f, 1.0f); // Blanco para el contorno
-   // glBegin(GL_LINE_LOOP);
+    if (type == 1 || type == 2) {
+        std::cout << "ha entrado para poner a VERDE\n";
+        glColor3f(0.0f, 1.0f, 0.0f); //Verde
+        glutPostRedisplay();
+    }
+    else {
+        std::cout << "ha entrado para ponera BLANCO\n";
+        glColor3f(1.0f, 1.0f, 1.0f); // Blanco 
+    }
     glBegin(GL_QUADS);
     glVertex2f(x, y);
     glVertex2f(x + width, y);
@@ -171,20 +179,19 @@ void drawButton(float x, float y, float width, float height, const char* label) 
     glVertex2f(x, y - height);
     glEnd();
 
-    glColor3f(0.0f, 0.0f, 0.0f); // Negro para el contorno
+    //Dibujar contorno del botón
+    glColor3f(0.0f, 0.0f, 0.0f); // Negro 
     glBegin(GL_LINE_LOOP);
-    //glBegin(GL_QUADS);
     glVertex2f(x, y);
     glVertex2f(x + width, y);
     glVertex2f(x + width, y - height);
     glVertex2f(x, y - height);
     glEnd();
 
-
-
     // Dibujar el texto del botón
     glColor3f(0.0f, 0.0f, 0.0f); // Negro para el texto
     renderBitmapString(x + width / 3, y - height / 2, GLUT_BITMAP_TIMES_ROMAN_24, label);
+
 }
 
 void drawPiece(int row, int col, const std::string& piece) {
@@ -245,9 +252,10 @@ void display() {
 }
 
 void displayMenu() {
+
+
     //limpiar ventana
     clearWindow();
-   // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Asegúrate de limpiar el buffer de profundidad también
 
     // Habilitar y configurar la textura del fondo
     glEnable(GL_TEXTURE_2D);
@@ -266,18 +274,8 @@ void displayMenu() {
     glDisable(GL_TEXTURE_2D); // Deshabilitar la textura después de usarla
 
     // Dibujar botones
-    drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
-    drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
-
-    // Dibujar selección (poner verde lo seleccionado, no entra)
-    if (selectedOption == 1) {
-        glColor3f(0.0f, 1.0f, 0.0f); // Verde para selección
-        drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
-    }
-    else if (selectedOption == 2) {
-        glColor3f(0.0f, 1.0f, 0.0f); // Verde para selección
-        drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
-    }
+    drawButton(-0.4f, 0.3f, 0.8f, 0.2f, 0, "Gardner");
+    drawButton(-0.4f, -0.1f, 0.8f, 0.2f, 0, "Baby");
 
     glutSwapBuffers();
 }
@@ -372,13 +370,28 @@ void inicializarJuego() {
         std::cout << "ha entrado en inicializaJuego baby\n";
         //meter baby
     }
-
 }
 
 //solo para que lo reconozca mouseClickMenu, está definido más abajo
 void cambiarValor(int x);
 
+void esperaPostSeleccion(int tipo) {
+    
+    // Dibujar selección (poner verde lo seleccionado, no entra)
+    if (tipo == 1) { 
+        drawButton(-0.4f, 0.3f, 0.8f, 0.2f, tipo, "Gardner");
+    }
+    if (tipo == 2) {
+        drawButton(-0.4f, -0.1f, 0.8f, 0.2f, tipo, "Baby");
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    
+}
+
 void mouseClickMenu(int button, int state, int x, int y) {
+
+    int espera = 0;
+
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         // Convertir coordenadas de ventana a coordenadas de OpenGL
         float fx = (float)x / (glutGet(GLUT_WINDOW_WIDTH) / 2) - 1.0f;
@@ -387,7 +400,9 @@ void mouseClickMenu(int button, int state, int x, int y) {
         // Verificar si se hizo clic en algún botón
         if (fx >= -0.4f && fx <= 0.4f) {
             if (fy <= 0.3f && fy >= 0.1f) {
+                espera = 1;
                 std::cout << "gardner\n";
+                esperaPostSeleccion(espera);
                 cambiarValor(1);           
             }
             else if (fy <= -0.1f && fy >= -0.3f) {
