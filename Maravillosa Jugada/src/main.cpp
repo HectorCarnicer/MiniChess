@@ -30,8 +30,9 @@ struct Coordenadas {
 
 //variables globales para menu
 GLuint backgroundTexture;
-int selectedOption = 0; // 0: ninguno, 1: Gardner, 2: Baby
-bool mainMenuTablero = 0;
+//valores temporales
+int selectedOption = 1; // 0: ninguno, 1: Gardner, 2: Baby
+bool mainMenuTablero = 1;
 
 
 // Variables globales para el tablero y piezas
@@ -424,30 +425,34 @@ int main(int argc, char** argv) {
     glutInitWindowSize(600, 600);
     glutCreateWindow("Chess");
 
-    if (mainMenuTablero == 0) {
-        //menu
-        std::cout << "MENU: valor de mainMenuTblero antes de inicilaizaJuego= " << mainMenuTablero << "\n";
-        initMenu();
-        glutDisplayFunc(displayMenu);
-        glutReshapeFunc(reshapeMenu);
-        glutMouseFunc(mouseClickMenu);
-        
-        if (mainMenuTablero == 1) {
-         //juego
-            std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
-            init();
-            glutDisplayFunc(display);
-            glutIdleFunc(idle);
-            glutMouseFunc(mouseClick);
+    //if (mainMenuTablero == 0) {
+    //    //menu
+    //    std::cout << "MENU: valor de mainMenuTblero antes de inicilaizaJuego= " << mainMenuTablero << "\n";
+    //    initMenu();
+    //    glutDisplayFunc(displayMenu);
+    //    glutReshapeFunc(reshapeMenu);
+    //    glutMouseFunc(mouseClickMenu);
+    //   
+    //}
+    
+    //temporal
+    //---------------
+    inicializarJuego();
+    //---------------
 
-            tablero = pintarTablero();
-            glutMainLoop();
-        }
+    if (mainMenuTablero == 1) {
+        //juego
+        std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
+        init();
+        glutDisplayFunc(display);
+        glutIdleFunc(idle);
+        glutMouseFunc(mouseClick);
 
-        glutMainLoop();
+        tablero = pintarTablero();
+       
     }
    
-
+    glutMainLoop();
     
 
    // commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
