@@ -132,8 +132,17 @@ bool Mundo::detectarJaque(Color& turnoActual) {
                 return true;
             }
         }
-     
+        else if (pieza->nombreDeClase() == "Peon") {
+            int x, y;
+            pieza->obtenerPosicion(x, y);
 
+            int deltaX = posreyx - x;
+            int deltaY = posreyy - y;
+            if (pieza->obtenerColor() != turnoActual && abs(deltaY) == 1 && abs(deltaX) == 1) {
+                return true;
+
+            }
+        }
     }
 
    return false;
