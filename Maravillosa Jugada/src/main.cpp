@@ -160,13 +160,15 @@ void drawBackground() {
 }
 
 // Función para dibujar botones
-void drawButton(float x, float y, float width, float height , int type, const char* label ) {
+void drawButton(float x, float y, float width, float height ,const char* label ) {
+
+    std::cout << "DRAW_BUTTON\n";
 
     // Dibujar el botón
-    if (type == 1 || type == 2) {
+    if (selectedOption == 1 || selectedOption == 2) {
+        glClearColor(1.0f, 1.0f, 1.0f,1.0f);
         std::cout << "ha entrado para poner a VERDE\n";
         glColor3f(0.0f, 1.0f, 0.0f); //Verde
-        glutPostRedisplay();
     }
     else {
         std::cout << "ha entrado para ponera BLANCO\n";
@@ -253,7 +255,6 @@ void display() {
 
 void displayMenu() {
 
-
     //limpiar ventana
     clearWindow();
 
@@ -274,9 +275,9 @@ void displayMenu() {
     glDisable(GL_TEXTURE_2D); // Deshabilitar la textura después de usarla
 
     // Dibujar botones
-    drawButton(-0.4f, 0.3f, 0.8f, 0.2f, 0, "Gardner");
-    drawButton(-0.4f, -0.1f, 0.8f, 0.2f, 0, "Baby");
-
+    drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
+    drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
+   
     glutSwapBuffers();
 }
 
@@ -375,22 +376,12 @@ void inicializarJuego() {
 //solo para que lo reconozca mouseClickMenu, está definido más abajo
 void cambiarValor(int x);
 
-void esperaPostSeleccion(int tipo) {
+void esperaPostSeleccion() {
     
-    // Dibujar selección (poner verde lo seleccionado, no entra)
-    if (tipo == 1) { 
-        drawButton(-0.4f, 0.3f, 0.8f, 0.2f, tipo, "Gardner");
-    }
-    if (tipo == 2) {
-        drawButton(-0.4f, -0.1f, 0.8f, 0.2f, tipo, "Baby");
-    }
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    
 }
 
 void mouseClickMenu(int button, int state, int x, int y) {
-
-    int espera = 0;
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         // Convertir coordenadas de ventana a coordenadas de OpenGL
@@ -400,9 +391,8 @@ void mouseClickMenu(int button, int state, int x, int y) {
         // Verificar si se hizo clic en algún botón
         if (fx >= -0.4f && fx <= 0.4f) {
             if (fy <= 0.3f && fy >= 0.1f) {
-                espera = 1;
                 std::cout << "gardner\n";
-                esperaPostSeleccion(espera);
+                //esperaPostSeleccion();
                 cambiarValor(1);           
             }
             else if (fy <= -0.1f && fy >= -0.3f) {
@@ -451,6 +441,8 @@ void cambiarValor(int x) {
     std::cout << "valor de selectedOption antes de cambiar valor= " << selectedOption << "\n";
     selectedOption = x;
     std::cout << "valor de selectedOption despues de cambiar valor= " << selectedOption << "\n";
+
+    esperaPostSeleccion();
 
     // Reconfigurar las funciones de GLUT según el nuevo estado
     switch (selectedOption) {
