@@ -31,8 +31,7 @@ struct Coordenadas {
 //variables globales para menu
 GLuint backgroundTexture;
 //valores temporales
-int selectedOption = 1; // 0: ninguno, 1: Gardner, 2: Baby
-bool mainMenuTablero = 1;
+int selectedOption = 0; // 0: ninguno, 1: Gardner, 2: Baby
 
 
 // Variables globales para el tablero y piezas
@@ -63,6 +62,13 @@ std::vector<std::vector<std::string>> pintarTablero() {
     }
 
     return tablero;
+}
+
+void clearWindow() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// Limpiar el buffer de color y profundidad
+    glLoadIdentity(); // Restablecer la matriz de modelo-vista
+   // glutSwapBuffers(); // Intercambiar los buffers (si estás usando doble buffer)
+
 }
 
 GLuint loadTextureMenu(const char* filename) {
@@ -227,13 +233,16 @@ void display() {
 }
 
 void displayMenu() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Asegúrate de limpiar el buffer de profundidad también
+    //limpiar ventana
+    clearWindow();
+   // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Asegúrate de limpiar el buffer de profundidad también
 
     // Habilitar y configurar la textura del fondo
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, backgroundTexture);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); // Asegúrate de que la textura reemplace el color del fondo
 
+    
     // Dibujar el fondo
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
@@ -248,7 +257,7 @@ void displayMenu() {
     drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
     drawButton(-0.4f, -0.1f, 0.8f, 0.2f, "Baby");
 
-    // Dibujar selección
+    // Dibujar selección (poner verde lo seleccionado, no entra)
     if (selectedOption == 1) {
         glColor3f(0.0f, 1.0f, 0.0f); // Verde para selección
         drawButton(-0.4f, 0.3f, 0.8f, 0.2f, "Gardner");
@@ -341,7 +350,7 @@ void mouseClick(int button, int state, int x, int y) {
 }
 
 //cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
-bool inicializarJuego() {
+void inicializarJuego() {
     if (selectedOption == 1) {
         std::cout << "ha entrado en inicializaJuego gardner\n";
         gardner = new Gardner(piezas);
@@ -351,8 +360,13 @@ bool inicializarJuego() {
         std::cout << "ha entrado en inicializaJuego baby\n";
         //meter baby
     }
-    mainMenuTablero = 1;
-    return mainMenuTablero;
+
+}
+
+void cambiarValor(int x) {
+    std::cout << "valor de selectedOption antes de cambiar valor= " << selectedOption << "\n";
+    selectedOption = x;
+    std::cout << "valor de selectedOption despues de cambiar valor= " << selectedOption << "\n";
 }
 
 void mouseClickMenu(int button, int state, int x, int y) {
@@ -364,19 +378,20 @@ void mouseClickMenu(int button, int state, int x, int y) {
         // Verificar si se hizo clic en algún botón
         if (fx >= -0.4f && fx <= 0.4f) {
             if (fy <= 0.3f && fy >= 0.1f) {
-                selectedOption = 1;
                 std::cout << "gardner\n";
-                std::cout << "valor de mainMenuTablero antes de inicilaizaJuego= "<<mainMenuTablero<<"\n";
-                inicializarJuego();
-                std::cout << "valor de mainMenuTablero depues de inicilaizaJuego= " << mainMenuTablero << "\n";
-               
+                cambiarValor(1);
+                //std::cout << "valor de selectedOption antes de inicializaJuego= "<< selectedOption <<"\n";
+                inicializarJuego();   
+                //glutPostRedisplay();
+                clearWindow();
             }
             else if (fy <= -0.1f && fy >= -0.3f) {
-                selectedOption = 2;
                 std::cout << "baby\n";
-                std::cout << "valor de mainMenuTblero antes de inicilaizaJuego= " << mainMenuTablero << "\n";
+                cambiarValor(2);
+                //std::cout << "valor de selectedOption antes de inicilaizaJuego= " << selectedOption << "\n";
                 inicializarJuego();
-                std::cout << "valor de mainMenuTablero depues de inicilaizaJuego= " << mainMenuTablero << "\n";
+                //glutPostRedisplay();
+                clearWindow();
             }
         }
         glutPostRedisplay();
@@ -425,32 +440,59 @@ int main(int argc, char** argv) {
     glutInitWindowSize(600, 600);
     glutCreateWindow("Chess");
 
-    //if (mainMenuTablero == 0) {
-    //    //menu
-    //    std::cout << "MENU: valor de mainMenuTblero antes de inicilaizaJuego= " << mainMenuTablero << "\n";
-    //    initMenu();
-    //    glutDisplayFunc(displayMenu);
-    //    glutReshapeFunc(reshapeMenu);
-    //    glutMouseFunc(mouseClickMenu);
-    //   
-    //}
-    
-    //temporal
-    //---------------
-    inicializarJuego();
-    //---------------
+    switch (selectedOption) {
+    case 0:
+       
+        std::cout << "MENU: valor de selectedOption antes de inicilaizaJuego= " << selectedOption << "\n";
+        initMenu();
+        glutDisplayFunc(displayMenu);
+        glutReshapeFunc(reshapeMenu);
+        glutMouseFunc(mouseClickMenu);
+        
+        break;
 
-    if (mainMenuTablero == 1) {
-        //juego
-        std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
+    case 1: 
+        
+        std::cout << "MENU: valor de selectedOption despues de inicilaizaJuego= " << selectedOption << "\n";
         init();
         glutDisplayFunc(display);
         glutIdleFunc(idle);
         glutMouseFunc(mouseClick);
 
         tablero = pintarTablero();
-       
+        break;
+
+    case 2:
+        
+        std::cout << "MENU: valor de selectedOption despues de inicilaizaJuego= " << selectedOption << "\n";
+        init();
+        glutDisplayFunc(display);
+        glutIdleFunc(idle);
+        glutMouseFunc(mouseClick);
+
+        tablero = pintarTablero();
+        break;
     }
+    
+    
+   
+    
+    //temporal
+    //---------------
+    //inicializarJuego();
+    //---------------
+
+    //if (mainMenuTablero == 1) {
+    //    //juego
+    //    std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
+    //    init();
+    //    glutDisplayFunc(display);
+    //    glutIdleFunc(idle);
+    //    glutMouseFunc(mouseClick);
+
+    //    tablero = pintarTablero();
+    //   
+    //}
    
     glutMainLoop();
     
