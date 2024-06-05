@@ -411,17 +411,19 @@ void mouseClickMenu(int button, int state, int x, int y) {
 }
 
 void init() {
+    //incializar el tablero con las fichas
     inicializarJuego();
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Habilitar blending para transparencia
     loadPieceTextures();
 
+    //musica_tablero
     if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
     }
-    if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
+    if (ma_engine_play_sound(&engine, "musica_tablero1.mp3", NULL) != MA_SUCCESS) {
         std::cerr << "Failed to play background music" << std::endl;
     }
 }
@@ -434,7 +436,7 @@ void initMenu() {
         exit(EXIT_FAILURE);
     }
 
-    //?¿cambiar musica
+    //musica_menu
     if (ma_engine_init(NULL, &menu) != MA_SUCCESS) {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
@@ -449,7 +451,11 @@ void cambiarValor(int x) {
     selectedOption = x;
     std::cout << "valor de selectedOption despues de cambiar valor= " << selectedOption << "\n";
 
+    //esperar 1s para pasar a tablero y poner boton verde
     esperaPostSeleccion();
+
+    //quitar la musica de menu
+    ma_engine_uninit(&menu);
 
     // Reconfigurar las funciones de GLUT según el nuevo estado
     switch (selectedOption) {
@@ -503,8 +509,8 @@ int main(int argc, char** argv) {
 
    // commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
 
-    ma_engine_uninit(&menu);
-    ma_engine_uninit(&engine);
+    
+    
 
     delete gardner;
     for (auto pieza : piezas) {
