@@ -219,15 +219,16 @@ void drawPiece(int row, int col, const std::string& piece) {
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
-    float cellSize = 2.0f / TAMANO_TABLERO;
+    float cellWidth = 2.0f / TAMANO_TABLERO;
+    float cellHeight = 2.0f / TAMANO_TABLERO;
 
     for (int i = 0; i < TAMANO_TABLERO; ++i) {
         for (int j = 0; j < TAMANO_TABLERO; ++j) {
-            //casillas
-            float x1 = -1.0f + j * cellSize;
-            float y1 = 1.0f - i * cellSize;
-            float x2 = x1 + cellSize;
-            float y2 = y1 - cellSize;
+            // Casillas
+            float x1 = -1.0f + j * cellWidth;
+            float y1 = 1.0f - i * cellHeight;
+            float x2 = x1 + cellWidth;
+            float y2 = y1 - cellHeight;
 
             glBegin(GL_QUADS);
             if ((i + j) % 2 == 0) {
@@ -242,7 +243,7 @@ void display() {
             glVertex2f(x1, y2);
             glEnd();
 
-            //piezas
+            // Piezas
             if (tablero[i][j] != ".") {
                 drawPiece(i, j, tablero[i][j]);
             }
@@ -311,9 +312,12 @@ void ejecutarComandoMovimiento() {
 
 void mouseClick(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        int squareSize = glutGet(GLUT_WINDOW_WIDTH) / TAMANO_TABLERO;
-        int col = x / squareSize;
-        int row = y / squareSize;
+        int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
+        int windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
+        int squareWidth = windowWidth / TAMANO_TABLERO;
+        int squareHeight = windowHeight / TAMANO_TABLERO;
+        int col = x / squareWidth;
+        int row = y / squareHeight;
 
         if (gardner->detectarJaque(turnoActual)) {
             std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
