@@ -87,7 +87,7 @@ void Baby::nuevaJugada(Color& turnoActual)
             }
 
         }
-        else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+        else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY,piezaSeleccionada)) {
             piezaSeleccionada->mover(nuevoX, nuevoY);
             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
             system("cls");

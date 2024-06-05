@@ -27,7 +27,8 @@ void Mundo::comerPieza(int x, int y) {
     }
 }
 
-bool Mundo::atacarPieza(Color color, int x, int y) {
+bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
+
     for (const auto& pieza : piezas) {
         int posX, posY;
         pieza->obtenerPosicion(posX, posY);
@@ -41,7 +42,7 @@ bool Mundo::atacarPieza(Color color, int x, int y) {
         int deltaX = x - posX;
         int deltaY = y - posY;
 
-        if (pieza->nombreDeClase() != "Peon") {
+        if (pieza->nombreDeClase() == "Peon" ) {
             if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
                 if (posX == x && posY == y && color2 != color) {
                     comerPieza(x, y);
@@ -56,8 +57,8 @@ bool Mundo::atacarPieza(Color color, int x, int y) {
 
             }
         }
-        return false;
     }
+    return false;
 }
 
 bool Mundo::detectarJaque(Color& turnoActual) {
@@ -104,11 +105,11 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
         }
 
         if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
-            if (posicionOcupada(nuevoX, nuevoY))
+            if (!posicionOcupada(nuevoX, nuevoY))
                 return false;
         }
         if (pieza->obtenerColor() == NEGRO && deltaY == 1 && abs(deltaX) == 1) {
-            if (posicionOcupada(nuevoX, nuevoY))
+            if (!posicionOcupada(nuevoX, nuevoY))       
                 return false;
         }
             return true;
@@ -194,7 +195,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
                     return false;
             }
         }
-        else if (nuevoX > x && nuevoY > y) {
+        if (nuevoX > x && nuevoY > y) {
             for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
                 if (posicionOcupada(i, j))
                     return false;

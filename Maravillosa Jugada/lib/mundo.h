@@ -14,7 +14,7 @@ public:
 	bool posicionOcupada(int x, int y);
 	void comerPieza(int x, int y);
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
-	bool atacarPieza(Color color,int x, int y);
+	bool atacarPieza(Color color,int x, int y, Pieza* piezaSeleccionada);
 	bool detectarJaque(Color& turnoActual);
 	bool movIlegalRey(Color& turnoActual);
 	// Métodos que se sobrescriben aguas abajo

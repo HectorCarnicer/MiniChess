@@ -51,7 +51,7 @@ void Gardner::inicializa()
 	//for (int i = 0; i < 5; ++i) {
 	//    this->nuevaPieza(new Peon(i, 3, NEGRO, TAMANO_TABLERO));
 	//}
-	//this->nuevaPieza(new Alfil(1, 4, BLANCO, TAMANO_TABLERO));
+	this->nuevaPieza(new Peon(1, 3, NEGRO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Reina(3, 2, BLANCO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
 	this->nuevaPieza(new Reina(2, 2, BLANCO, TAMANO_TABLERO));
@@ -72,7 +72,6 @@ void Gardner::nuevaJugada(Color& turnoActual)
 
 	std::cout << "Turno de " << (turnoActual == BLANCO ? "Blanco" : "Negro") << ". Seleccione una pieza para mover:\n";
 
-
 	for (int i = 0; i < piezas.size(); ++i) {
 		if (piezas[i]->obtenerColor() == turnoActual) {
 			std::cout << i + 1 << ". " << piezas[i]->nombreDeClase() << " en posicion ";
@@ -88,7 +87,7 @@ void Gardner::nuevaJugada(Color& turnoActual)
 
 		Pieza* piezaSeleccionada = piezas[eleccion - 1];
 
-		if (detectarJaque(turnoActual) && piezas[eleccion - 1]->nombreDeClase() != "Rey") {
+		if (detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
 			system("cls");
 			std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
 			return;
@@ -120,7 +119,7 @@ void Gardner::nuevaJugada(Color& turnoActual)
 				system("cls");
 			}
 		}
-		else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+		else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
 			piezaSeleccionada->mover(nuevoX, nuevoY);
 			turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
 			system("cls");
