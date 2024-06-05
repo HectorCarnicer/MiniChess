@@ -162,17 +162,29 @@ void drawBackground() {
 // Función para dibujar botones
 void drawButton(float x, float y, float width, float height, const char* label) {
     // Dibujar el botón
-    glColor3f(0.0f, 0.0f, 0.0f); // Negro para el contorno
-    glBegin(GL_LINE_LOOP);
+    glColor3f(1.0f, 1.0f, 1.0f); // Blanco para el contorno
+   // glBegin(GL_LINE_LOOP);
+    glBegin(GL_QUADS);
     glVertex2f(x, y);
     glVertex2f(x + width, y);
     glVertex2f(x + width, y - height);
     glVertex2f(x, y - height);
     glEnd();
 
+    glColor3f(0.0f, 0.0f, 0.0f); // Negro para el contorno
+    glBegin(GL_LINE_LOOP);
+    //glBegin(GL_QUADS);
+    glVertex2f(x, y);
+    glVertex2f(x + width, y);
+    glVertex2f(x + width, y - height);
+    glVertex2f(x, y - height);
+    glEnd();
+
+
+
     // Dibujar el texto del botón
     glColor3f(0.0f, 0.0f, 0.0f); // Negro para el texto
-    renderBitmapString(x + width / 4, y - height / 2, GLUT_BITMAP_HELVETICA_18, label);
+    renderBitmapString(x + width / 3, y - height / 2, GLUT_BITMAP_TIMES_ROMAN_24, label);
 }
 
 void drawPiece(int row, int col, const std::string& piece) {
@@ -363,11 +375,8 @@ void inicializarJuego() {
 
 }
 
-void cambiarValor(int x) {
-    std::cout << "valor de selectedOption antes de cambiar valor= " << selectedOption << "\n";
-    selectedOption = x;
-    std::cout << "valor de selectedOption despues de cambiar valor= " << selectedOption << "\n";
-}
+//solo para que lo reconozca mouseClickMenu, está definido más abajo
+void cambiarValor(int x);
 
 void mouseClickMenu(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
@@ -379,26 +388,18 @@ void mouseClickMenu(int button, int state, int x, int y) {
         if (fx >= -0.4f && fx <= 0.4f) {
             if (fy <= 0.3f && fy >= 0.1f) {
                 std::cout << "gardner\n";
-                cambiarValor(1);
-                //std::cout << "valor de selectedOption antes de inicializaJuego= "<< selectedOption <<"\n";
-                inicializarJuego();   
-                //glutPostRedisplay();
-                clearWindow();
+                cambiarValor(1);           
             }
             else if (fy <= -0.1f && fy >= -0.3f) {
                 std::cout << "baby\n";
                 cambiarValor(2);
-                //std::cout << "valor de selectedOption antes de inicilaizaJuego= " << selectedOption << "\n";
-                inicializarJuego();
-                //glutPostRedisplay();
-                clearWindow();
             }
         }
-        glutPostRedisplay();
     }
 }
 
 void init() {
+    inicializarJuego();
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Habilitar blending para transparencia
@@ -415,7 +416,7 @@ void init() {
 
 void initMenu() {
     //carga del fondo 
-    backgroundTexture = loadTextureMenu("fondo.png");
+    backgroundTexture = loadTextureMenu("fondo5.png");
     if (backgroundTexture == 0) {
         printf("Error loading background texture\n");
         exit(EXIT_FAILURE);
@@ -426,9 +427,45 @@ void initMenu() {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
     }
-    /*if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
+    if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
         std::cerr << "Failed to play background music" << std::endl;
-    }*/
+    }
+}
+
+void cambiarValor(int x) {
+    std::cout << "valor de selectedOption antes de cambiar valor= " << selectedOption << "\n";
+    selectedOption = x;
+    std::cout << "valor de selectedOption despues de cambiar valor= " << selectedOption << "\n";
+
+    // Reconfigurar las funciones de GLUT según el nuevo estado
+    switch (selectedOption) {
+    case 0:
+        std::cout << "MENU: valor de selectedOption antes de inicilaizaJuego= " << selectedOption << "\n";
+        initMenu();
+        glutDisplayFunc(displayMenu);
+        glutReshapeFunc(reshapeMenu);
+        glutMouseFunc(mouseClickMenu);
+        break;
+    case 1:
+        std::cout << "MENU: valor de selectedOption despues de inicilaizaJuego= " << selectedOption << "\n";
+        init();
+        glutDisplayFunc(display);
+        glutIdleFunc(idle);
+        glutMouseFunc(mouseClick);
+        tablero=pintarTablero();
+        break;
+    case 2:
+        std::cout << "MENU: valor de selectedOption despues de inicilaizaJuego= " << selectedOption << "\n";
+        init();
+        glutDisplayFunc(display);
+        glutIdleFunc(idle);
+        glutMouseFunc(mouseClick);
+        tablero=pintarTablero();
+        break;
+    }
+
+    // Forzar redibujado
+    glutPostRedisplay();
 }
 
 int main(int argc, char** argv) {
@@ -440,60 +477,13 @@ int main(int argc, char** argv) {
     glutInitWindowSize(600, 600);
     glutCreateWindow("Chess");
 
-    switch (selectedOption) {
-    case 0:
-       
-        std::cout << "MENU: valor de selectedOption antes de inicilaizaJuego= " << selectedOption << "\n";
-        initMenu();
-        glutDisplayFunc(displayMenu);
-        glutReshapeFunc(reshapeMenu);
-        glutMouseFunc(mouseClickMenu);
+ 
+    std::cout << "MENU: valor de selectedOption antes de inicilaizaJuego= " << selectedOption << "\n";
+    initMenu();
+    glutDisplayFunc(displayMenu);
+    glutReshapeFunc(reshapeMenu);
+    glutMouseFunc(mouseClickMenu);
         
-        break;
-
-    case 1: 
-        
-        std::cout << "MENU: valor de selectedOption despues de inicilaizaJuego= " << selectedOption << "\n";
-        init();
-        glutDisplayFunc(display);
-        glutIdleFunc(idle);
-        glutMouseFunc(mouseClick);
-
-        tablero = pintarTablero();
-        break;
-
-    case 2:
-        
-        std::cout << "MENU: valor de selectedOption despues de inicilaizaJuego= " << selectedOption << "\n";
-        init();
-        glutDisplayFunc(display);
-        glutIdleFunc(idle);
-        glutMouseFunc(mouseClick);
-
-        tablero = pintarTablero();
-        break;
-    }
-    
-    
-   
-    
-    //temporal
-    //---------------
-    //inicializarJuego();
-    //---------------
-
-    //if (mainMenuTablero == 1) {
-    //    //juego
-    //    std::cout << "MENU: valor de mainMenuTblero despues de inicilaizaJuego= " << mainMenuTablero << "\n";
-    //    init();
-    //    glutDisplayFunc(display);
-    //    glutIdleFunc(idle);
-    //    glutMouseFunc(mouseClick);
-
-    //    tablero = pintarTablero();
-    //   
-    //}
-   
     glutMainLoop();
     
 
