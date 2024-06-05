@@ -32,7 +32,7 @@ struct Coordenadas {
 GLuint backgroundTexture;
 //valores temporales
 int selectedOption = 0; // 0: ninguno, 1: Gardner, 2: Baby
-
+ma_engine menu;
 
 // Variables globales para el tablero y piezas
 std::vector<Pieza*> piezas;
@@ -193,7 +193,6 @@ void drawButton(float x, float y, float width, float height ,const char* label )
     // Dibujar el texto del botón
     glColor3f(0.0f, 0.0f, 0.0f); // Negro para el texto
     renderBitmapString(x + width / 3, y - height / 2, GLUT_BITMAP_TIMES_ROMAN_24, label);
-
 }
 
 void drawPiece(int row, int col, const std::string& piece) {
@@ -422,9 +421,9 @@ void init() {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
     }
-    /*if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
+    if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
         std::cerr << "Failed to play background music" << std::endl;
-    }*/
+    }
 }
 
 void initMenu() {
@@ -436,11 +435,11 @@ void initMenu() {
     }
 
     //?¿cambiar musica
-    if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
+    if (ma_engine_init(NULL, &menu) != MA_SUCCESS) {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
     }
-    if (ma_engine_play_sound(&engine, "background_music.mp3", NULL) != MA_SUCCESS) {
+    if (ma_engine_play_sound(&menu, "musica_menu.mp3", NULL) != MA_SUCCESS) {
         std::cerr << "Failed to play background music" << std::endl;
     }
 }
@@ -504,6 +503,7 @@ int main(int argc, char** argv) {
 
    // commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
 
+    ma_engine_uninit(&menu);
     ma_engine_uninit(&engine);
 
     delete gardner;
