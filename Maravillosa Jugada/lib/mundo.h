@@ -17,6 +17,7 @@ public:
 	bool atacarPieza(Color color,int x, int y, Pieza* piezaSeleccionada);
 	bool detectarJaque(Color& turnoActual);
 	bool movIlegalRey(Color& turnoActual);
+	bool promocion(Color color, int x, int y, Pieza* piezaSeleccionada);
 	// Métodos que se sobrescriben aguas abajo
 	virtual bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
 	virtual void inicializa() = 0;

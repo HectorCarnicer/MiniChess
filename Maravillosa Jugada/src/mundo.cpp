@@ -27,6 +27,34 @@ void Mundo::comerPieza(int x, int y) {
     }
 }
 
+bool Mundo::promocion(Color color, int x, int y, Pieza* piezaSeleccionada) {
+    int posX, posY;
+    piezaSeleccionada->obtenerPosicion(posX, posY);
+    std::string nombreClase = piezaSeleccionada->nombreDeClase();
+
+    int deltaX = x - posX;
+    int deltaY = y - posY;
+
+    if (nombreClase == "Peon") {
+        if ((color == BLANCO && deltaY == -1 && abs(deltaX) == 1 && y == 0) ||
+            (color == NEGRO && deltaY == 1 && abs(deltaX) == 1 && y == 4)) {
+            if (atacarPieza(piezaSeleccionada->obtenerColor(), x, y, piezaSeleccionada) && posicionOcupada(x,y))
+            piezaSeleccionada->mover(x, y);
+            comerPieza(posX, posY);
+            return true;
+        }
+        else if ((color == BLANCO && deltaY == -1 && deltaX == 0 && y == 0) ||
+            (color == NEGRO && deltaY == 1 && deltaX == 0 && y == 4)) {
+            if(!posicionOcupada(x, y))
+            piezaSeleccionada->mover(x, y);
+            comerPieza(posX, posY);
+            return true;
+        }
+    }
+    return false;
+}
+
+
 bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 
     int posX, posY;
@@ -89,21 +117,25 @@ bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 }
 
 bool Mundo::detectarJaque(Color& turnoActual) {
-    int posreyx=0, posreyy=0;
-
-   for (const auto& pieza : piezas) {
+    int posreyx = 0, posreyy = 0;
+    // Obtiene la posicion del rey actual
+    for (const auto& pieza : piezas) {
         if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
             pieza->obtenerPosicion(posreyx, posreyy);
             break;
         }
-   }
-   for (const auto& pieza : piezas) {
-        if (pieza->obtenerColor() != turnoActual) {
+    }
+    // Comprueba que de todas las piezas ninguna toque al rey a traves de caminoLibre
+    for (const auto& pieza : piezas) {
+        if (pieza->obtenerColor() != turnoActual && pieza->nombreDeClase() != "Peon") {
             if (!caminoLibre(pieza, posreyx, posreyy)) {
                 return true;
             }
         }
-   }
+     
+
+    }
+
    return false;
 }
 
@@ -130,7 +162,6 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
             if (posicionOcupada(nuevoX, nuevoY))
                 return false;
         }
-
         if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
             if (!posicionOcupada(nuevoX, nuevoY))
                 return false;
