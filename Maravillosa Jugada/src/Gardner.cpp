@@ -55,7 +55,7 @@
 		//this->nuevaPieza(new Reina(3, 2, BLANCO, TAMANO_TABLERO));
 		//this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
 		//this->nuevaPieza(new Reina(2, 2, BLANCO, TAMANO_TABLERO));
-		this->nuevaPieza(new Peon(1, 2git, BLANCO, TAMANO_TABLERO));
+		this->nuevaPieza(new Peon(1, 2, BLANCO, TAMANO_TABLERO));
 		this->nuevaPieza(new Peon(0, 0, NEGRO, TAMANO_TABLERO));
 		this->nuevaPieza(new Rey(2,0,NEGRO,TAMANO_TABLERO));
 
