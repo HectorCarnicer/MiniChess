@@ -20,7 +20,8 @@
 // Incluye la implementación de miniaudio
 #define MINIAUDIO_IMPLEMENTATION
 #include "../lib/miniaudio.h"
-
+bool musicPaused = false;
+bool bizarreMode = false;
 struct Coordenadas {
     int x, y;
     Coordenadas(int x, int y) : x(x), y(y) {}
@@ -131,7 +132,12 @@ GLuint loadTexture(const char* filename) {
 void loadPieceTextures() {
     std::vector<std::string> pieces = { "reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
     for (const std::string& piece : pieces) {
-        pieceTextures[piece] = loadTexture((piece + ".png").c_str());
+        if (bizarreMode) {
+            pieceTextures[piece] = loadTexture((piece + "s" + ".png").c_str());
+        }
+        else {
+            pieceTextures[piece] = loadTexture((piece + ".png").c_str());
+        }
     }
 }
 
@@ -201,10 +207,13 @@ void drawPiece(int row, int col, const std::string& piece) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, pieceTextures[piece]);
 
-    float x1 = -1.0f + col * (2.0f / TAMANO_TABLERO);
-    float y1 = 1.0f - row * (2.0f / TAMANO_TABLERO);
-    float x2 = x1 + (2.0f / TAMANO_TABLERO);
-    float y2 = y1 - (2.0f / TAMANO_TABLERO);
+    float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
+    float cellHeight = 2.0f / TAMANO_TABLERO;
+
+    float x1 = -1.0f + col * cellWidth;
+    float y1 = 1.0f - row * cellHeight;
+    float x2 = x1 + cellWidth;
+    float y2 = y1 - cellHeight;
 
     glColor4f(1.0, 1.0, 1.0, 1.0); // Asegurarse de que el color tenga un alfa de 1.0
     glBegin(GL_QUADS);
@@ -217,13 +226,14 @@ void drawPiece(int row, int col, const std::string& piece) {
     glDisable(GL_TEXTURE_2D);
 }
 
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
-    float cellWidth = 2.0f / TAMANO_TABLERO;
+    float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
     float cellHeight = 2.0f / TAMANO_TABLERO;
 
     for (int i = 0; i < TAMANO_TABLERO; ++i) {
-        for (int j = 0; j < TAMANO_TABLERO; ++j) {
+        for (int j = 0; j < TAMANO_TABLERO + 1; ++j) { // +1 para la columna de botones
             // Casillas
             float x1 = -1.0f + j * cellWidth;
             float y1 = 1.0f - i * cellHeight;
@@ -231,11 +241,45 @@ void display() {
             float y2 = y1 - cellHeight;
 
             glBegin(GL_QUADS);
-            if ((i + j) % 2 == 0) {
-                glColor3f(1.0f, 1.0f, 1.0f); // Blanco
+            if (j == TAMANO_TABLERO) { // Columna de botones
+                if (i == 0) {
+                    glColor3f(0.8f, 0.1f, 0.1f); // Rojo oscuro para el primer botón (Pause)
+                }
+                else if (i == 1) {
+                    glColor3f(0.1f, 0.8f, 0.1f); // Verde oscuro para el segundo botón
+                }
+                else {
+                    glColor3f(0.1f, 0.1f, 0.8f); // Azul oscuro para otros botones
+                }
+            }
+            else if (bizarreMode) {
+                // Parte superior: territorio hacker
+                if (i < TAMANO_TABLERO / 2) {
+                    if ((i + j) % 2 == 0) {
+                        glColor3f(0.0f, 1.0f, 0.0f); // Verde para casillas claras
+                    }
+                    else {
+                        glColor3f(0.0f, 0.5f, 0.0f); // Verde oscuro para casillas oscuras
+                    }
+                }
+                else {
+                    // Parte inferior: territorio servidor
+                    if ((i + j) % 2 == 0) {
+                        glColor3f(0.0f, 0.0f, 1.0f); // Azul para casillas claras
+                    }
+                    else {
+                        glColor3f(0.0f, 0.0f, 0.5f); // Azul oscuro para casillas oscuras
+                    }
+                }
             }
             else {
-                glColor3f(0.0f, 0.0f, 0.0f); // Negro
+                // Modo normal
+                if ((i + j) % 2 == 0) {
+                    glColor3f(1.0f, 1.0f, 1.0f); // Blanco
+                }
+                else {
+                    glColor3f(0.0f, 0.0f, 0.0f); // Negro
+                }
             }
             glVertex2f(x1, y1);
             glVertex2f(x2, y1);
@@ -244,14 +288,24 @@ void display() {
             glEnd();
 
             // Piezas
-            if (tablero[i][j] != ".") {
+            if (j < TAMANO_TABLERO && tablero[i][j] != ".") {
                 drawPiece(i, j, tablero[i][j]);
             }
         }
     }
 
+    // Dibujar el texto "Pause" en el primer botón
+    glColor3f(1.0f, 1.0f, 1.0f); // Color blanco para el texto
+    glRasterPos2f(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - cellHeight / 2);
+    const char* text = "Pause";
+    for (const char* c = text; *c != '\0'; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
+
     glutSwapBuffers();
 }
+
+
 
 void displayMenu() {
 
@@ -310,11 +364,41 @@ void ejecutarComandoMovimiento() {
     }
 }
 
+void handleButtonClick(int row) {
+    switch (row) {
+    case 0:
+        // Función del primer botón: pausar/reanudar la música
+        if (musicPaused) {
+            ma_engine_start(&engine);
+            musicPaused = false;
+            std::cout << "Música reanudada\n";
+        }
+        else {
+            ma_engine_stop(&engine);
+            musicPaused = true;
+            std::cout << "Música pausada\n";
+        }
+        break;
+    case 1:
+        // Función del segundo botón: cambiar diseño de casillas y piezas
+        bizarreMode = !bizarreMode;
+        loadPieceTextures();
+        std::cout << "Modo bizarro activado\n";
+        glutPostRedisplay();
+        break;
+        // Añadir más casos según el número de botones
+    default:
+        std::cout << "Botón desconocido\n";
+        break;
+    }
+}
+
+
 void mouseClick(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
         int windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
-        int squareWidth = windowWidth / TAMANO_TABLERO;
+        int squareWidth = windowWidth / (TAMANO_TABLERO + 1); // +1 para la columna de botones
         int squareHeight = windowHeight / TAMANO_TABLERO;
         int col = x / squareWidth;
         int row = y / squareHeight;
@@ -324,52 +408,60 @@ void mouseClick(int button, int state, int x, int y) {
             return;
         }
 
-        if (row >= 0 && row < TAMANO_TABLERO && col >= 0 && col < TAMANO_TABLERO) {
-            Coordenadas clickPos{ col, row };
+        if (row >= 0 && row < TAMANO_TABLERO) {
+            if (col >= 0 && col < TAMANO_TABLERO) {
+                // Logica para seleccionar y mover piezas en el tablero
+                Coordenadas clickPos{ col, row };
 
-            if (piezaSeleccionada == nullptr) {
-                // Seleccionar una pieza
-                for (Pieza* pieza : piezas) {
-                    int px, py;
-                    pieza->obtenerPosicion(px, py);
-                    if (px == col && py == row) {
-                        if (pieza->obtenerColor() == turnoActual) {
-                            piezaSeleccionada = pieza;
-                            std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
+                if (piezaSeleccionada == nullptr) {
+                    // Seleccionar una pieza
+                    for (Pieza* pieza : piezas) {
+                        int px, py;
+                        pieza->obtenerPosicion(px, py);
+                        if (px == col && py == row) {
+                            if (pieza->obtenerColor() == turnoActual) {
+                                piezaSeleccionada = pieza;
+                                std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
+                            }
+                            break;
                         }
-                        break;
                     }
-                }
-            }
-            else {
-                // Mover la pieza seleccionada
-                int nuevoX = col;
-                int nuevoY = row;
-
-                if (!gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-                    if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
-                        turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                        piezaSeleccionada = nullptr;
-                        std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
-                    }
-                }
-                else if (gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
-                    piezaSeleccionada->mover(nuevoX, nuevoY);
-                    turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                    piezaSeleccionada = nullptr;
-                    std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
                 }
                 else {
-                    std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                    // Mover la pieza seleccionada
+                    int nuevoX = col;
+                    int nuevoY = row;
+
+                    if (!gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                        if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
+                            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                            piezaSeleccionada = nullptr;
+                            std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
+                        }
+                    }
+                    else if (gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                        piezaSeleccionada->mover(nuevoX, nuevoY);
+                        turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                        piezaSeleccionada = nullptr;
+                        std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
+                    }
+                    else {
+                        std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                    }
+                    glutPostRedisplay();
                 }
-                glutPostRedisplay();
             }
-        }
-        else {
-            std::cout << "Click fuera del tablero\n";
+            else if (col == TAMANO_TABLERO) {
+                // Logica para manejar los clics en la columna de botones
+                handleButtonClick(row);
+            }
+            else {
+                std::cout << "Click fuera del tablero\n";
+            }
         }
     }
 }
+
 
 //cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
 void inicializarJuego() {
@@ -415,14 +507,14 @@ void mouseClickMenu(int button, int state, int x, int y) {
 }
 
 void init() {
-    //incializar el tablero con las fichas
+    // Inicializar el tablero con las fichas
     inicializarJuego();
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Habilitar blending para transparencia
     loadPieceTextures();
 
-    //musica_tablero
+    // Inicializar el motor de audio y la música
     if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
