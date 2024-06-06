@@ -42,17 +42,24 @@ void Baby::imprimirTablero()
 // Inicializador del tablero Gardner
 void Baby::inicializa()
 {
-    // TODO: Añadir piezas que faltan
-
     // Creación de piezas blancas
-    this->nuevaPieza(new Rey(2, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Rey(4, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Reina(3, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Alfil(2, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Caballo(1, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Torre(0, 4, BLANCO, TAMANO_TABLERO));
     for (int i = 0; i < TAMANO_TABLERO; ++i) {
-        this->nuevaPieza(new Peon(i, 1, BLANCO, TAMANO_TABLERO));
+        this->nuevaPieza(new Peon(i, 3, BLANCO, TAMANO_TABLERO));
     }
+
     // Creación de piezas negras
-    this->nuevaPieza(new Rey(2, 0, NEGRO, TAMANO_TABLERO));
-    for (int i = 0; i < 5; ++i) {
-        this->nuevaPieza(new Peon(i, 3, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Rey(0, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Reina(1, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Alfil(2, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Caballo(3, 0, NEGRO, TAMANO_TABLERO));
+    this->nuevaPieza(new Torre(4, 0, NEGRO, TAMANO_TABLERO));
+    for (int i = 0; i < 5; i++) {
+        this->nuevaPieza(new Peon(i, 1, NEGRO, TAMANO_TABLERO));
     }
 }
 
