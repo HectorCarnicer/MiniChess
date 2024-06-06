@@ -591,6 +591,21 @@ void mouseClick(int button, int state, int x, int y) {
                     int nuevoX = col;
                     int nuevoY = row;
 
+                    if (baby->JaqueMate(turnoActual)) {
+                        std::cout << "ACABO EL JUEGO MANIN";
+                        exit(0);
+                    }
+                    if (baby->detectarJaque(turnoActual)) {
+                        std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
+                    }
+
+                    if (baby->promocion(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+                        baby->nuevaPieza(new Reina(nuevoX, nuevoY, turnoActual, TAMANO_TABLERO));
+                        turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                        system("cls");
+                        return;
+                    }
+
                     if (!baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
                         if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
