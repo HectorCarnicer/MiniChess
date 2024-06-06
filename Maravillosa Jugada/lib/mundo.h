@@ -18,7 +18,6 @@ public:
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
 	bool atacarPieza(Color color,int x, int y, Pieza* piezaSeleccionada);
 	bool detectarJaque(Color& turnoActual);
-	bool movIlegalRey(Color& turnoActual);
 	bool promocion(Color color, int x, int y, Pieza* piezaSeleccionada);
 	bool JaqueMate(Color& turnoActual);
 
