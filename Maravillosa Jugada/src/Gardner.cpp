@@ -62,7 +62,7 @@ void Gardner::inicializa()
 	this->nuevaPieza(new Caballo(2, 2, BLANCO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Torre(0, 3, BLANCO, TAMANO_TABLERO));
 
-	//this->nuevaPieza(new Alfil(0, 2, BLANCO, TAMANO_TABLERO));
+	this->nuevaPieza(new Alfil(0, 2, NEGRO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Reina(3, 4, BLANCO, TAMANO_TABLERO));
 
 }
