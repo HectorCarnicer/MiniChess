@@ -374,7 +374,15 @@ void reshapeMenu(int w, int h) {
 
 void ejecutarComandoMovimiento() {
     while (true) {
-        gardner->nuevaJugada(turnoActual);
+        if (selectedOption == 1) {
+
+            gardner->nuevaJugada(turnoActual);
+        }
+        else if (selectedOption == 2) {
+
+            baby->nuevaJugada(turnoActual);
+
+        }
     }
 }
 
@@ -500,16 +508,65 @@ void mouseClick(int button, int state, int x, int y) {
 
         case 2:
         
-            if (selectedOption == 1) {
-                
-                gardner->realizarMovimientoIA(turnoActual,piezas);
+            /*if (baby->detectarJaque(turnoActual)) {
+              std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
+              jaque = 1;
+              display();
+              return;
+          }*/
+
+            if (row >= 0 && row < TAMANO_TABLERO) {
+                if (col >= 0 && col < TAMANO_TABLERO) {
+                    // Logica para seleccionar y mover piezas en el tablero
+                    Coordenadas clickPos{ col, row };
+
+                    if (piezaSeleccionada == nullptr) {
+                        // Seleccionar una pieza
+                        for (Pieza* pieza : piezas) {
+                            int px, py;
+                            pieza->obtenerPosicion(px, py);
+                            if (px == col && py == row) {
+                                if (pieza->obtenerColor() == turnoActual) {
+                                    piezaSeleccionada = pieza;
+                                    std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        // Mover la pieza seleccionada
+                        int nuevoX = col;
+                        int nuevoY = row;
+
+                        if (!baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
+                                turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                                piezaSeleccionada = nullptr;
+                                std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
+                            }
+                        }
+                        else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                            piezaSeleccionada->mover(nuevoX, nuevoY);
+                            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                            piezaSeleccionada = nullptr;
+                            std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
+                        }
+                        else {
+                            std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                        }
+                        glutPostRedisplay();
+                    }
+                }
+                else if (col == TAMANO_TABLERO) {
+                    // Logica para manejar los clics en la columna de botones
+                    handleButtonClick(row);
+                }
+                else {
+                    std::cout << "Click fuera del tablero\n";
+                }
             }
-            else if (selectedOption == 2) {
-              
-                baby->realizarMovimientoIA(turnoActual, piezas);
-            }
-            glutPostRedisplay(); // Se actualiza la pantalla después del movimiento de la IA
-            break;
+     
         }
     }
 }
