@@ -1,6 +1,4 @@
 #include "../lib/baby.h"
-#include "../lib/peon.h"
-#include "../lib/rey.h"
 
 
 // Destructor de objetos Gardner
@@ -66,46 +64,96 @@ void Baby::inicializa()
 // Nueva Jugada
 void Baby::nuevaJugada(Color& turnoActual)
 {
-    int eleccion, nuevoX, nuevoY;
-    // Mostrar las piezas y pedir al usuario que elija una
-    std::cout << "Turno de " << (turnoActual == BLANCO ? "Blanco" : "Negro") << ". Seleccione una pieza para mover:\n";
-    for (int i = 0; i < piezas.size(); ++i) {
-        if (piezas[i]->obtenerColor() == turnoActual) {
-            std::cout << i + 1 << ". " << piezas[i]->nombreDeClase() << " en posición ";
-            piezas[i]->mostrarPosicion();
-        }
-    }
-    std::cin >> eleccion;
+	int eleccion, nuevoX, nuevoY;
 
-    // Verificar que la elección es válida y corresponde al color del turno
-    if (eleccion > 0 && eleccion <= piezas.size() && piezas[eleccion - 1]->obtenerColor() == turnoActual) {
-        Pieza* piezaSeleccionada = piezas[eleccion - 1];
-        std::cout << "Ingrese la nueva posición X (0 a 7): ";
-        std::cin >> nuevoX;
-        std::cout << "Ingrese la nueva posición Y (0 a 7): ";
-        std::cin >> nuevoY;
+	if (JaqueMate(turnoActual)) {
+		std::cout << "ACABO EL JUEGO MANIN";
+		exit(0);
+	}
+	if (detectarJaque(turnoActual)) {
+		std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
+	}
 
 
-        // Verificar si la posición está ocupada antes de mover la pieza
-        if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
-                turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                system("cls");
-            }
+	std::cout << "Turno de " << (turnoActual == BLANCO ? "Blanco" : "Negro") << ". Seleccione una pieza para mover:\n";
 
-        }
-        else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY,piezaSeleccionada)) {
-            piezaSeleccionada->mover(nuevoX, nuevoY);
-            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-            system("cls");
-        }
-        else {
-            system("cls");
-            std::cout << "-----Movimiento inválido o posición ocupada-----\n";
-        }
-    }
-    else {
-        system("cls");
-        std::cout << "Elección inválida o no es el turno de esa pieza.\n";
-    }
+	for (int i = 0; i < piezas.size(); ++i) {
+		if (piezas[i]->obtenerColor() == turnoActual) {
+			std::cout << i + 1 << ". " << piezas[i]->nombreDeClase() << " en posicion ";
+			piezas[i]->mostrarPosicion();
+		}
+	}
+
+	std::cin >> eleccion;
+
+	// Verificar que la elección es válida y corresponde al color del turno
+
+	if (eleccion > 0 && eleccion <= piezas.size() && piezas[eleccion - 1]->obtenerColor() == turnoActual) {
+
+		Pieza* piezaSeleccionada = piezas[eleccion - 1];
+
+		if (detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+			system("cls");
+			std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
+			return;
+		}
+		std::cout << "Ingrese la nueva posicion X (0 a 7): ";
+		std::cin >> nuevoX;
+		std::cout << "Ingrese la nueva posicion Y (0 a 7): ";
+		std::cin >> nuevoY;
+
+
+		//detecta movimiento ilegal
+		if (piezaSeleccionada->nombreDeClase() == "Rey") {
+			int posX = 0, posY = 0;
+			piezaSeleccionada->obtenerPosicion(posX, posY);
+			piezaSeleccionada->mover(nuevoX, nuevoY);
+			bool jaque = detectarJaque(turnoActual);
+			piezaSeleccionada->mover(posX, posY);
+
+			if (jaque) {
+				system("cls");
+				std::cout << "MOVIMIENTO ILEGAL\n";
+				return;
+			}
+			piezaSeleccionada->mover(posX, posY);
+		}
+
+
+
+		//POR ORDEN DE PRIORIDAD
+
+		if (promocion(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+			this->nuevaPieza(new Reina(nuevoX, nuevoY, turnoActual, TAMANO_TABLERO));
+			turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+			system("cls");
+			return;
+		}
+
+		else if (!posicionOcupada(nuevoX, nuevoY) && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+			if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
+				turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+				system("cls");
+			}
+			else {
+				system("cls");
+				std::cout << "-----Movimiento invalido o posicion ocupada-----\n";
+			}
+		}
+
+		else if (atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+			piezaSeleccionada->mover(nuevoX, nuevoY);
+			turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+			system("cls");
+		}
+
+
+
+	}
+	else {
+		system("cls");
+		std::cout << "Eleccion invalida o no es el turno de esa pieza.\n";
+	}
+
+
 }

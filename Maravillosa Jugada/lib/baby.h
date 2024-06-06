@@ -3,6 +3,16 @@
 
 #include "mundo.h"
 
+#include "../lib/rey.h"
+#include "../lib/pieza.h"
+#include "../lib/peon.h"
+#include "alfil.h"
+#include "../lib/alfil.h"
+#include "torre.h"
+#include "caballo.h"
+#include "reina.h"
+
+
 class Baby : public Mundo
 {
 
@@ -29,6 +39,7 @@ private:
 	// El tamaño del tablero Baby
 	static const int TAMANO_TABLERO = 5;
 };
+
 #endif
 
 
