@@ -407,13 +407,13 @@ void handleButtonClick(int row) {
                 std::cerr << "Failed to play background music" << std::endl;
             }
         }
-        else if(bizarreMode==0) {
+        else  {
             ma_engine_uninit(&bizarro);
             if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
                 std::cerr << "Failed to initialize audio engine" << std::endl;
                 exit(1);
             }
-            if (ma_engine_play_sound(&engine, "musica_tablero1.mp3", NULL) != MA_SUCCESS) {
+            if (ma_engine_play_sound(&engine, "musica_tablero2.mp3", NULL) != MA_SUCCESS) {
                 std::cerr << "Failed to play background music" << std::endl;
             }
         }
