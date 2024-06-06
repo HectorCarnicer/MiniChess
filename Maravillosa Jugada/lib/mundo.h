@@ -1,4 +1,4 @@
-// Corrección en la definición del macro de inclusión
+// CorrecciÃ³n en la definiciÃ³n del macro de inclusiÃ³n
 #ifndef MUNDO_H
 #define MUNDO_H
 
@@ -9,22 +9,28 @@
 // Interfaz del mundo, de ella heredan los distintos modos de juego
 class Mundo {
 public:
-    // Constructor
-    Mundo(std::vector<Pieza*>& piezas) : piezas(piezas) {}
-    // Métodos globales
-    bool posicionOcupada(int x, int y);
-    void comerPieza(int x, int y);
-    void nuevaPieza(Pieza* p) { piezas.push_back(p); }
-    bool atacarPieza(Color color, int x, int y);
-    bool detectarJaque(Color& turnoActual);
-    void realizarMovimientoIA(Color colorIA, std::vector<Pieza*>& piezas);
-    // Métodos que se sobrescriben aguas abajo
-    virtual bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
-    virtual void inicializa() = 0;
-    virtual void imprimirTablero() = 0;
-    virtual int getTam() = 0;
-    virtual ~Mundo() {}
-    virtual void nuevaJugada(Color& turnoActual) = 0;
+
+	// Constructor
+	Mundo(std::vector<Pieza*>& piezas) : piezas(piezas){}
+	// MÃ©todos globales
+	bool posicionOcupada(int x, int y);
+	void comerPieza(int x, int y);
+	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
+	bool atacarPieza(Color color,int x, int y, Pieza* piezaSeleccionada);
+	bool detectarJaque(Color& turnoActual);
+	bool movIlegalRey(Color& turnoActual);
+	bool promocion(Color color, int x, int y, Pieza* piezaSeleccionada);
+	bool JaqueMate(Color& turnoActual);
+
+
+	// MÃ©todos que se sobrescriben aguas abajo
+	virtual bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
+	virtual void inicializa() = 0;
+	virtual void imprimirTablero() = 0;
+	virtual int getTam() = 0;
+	virtual ~Mundo() {}
+	virtual void nuevaJugada(Color& turnoActual) = 0;
+
 
     // Vector que contiene las piezas
     std::vector<Pieza*>& piezas;

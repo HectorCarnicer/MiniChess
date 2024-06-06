@@ -9,28 +9,31 @@ class Peon : public Pieza {
 public:
     // Constructor que utiliza el constructor de la clase base Pieza
     Peon(int posX, int posY, Color color, int TAM_TAB) : Pieza(posX, posY, color, TAM_TAB) {}
-    // MÈtodo para mover el peÛn con validaciÛn de movimiento
+    // M√©todo para mover el pe√≥n con validaci√≥n de movimiento
     bool mover(int nuevoX, int nuevoY) override {
-        // El peÛn solo puede moverse hacia adelante una casilla
+        // El pe√≥n solo puede moverse hacia adelante una casilla
         // y capturar en diagonal una casilla
         int deltaX = nuevoX - x;
         int deltaY = nuevoY - y;
 
         // Mover hacia adelante
-        if (color == BLANCO && deltaY == 1 && deltaX == 0) {
+        if (color == BLANCO && deltaY == -1 && deltaX == 0) {
             return Pieza::mover(nuevoX, nuevoY);
         }
-        else if (color == NEGRO && deltaY == -1 && deltaX == 0) {
+        else if (color == NEGRO && deltaY == 1 && deltaX == 0) {
             return Pieza::mover(nuevoX, nuevoY);
         }
 
         // Capturar en diagonal
-        if ((color == BLANCO && deltaY == 1 && std::abs(deltaX) == 1) || // Usa std::abs() en lugar de abs()
-            (color == NEGRO && deltaY == -1 && std::abs(deltaX) == 1)) { // Usa std::abs() en lugar de abs()
-            return Pieza::mover(nuevoX, nuevoY);
+
+        
+        if ((color == BLANCO && deltaY == -1 && abs(deltaX) == 1) ||
+            (color == NEGRO && deltaY == 1 && abs(deltaX) == 1)) {
+                return Pieza::mover(nuevoX, nuevoY);
+
         }
 
-        // Si no es ninguno de los movimientos v·lidos, retorna falso
+        // Si no es ninguno de los movimientos v√°lidos, retorna falso
         return false;
     }
 
