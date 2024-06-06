@@ -209,6 +209,7 @@ bool Mundo::detectarJaque(Color& turnoActual) {
 			if (!caminoLibre(pieza, posreyx, posreyy)) {
 				return true;
 			}
+			else return false;
 		}
 		else if (pieza->nombreDeClase() == "Peon") {
 			int x, y;
@@ -220,6 +221,7 @@ bool Mundo::detectarJaque(Color& turnoActual) {
 				return true;
 
 			}
+			else return false;
 		}
 	}
 

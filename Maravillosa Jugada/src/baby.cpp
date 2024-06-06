@@ -58,9 +58,9 @@ void Baby::inicializa()
     this->nuevaPieza(new Alfil(2, 0, NEGRO, TAMANO_TABLERO));
     this->nuevaPieza(new Caballo(3, 0, NEGRO, TAMANO_TABLERO));
     this->nuevaPieza(new Torre(4, 0, NEGRO, TAMANO_TABLERO));
-  /*  for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
         this->nuevaPieza(new Peon(i, 1, NEGRO, TAMANO_TABLERO));
-    }*/
+    }
 }
 
 // Nueva Jugada
