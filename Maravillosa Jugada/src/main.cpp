@@ -594,6 +594,7 @@ void mouseClick(int button, int state, int x, int y) {
                 if (piezaSeleccionada == nullptr) {
                     // Seleccionar una pieza
                     for (Pieza* pieza : piezas) {
+                        if (!pieza) continue;
                         int px, py;
                         pieza->obtenerPosicion(px, py);
                         if (px == col && py == row) {
@@ -610,16 +611,19 @@ void mouseClick(int button, int state, int x, int y) {
                     int nuevoX = col;
                     int nuevoY = row;
 
-                    if (baby->JaqueMate(turnoActual)) {
-                        std::cout << "ACABO EL JUEGO MANIN";
-                        exit(0);
-                    }
                     if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
                         system("cls");
                         std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
                         return;
                     }
 
+
+                    if (baby->JaqueMate(turnoActual)) {
+                        std::cout << "ACABO EL JUEGO MANIN";
+                        exit(0);
+                    }
+
+                    
 
                     if (piezaSeleccionada->nombreDeClase() == "Rey") {
                         int posX = 0, posY = 0;

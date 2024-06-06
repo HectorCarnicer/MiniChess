@@ -1,4 +1,6 @@
 #include "../lib/baby.h"
+#include "../lib/peon.h"
+#include "../lib/rey.h"
 
 
 // Destructor de objetos Gardner
@@ -56,9 +58,9 @@ void Baby::inicializa()
     this->nuevaPieza(new Alfil(2, 0, NEGRO, TAMANO_TABLERO));
     this->nuevaPieza(new Caballo(3, 0, NEGRO, TAMANO_TABLERO));
     this->nuevaPieza(new Torre(4, 0, NEGRO, TAMANO_TABLERO));
-    for (int i = 0; i < 5; i++) {
+  /*  for (int i = 0; i < 5; i++) {
         this->nuevaPieza(new Peon(i, 1, NEGRO, TAMANO_TABLERO));
-    }
+    }*/
 }
 
 // Nueva Jugada
@@ -70,6 +72,7 @@ void Baby::nuevaJugada(Color& turnoActual)
 		std::cout << "ACABO EL JUEGO MANIN";
 		exit(0);
 	}
+
 	if (detectarJaque(turnoActual)) {
 		std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
 	}

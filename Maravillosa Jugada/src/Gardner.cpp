@@ -66,6 +66,8 @@ void Gardner::inicializa()
 	//this->nuevaPieza(new Reina(3, 4, BLANCO, TAMANO_TABLERO));
 
 }
+
+
 // Nueva Jugada
 void Gardner::nuevaJugada(Color& turnoActual)
 {
