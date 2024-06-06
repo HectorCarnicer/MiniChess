@@ -245,7 +245,7 @@ void display() {
     float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
     float cellHeight = 2.0f / TAMANO_TABLERO;
 
-    for (int i = 0; i < TAMANO_TABLERO; ++i) {
+    for (int i = 0; i < TAMANO_TABLERO; i++) {
         for (int j = 0; j < TAMANO_TABLERO + 1; ++j) { // +1 para la columna de botones
             // Casillas
             float x1 = -1.0f + j * cellWidth;
@@ -311,7 +311,20 @@ void display() {
     // Dibujar el texto "Bizarro" en el segundo botón
     glColor3f(1.0f, 1.0f, 1.0f); // Color blanco para el texto
     renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Pause");
-    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 3*cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Bizarro");
+    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 3 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Bizarro");
+
+    // Dibujar turno actual debajo de los botones
+    if (turnoActual == BLANCO)
+    {
+        glColor3f(1.0f, 1.0f, 1.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "B");
+    }
+    else
+    {
+        glColor3f(0.0f, 0.0f, 0.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "N");
+    }
+
     if (jaque == 1) {
 
         glColor3f(1.0f,0.0f,0.0f);
