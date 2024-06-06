@@ -288,7 +288,7 @@ void display() {
                     glColor3f(1.0f, 1.0f, 1.0f); // Blanco
                 }
                 else {
-                    glColor3f(0.0f, 0.0f, 0.0f); // Negro
+                    glColor3f(0.5f, 0.5f, 0.5f); // Negro
                 }
             }
             glVertex2f(x1, y1);
