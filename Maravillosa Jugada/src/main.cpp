@@ -11,6 +11,7 @@
 #include "../lib/Reina.h"
 #include "../lib/Caballo.h"
 #include "../lib/Gardner.h"
+#include "../lib/Baby.h"
 #include "../lib/graficos.h"
 
 // Incluye la implementación de stb_image
@@ -42,6 +43,7 @@ ma_engine menu;
 // Variables globales para el tablero y piezas
 std::vector<Pieza*> piezas;
 Gardner* gardner;
+Baby* baby;
 std::vector<std::vector<std::string>> tablero;
 Color turnoActual = BLANCO; // Comienza el turno de las piezas blancas
 Pieza* piezaSeleccionada = nullptr;
@@ -506,7 +508,8 @@ void inicializarJuego() {
     }
     else if (selectedOption == 2) {
         std::cout << "ha entrado en inicializaJuego baby\n";
-        //meter baby
+        baby = new Baby(piezas);
+        baby->inicializa();
     }
 }
 
