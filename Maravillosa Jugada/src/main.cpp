@@ -13,6 +13,7 @@
 #include "../lib/Gardner.h"
 #include "../lib/Baby.h"
 #include "../lib/graficos.h"
+#include "../lib/mundo.h"
 
 // Incluye la implementación de stb_image
 #define STB_IMAGE_IMPLEMENTATION
@@ -35,7 +36,7 @@ struct Coordenadas {
 
 #define TAMANO_TABLERO 5
 
-// Variables globales para el menú
+//variables globales para menu
 GLuint backgroundTexture;
 int selectedOption = 0; // 0: ninguno, 1: Gardner, 2: Baby
 ma_engine menu;
@@ -85,7 +86,6 @@ void clearWindow() {
 
 }
 
-// Función de GLUT que permite cargar la textura del menú al programa
 GLuint loadTextureMenu(const char* filename) {
     int width, height, channels;
     unsigned char* data = stbi_load(filename, &width, &height, &channels, 0);
@@ -123,7 +123,6 @@ GLuint loadTextureMenu(const char* filename) {
     return texture;
 }
 
-// Función de GLUT que permite cargar una textura
 GLuint loadTexture(const char* filename) {
     int width, height, channels;
     unsigned char* data = stbi_load(filename, &width, &height, &channels, 4); // Cargar con 4 canales (RGBA)
@@ -144,7 +143,6 @@ GLuint loadTexture(const char* filename) {
     return texture;
 }
 
-// Función que carga todas las texturas de las piezas
 void loadPieceTextures() {
     std::vector<std::string> pieces = { "reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
     for (const std::string& piece : pieces) {
@@ -217,7 +215,6 @@ void drawButton(float x, float y, float width, float height ,const char* label )
     renderBitmapString(x + width / 3, y - height / 2, GLUT_BITMAP_TIMES_ROMAN_24, label);
 }
 
-// Función para dibujar una pieza en una posición
 void drawPiece(int row, int col, const std::string& piece) {
     if (pieceTextures.find(piece) == pieceTextures.end()) return;
 
@@ -243,7 +240,6 @@ void drawPiece(int row, int col, const std::string& piece) {
     glDisable(GL_TEXTURE_2D);
 }
 
-// Función global de cambios de color de ventana
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
@@ -325,7 +321,6 @@ void display() {
     glutSwapBuffers();
 }
 
-// Función para mostrar el menú en pantalla
 void displayMenu() {
 
     //limpiar ventana
@@ -362,7 +357,6 @@ void displayMenu() {
     glutSwapBuffers();
 }
 
-// Función de espera 
 void idle() {
     // Actualizar el tablero y redibujar
     tablero = pintarTablero();
@@ -379,22 +373,11 @@ void reshapeMenu(int w, int h) {
 }
 
 void ejecutarComandoMovimiento() {
-    switch (selectedOption)
-    {
-    case 1:
-        while (true)
-        {
-            gardner->nuevaJugada(turnoActual);
-        }
-    case 2:
-        while (true) 
-        {
-            baby->nuevaJugada(turnoActual);
-        }
+    while (true) {
+        gardner->nuevaJugada(turnoActual);
     }
 }
 
-// Función para el funcionamiento del Mouse
 void handleButtonClick(int row) {
     switch (row) {
     case 0:
@@ -447,7 +430,6 @@ void handleButtonClick(int row) {
     }
 }
 
-// Función de click del Mouse
 void mouseClick(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
@@ -456,17 +438,12 @@ void mouseClick(int button, int state, int x, int y) {
         int squareHeight = windowHeight / TAMANO_TABLERO;
         int col = x / squareWidth;
         int row = y / squareHeight;
-        switch (selectedOption)
-        {
+
+        // Switch basado en la opción seleccionada
+        switch (selectedOption) {
         case 0:
         case 1:
-            if (gardner->detectarJaque(turnoActual)) {
-                std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
-                jaque = 1;
-                display();
-                return;
-            }
-
+            // Lógica para el jugador humano
             if (row >= 0 && row < TAMANO_TABLERO) {
                 if (col >= 0 && col < TAMANO_TABLERO) {
                     // Logica para seleccionar y mover piezas en el tablero
@@ -475,6 +452,7 @@ void mouseClick(int button, int state, int x, int y) {
                     if (piezaSeleccionada == nullptr) {
                         // Seleccionar una pieza
                         for (Pieza* pieza : piezas) {
+                            if (!pieza) continue;
                             int px, py;
                             pieza->obtenerPosicion(px, py);
                             if (px == col && py == row) {
@@ -491,14 +469,14 @@ void mouseClick(int button, int state, int x, int y) {
                         int nuevoX = col;
                         int nuevoY = row;
 
-                        if (!gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                        if (gardner && !gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
                             if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                                 piezaSeleccionada = nullptr;
                                 std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
                             }
                         }
-                        else if (gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                        else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
                             piezaSeleccionada->mover(nuevoX, nuevoY);
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;
@@ -518,73 +496,27 @@ void mouseClick(int button, int state, int x, int y) {
                     std::cout << "Click fuera del tablero\n";
                 }
             }
+            break;
+
         case 2:
-            if (baby->detectarJaque(turnoActual)) {
-                std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
-                jaque = 1;
-                display();
-                return;
+        
+            if (selectedOption == 1) {
+                
+                gardner->realizarMovimientoIA(turnoActual,piezas);
             }
-
-            if (row >= 0 && row < TAMANO_TABLERO) {
-                if (col >= 0 && col < TAMANO_TABLERO) {
-                    // Logica para seleccionar y mover piezas en el tablero
-                    Coordenadas clickPos{ col, row };
-
-                    if (piezaSeleccionada == nullptr) {
-                        // Seleccionar una pieza
-                        for (Pieza* pieza : piezas) {
-                            int px, py;
-                            pieza->obtenerPosicion(px, py);
-                            if (px == col && py == row) {
-                                if (pieza->obtenerColor() == turnoActual) {
-                                    piezaSeleccionada = pieza;
-                                    std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        // Mover la pieza seleccionada
-                        int nuevoX = col;
-                        int nuevoY = row;
-
-                        if (!baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-                            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
-                                turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                                piezaSeleccionada = nullptr;
-                                std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
-                            }
-                        }
-                        else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
-                            piezaSeleccionada->mover(nuevoX, nuevoY);
-                            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                            piezaSeleccionada = nullptr;
-                            std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
-                        }
-                        else {
-                            std::cout << "-----Movimiento inválido o posición ocupada-----\n";
-                        }
-                        glutPostRedisplay();
-                    }
-                }
-                else if (col == TAMANO_TABLERO) {
-                    // Logica para manejar los clics en la columna de botones
-                    handleButtonClick(row);
-                }
-                else {
-                    std::cout << "Click fuera del tablero\n";
-                }
+            else if (selectedOption == 2) {
+              
+                baby->realizarMovimientoIA(turnoActual, piezas);
             }
+            glutPostRedisplay(); // Se actualiza la pantalla después del movimiento de la IA
+            break;
         }
     }
 }
 
-// Función que inicia el juego en función del tipo
-void inicializarJuego() 
-{
-    //cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
+
+//cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
+void inicializarJuego() {
     if (selectedOption == 1) {
         std::cout << "ha entrado en inicializaJuego gardner\n";
         gardner = new Gardner(piezas);
@@ -604,7 +536,7 @@ void esperaPostSeleccion() {
     displayMenu(); //para poner a verde el botón
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
-// Función para el funcionamiento del Mouse en el menú
+
 void mouseClickMenu(int button, int state, int x, int y) {
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
@@ -626,7 +558,6 @@ void mouseClickMenu(int button, int state, int x, int y) {
     }
 }
 
-// Función de inicialización del juego
 void init() {
     // Inicializar el tablero con las fichas
     inicializarJuego();
@@ -647,7 +578,6 @@ void init() {
     
 }
 
-// Función de inicialización del menú
 void initMenu() {
     //carga del fondo 
     backgroundTexture = loadTextureMenu("fondo5.png");
@@ -666,7 +596,6 @@ void initMenu() {
     }
 }
 
-// Función para el cambio de valores del menú
 void cambiarValor(int x) {
     std::cout << "valor de selectedOption antes de cambiar valor= " << selectedOption << "\n";
     selectedOption = x;
@@ -709,7 +638,6 @@ void cambiarValor(int x) {
     glutPostRedisplay();
 }
 
-// Función para el funcionamiento del teclado
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case 'f':
@@ -724,9 +652,7 @@ void keyboard(unsigned char key, int x, int y) {
     }
 }
 
-//--------------------------------
-//          Main
-//-------------------------------- 
+
 
 int main(int argc, char** argv) {
    
