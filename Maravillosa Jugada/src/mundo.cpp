@@ -3,6 +3,8 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
+#include <random>
 
 // Función para verificar si la posición está ocupada por otra pieza
 bool Mundo::posicionOcupada(int x, int y) {
@@ -227,8 +229,9 @@ void Mundo::imprimirTablero() {
 }
 
 // Función de IA para realizar un movimiento aleatorio
-void Mundo::realizarMovimientoIA(Color colorIA) {
-    if (!this) return;
+// Corrección en la declaración de la función
+void Mundo::realizarMovimientoIA(Color colorIA, std::vector<Pieza*>& piezas) {
+    if (piezas.empty()) return;
     std::srand(std::time(nullptr));
     std::vector<Pieza*> piezasIA;
     for (auto& pieza : piezas) {
@@ -238,27 +241,33 @@ void Mundo::realizarMovimientoIA(Color colorIA) {
     }
     if (piezasIA.empty()) return;
 
-    Pieza* piezaSeleccionada = piezasIA[std::rand() % piezasIA.size()];
-    if (!piezaSeleccionada) return;
+    while (true) {
+        Pieza* piezaSeleccionada = piezasIA[std::rand() % piezasIA.size()];
+        if (!piezaSeleccionada) continue;
 
-    int x, y;
-    piezaSeleccionada->obtenerPosicion(x, y);
+        int x, y;
+        piezaSeleccionada->obtenerPosicion(x, y);
 
-    std::vector<std::pair<int, int>> movimientos = {
-        {x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1},
-        {x + 1, y + 1}, {x - 1, y + 1}, {x + 1, y - 1}, {x - 1, y - 1}
-    };
+        std::vector<std::pair<int, int>> movimientos = {
+            {x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1},
+            {x + 1, y + 1}, {x - 1, y + 1}, {x + 1, y - 1}, {x - 1, y - 1}
+        };
 
-    std::pair<int, int> movimientoSeleccionado = movimientos[std::rand() % movimientos.size()];
-    int nuevoX = movimientoSeleccionado.first;
-    int nuevoY = movimientoSeleccionado.second;
+        std::shuffle(movimientos.begin(), movimientos.end(), std::default_random_engine(std::random_device()()));
 
-    if (nuevoX >= 0 && nuevoX < 8 && nuevoY >= 0 && nuevoY < 8 && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-        if (atacarPieza(colorIA, nuevoX, nuevoY)) {
-            piezaSeleccionada->mover(nuevoX, nuevoY);
-        }
-        else if (!posicionOcupada(nuevoX, nuevoY)) {
-            piezaSeleccionada->mover(nuevoX, nuevoY);
+        for (const auto& movimiento : movimientos) {
+            int nuevoX = movimiento.first;
+            int nuevoY = movimiento.second;
+
+            if (nuevoX >= 0 && nuevoX < 8 && nuevoY >= 0 && nuevoY < 8 && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                if (atacarPieza(colorIA, nuevoX, nuevoY)) {
+                    piezaSeleccionada->mover(nuevoX, nuevoY);
+                }
+                else if (!posicionOcupada(nuevoX, nuevoY)) {
+                    piezaSeleccionada->mover(nuevoX, nuevoY);
+                }
+                return; // La IA ha movido una ficha, salimos de la función
+            }
         }
     }
 }
