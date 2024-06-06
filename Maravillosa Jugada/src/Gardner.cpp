@@ -54,11 +54,14 @@ void Gardner::inicializa()
 	//this->nuevaPieza(new Reina(3, 2, BLANCO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Torre(3, 2, BLANCO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Reina(2, 2, BLANCO, TAMANO_TABLERO));
-	this->nuevaPieza(new Rey(4, 0, NEGRO, TAMANO_TABLERO));
-	this->nuevaPieza(new Torre(3, 4, BLANCO, TAMANO_TABLERO));
-	//this->nuevaPieza(new Torre(1, 1, BLANCO, TAMANO_TABLERO));
-	this->nuevaPieza(new Alfil(0, 2, BLANCO, TAMANO_TABLERO));
+	this->nuevaPieza(new Rey(2, 2, NEGRO, TAMANO_TABLERO));
+	this->nuevaPieza(new Torre(1, 0, BLANCO, TAMANO_TABLERO));
+	//this->nuevaPieza(new Torre(3, 0, BLANCO, TAMANO_TABLERO));
+	this->nuevaPieza(new Torre(0, 1, BLANCO, TAMANO_TABLERO));
+	//this->nuevaPieza(new Torre(0, 3, BLANCO, TAMANO_TABLERO));
 
+	//this->nuevaPieza(new Alfil(0, 2, BLANCO, TAMANO_TABLERO));
+	this->nuevaPieza(new Reina(3, 4, BLANCO, TAMANO_TABLERO));
 
 }
 
@@ -66,6 +69,12 @@ void Gardner::inicializa()
 void Gardner::nuevaJugada(Color& turnoActual)
 {
 	int eleccion, nuevoX, nuevoY;
+
+	if (JaqueMate(turnoActual)) {
+		std::cout << "ACABO EL JUEGO MANIN";
+		exit (0);
+	}
+
 	// Mostrar las piezas y pedir al usuario que elija una
 	if (detectarJaque(turnoActual)) {
 		std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
@@ -97,6 +106,11 @@ void Gardner::nuevaJugada(Color& turnoActual)
 		std::cin >> nuevoX;
 		std::cout << "Ingrese la nueva posicion Y (0 a 7): ";
 		std::cin >> nuevoY;
+
+		if (JaqueMate(turnoActual)) {
+			std::cout << "ACABO EL JUEGO MANIN";
+			system("pause");
+		}
 
 		//detecta movimiento ilegal
 		if (piezaSeleccionada->nombreDeClase() == "Rey") {
