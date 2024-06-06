@@ -645,7 +645,7 @@ void mouseClick(int button, int state, int x, int y) {
                         return;
                     }
 
-                    if (!baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                    if (baby && !baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
                         if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;
@@ -654,7 +654,7 @@ void mouseClick(int button, int state, int x, int y) {
                             display();
                         }
                     }
-                    else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+                    else if (baby && baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                         piezaSeleccionada->mover(nuevoX, nuevoY);
                         turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                         piezaSeleccionada = nullptr;
