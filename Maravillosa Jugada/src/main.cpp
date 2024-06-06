@@ -54,8 +54,7 @@ ma_engine engine;
 ma_engine bizarro;
 
 bool jaque = 0;
-int clic = 0;
-bool showText = 1;
+bool clic = 0;
 
 //--------------------------------
 //          Funciones
@@ -243,17 +242,6 @@ void drawPiece(int row, int col, const std::string& piece) {
 }
 
 
-//void renderTextWithDelay(const char* text, float delaySeconds) {
-//    showText = true;
-//    display();
-//    std::this_thread::sleep_for(std::chrono::milliseconds(int(delaySeconds * 1000)));
-//    showText = false;
-//    display();
-//}
-
-
-
-
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
@@ -324,38 +312,32 @@ void display() {
     // Dibujar el texto "Pause" en el primer botón
     // Dibujar el texto "Bizarro" en el segundo botón
     glColor3f(1.0f, 1.0f, 1.0f); // Color blanco para el texto
-    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Pause");
-    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 3 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Bizarro");
+    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 5, 1.0f - cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Pause");
+    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 5, 1.0f - 3 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Bizarro");
 
     // Dibujar turno actual debajo de los botones
-    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 5.5 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Turno");
+    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 5, 1.0f - 5.5 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Turno");
     if (turnoActual == BLANCO)
     {
         glColor3f(1.0f, 1.0f, 1.0f);
-        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Blanco");
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 5, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Blanco");
     }
     else
     {
         glColor3f(0.0f, 0.0f, 0.0f);
-        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Negro");
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 5, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Negro");
     }
 
     // Dibujar Movimiento invalido o Moviento fuera de tablero
     if (clic == 1) {
 
-        glColor3f(1.0f, 1.0f, 1.0f);
-        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Mov Inv");
+        glColor3f(1.0f, 0.0f, 0.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 8, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Mov Inv");
         
     }
-    else if (clic == 2) {
-
-        glColor3f(1.0f, 1.0f, 1.0f);
-        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Out Tab");
-       
-    }
     else {
-        glColor3f(1.0f, 1.0f, 1.0f);
-        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "---");
+        glColor3f(1.0f, 0.0f, 0.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 5, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "---");
         
     }
     
@@ -540,6 +522,8 @@ void mouseClick(int button, int state, int x, int y) {
                         turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                         piezaSeleccionada = nullptr;
                         std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
+                        clic = 0;
+                        display();
                     }
                     else {
                         std::cout << "-----Movimiento inválido o posición ocupada-----\n";
@@ -606,6 +590,8 @@ void mouseClick(int button, int state, int x, int y) {
                         turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                         piezaSeleccionada = nullptr;
                         std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
+                        clic = 0;
+                        display();
                     }
                     else {
                         std::cout << "-----Movimiento inválido o posición ocupada-----\n";
