@@ -499,7 +499,7 @@ void mouseClick(int button, int state, int x, int y) {
                                 std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
                             }
                         }
-                        else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                        else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                             piezaSeleccionada->mover(nuevoX, nuevoY);
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;
@@ -561,7 +561,7 @@ void mouseClick(int button, int state, int x, int y) {
                                 std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
                             }
                         }
-                        else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                        else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                             piezaSeleccionada->mover(nuevoX, nuevoY);
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;

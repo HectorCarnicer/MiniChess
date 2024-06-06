@@ -498,7 +498,8 @@ void Mundo::imprimirTablero()
 }
 // Función de IA para realizar un movimiento aleatorio
 // Corrección en la declaración de la función
-void Mundo::realizarMovimientoIA(Color colorIA, std::vector<Pieza*>& piezas) {
+
+/*void Mundo::realizarMovimientoIA(Color colorIA, std::vector<Pieza*>& piezas) {
     if (piezas.empty()) return;
     std::srand(std::time(nullptr));
     std::vector<Pieza*> piezasIA;
@@ -538,4 +539,4 @@ void Mundo::realizarMovimientoIA(Color colorIA, std::vector<Pieza*>& piezas) {
             }
         }
     }
-}
+}*/
