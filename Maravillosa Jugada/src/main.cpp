@@ -54,6 +54,8 @@ ma_engine engine;
 ma_engine bizarro;
 
 bool jaque = 0;
+int clic = 0;
+bool showText = 1;
 
 //--------------------------------
 //          Funciones
@@ -240,6 +242,18 @@ void drawPiece(int row, int col, const std::string& piece) {
     glDisable(GL_TEXTURE_2D);
 }
 
+
+//void renderTextWithDelay(const char* text, float delaySeconds) {
+//    showText = true;
+//    display();
+//    std::this_thread::sleep_for(std::chrono::milliseconds(int(delaySeconds * 1000)));
+//    showText = false;
+//    display();
+//}
+
+
+
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
@@ -325,6 +339,26 @@ void display() {
         glColor3f(0.0f, 0.0f, 0.0f);
         renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Negro");
     }
+
+    // Dibujar Movimiento invalido o Moviento fuera de tablero
+    if (clic == 1) {
+
+        glColor3f(1.0f, 1.0f, 1.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Mov Inv");
+        
+    }
+    else if (clic == 2) {
+
+        glColor3f(1.0f, 1.0f, 1.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Out Tab");
+       
+    }
+    else {
+        glColor3f(1.0f, 1.0f, 1.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 7 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "---");
+        
+    }
+    
 
     // Dibujar GAME OVER si ocurre Jaque Mate
     if (jaque == 1) {
@@ -497,6 +531,8 @@ void mouseClick(int button, int state, int x, int y) {
                                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                                 piezaSeleccionada = nullptr;
                                 std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
+                                clic = 0;
+                                display();
                             }
                         }
                         else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
@@ -507,6 +543,8 @@ void mouseClick(int button, int state, int x, int y) {
                         }
                         else {
                             std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                            clic = 1;
+                            display();
                         }
                         glutPostRedisplay();
                     }
@@ -559,6 +597,8 @@ void mouseClick(int button, int state, int x, int y) {
                                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                                 piezaSeleccionada = nullptr;
                                 std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
+                                clic = 0;
+                                display();
                             }
                         }
                         else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
@@ -569,6 +609,8 @@ void mouseClick(int button, int state, int x, int y) {
                         }
                         else {
                             std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                            clic = 1;
+                            display();
                         }
                         glutPostRedisplay();
                     }
