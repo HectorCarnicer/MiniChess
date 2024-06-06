@@ -20,6 +20,11 @@
 // Incluye la implementación de miniaudio
 #define MINIAUDIO_IMPLEMENTATION
 #include "../lib/miniaudio.h"
+
+//--------------------------------
+//      Variables globales
+//-------------------------------- 
+
 bool musicPaused = false;
 bool bizarreMode = false;
 struct Coordenadas {
@@ -43,6 +48,13 @@ Pieza* piezaSeleccionada = nullptr;
 
 std::unordered_map<std::string, GLuint> pieceTextures;
 ma_engine engine;
+ma_engine bizarro;
+
+bool jaque = 0;
+
+//--------------------------------
+//          Funciones
+//-------------------------------- 
 
 std::vector<std::vector<std::string>> pintarTablero() {
     std::vector<std::vector<std::string>> tablero(TAMANO_TABLERO, std::vector<std::string>(TAMANO_TABLERO, "."));
@@ -225,7 +237,6 @@ void drawPiece(int row, int col, const std::string& piece) {
     glDisable(GL_TEXTURE_2D);
 }
 
-
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
@@ -242,7 +253,7 @@ void display() {
             glBegin(GL_QUADS);
             if (j == TAMANO_TABLERO) { // Columna de botones
                 if (i == 0) {
-                    glColor3f(0.5f, 0.5f, 0.5f); // Rojo oscuro para el primer botón (Pause)
+                    glColor3f(1.0f, 0.0f, 0.0f); // Rojo oscuro para el primer botón (Pause)
                 }
                 else if (i == 1) {
                     glColor3f(0.5f, 0.0f, 1.0f); // Verde oscuro para el segundo botón
@@ -298,11 +309,14 @@ void display() {
     glColor3f(1.0f, 1.0f, 1.0f); // Color blanco para el texto
     renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Pause");
     renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 3*cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Bizarro");
+    if (jaque == 1) {
+
+        glColor3f(1.0f,0.0f,0.0f);
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth*cellWidth, 1.0f - 5 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "GAME OVER");
+    }
 
     glutSwapBuffers();
 }
-
-
 
 void displayMenu() {
 
@@ -378,8 +392,31 @@ void handleButtonClick(int row) {
         break;
     case 1:
         // Función del segundo botón: cambiar diseño de casillas y piezas
+        std::cout << "\nBIZARRO ANTES=" << bizarreMode;
         bizarreMode = !bizarreMode;
+        std::cout << "\nBIZARRO DESPUES=" << bizarreMode;
         loadPieceTextures();
+        // Inicializar el motor de audio y la música
+        if (bizarreMode == 1) {
+            ma_engine_uninit(&engine);
+            if (ma_engine_init(NULL, &bizarro) != MA_SUCCESS) {
+                std::cerr << "Failed to initialize audio engine" << std::endl;
+                exit(1);
+            }
+            if (ma_engine_play_sound(&bizarro, "musica_tablero1.mp3", NULL) != MA_SUCCESS) {
+                std::cerr << "Failed to play background music" << std::endl;
+            }
+        }
+        else if(bizarreMode==0) {
+            ma_engine_uninit(&bizarro);
+            if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
+                std::cerr << "Failed to initialize audio engine" << std::endl;
+                exit(1);
+            }
+            if (ma_engine_play_sound(&engine, "musica_tablero1.mp3", NULL) != MA_SUCCESS) {
+                std::cerr << "Failed to play background music" << std::endl;
+            }
+        }
         std::cout << "Modo bizarro activado\n";
         glutPostRedisplay();
         break;
@@ -389,7 +426,6 @@ void handleButtonClick(int row) {
         break;
     }
 }
-
 
 void mouseClick(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
@@ -402,6 +438,7 @@ void mouseClick(int button, int state, int x, int y) {
 
         if (gardner->detectarJaque(turnoActual)) {
             std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
+            jaque = 1; 
             display();
             return;
         }
@@ -460,7 +497,6 @@ void mouseClick(int button, int state, int x, int y) {
     }
 }
 
-
 //cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
 void inicializarJuego() {
     if (selectedOption == 1) {
@@ -493,7 +529,6 @@ void mouseClickMenu(int button, int state, int x, int y) {
         if (fx >= -0.4f && fx <= 0.4f) {
             if (fy <= 0.3f && fy >= 0.1f) {
                 std::cout << "gardner\n";
-                //esperaPostSeleccion();
                 cambiarValor(1);           
             }
             else if (fy <= -0.1f && fy >= -0.3f) {
@@ -517,9 +552,11 @@ void init() {
         std::cerr << "Failed to initialize audio engine" << std::endl;
         exit(1);
     }
-    if (ma_engine_play_sound(&engine, "musica_tablero1.mp3", NULL) != MA_SUCCESS) {
+    if (ma_engine_play_sound(&engine, "musica_tablero2.mp3", NULL) != MA_SUCCESS) {
         std::cerr << "Failed to play background music" << std::endl;
     }
+    
+    
 }
 
 void initMenu() {
@@ -545,11 +582,11 @@ void cambiarValor(int x) {
     selectedOption = x;
     std::cout << "valor de selectedOption despues de cambiar valor= " << selectedOption << "\n";
 
-    //esperar 1s para pasar a tablero y poner boton verde
-    esperaPostSeleccion();
-
     //quitar la musica de menu
     ma_engine_uninit(&menu);
+
+    //esperar 1s para pasar a tablero y poner boton verde
+    esperaPostSeleccion();
 
     // Reconfigurar las funciones de GLUT según el nuevo estado
     switch (selectedOption) {
