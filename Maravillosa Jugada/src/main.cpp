@@ -621,6 +621,10 @@ void inicializarJuego() {
         std::cout << "ha entrado en inicializaJuego gardner\n";
         gardner = new Gardner(piezas);
         gardner->inicializa();
+        while (true) {
+            gardner->imprimirTablero();
+            gardner->nuevaJugada(turnoActual);
+        }
     }
     else if (selectedOption == 2) {
         std::cout << "ha entrado en inicializaJuego baby\n";
@@ -758,7 +762,7 @@ void keyboard(unsigned char key, int x, int y) {
 
 int main(int argc, char** argv) {
    
-   // std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
+    //std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -772,11 +776,11 @@ int main(int argc, char** argv) {
     glutReshapeFunc(reshapeMenu);
     glutMouseFunc(mouseClickMenu);
     glutKeyboardFunc(keyboard);
-        
+    
     glutMainLoop();
     
 
-   // commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
+    //commandThread.join(); // Espera a que el hilo termine (nunca ocurrirá ya que está en un bucle infinito)
 
     
     

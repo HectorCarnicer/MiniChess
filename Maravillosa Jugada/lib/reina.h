@@ -60,7 +60,7 @@ public:
     }
 
     std::string nombreDeClase() const override {
-        return "reina";
+        return "Reina";
     }
 };
 
