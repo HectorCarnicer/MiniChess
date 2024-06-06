@@ -57,7 +57,7 @@ void Gardner::inicializa()
 	this->nuevaPieza(new Rey(0, 0, NEGRO, TAMANO_TABLERO));
 	this->nuevaPieza(new Rey(4, 4, BLANCO, TAMANO_TABLERO));
 
-	this->nuevaPieza(new Caballo(2, 3, BLANCO, TAMANO_TABLERO));
+	this->nuevaPieza(new Peon(2, 3, BLANCO, TAMANO_TABLERO));
 	this->nuevaPieza(new Reina(3, 3, BLANCO, TAMANO_TABLERO));
 	this->nuevaPieza(new Caballo(2, 2, BLANCO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Torre(0, 3, BLANCO, TAMANO_TABLERO));

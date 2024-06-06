@@ -512,9 +512,28 @@ void mouseClick(int button, int state, int x, int y) {
                         std::cout << "ACABO EL JUEGO MANIN";
                         exit(0);
                     }
-                    if (gardner->detectarJaque(turnoActual)) {
-                        std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
+                    if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                        system("cls");
+                        std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
+                        return;
                     }
+
+                    if (piezaSeleccionada->nombreDeClase() == "Rey") {
+                        int posX = 0, posY = 0;
+                        piezaSeleccionada->obtenerPosicion(posX, posY);
+                        piezaSeleccionada->mover(nuevoX, nuevoY);
+                        bool jaque = gardner->detectarJaque(turnoActual);
+                        piezaSeleccionada->mover(posX, posY);
+
+                        if (jaque) {
+                            system("cls");
+                            std::cout << "MOVIMIENTO ILEGAL\n";
+                            return;
+                        }
+                        piezaSeleccionada->mover(posX, posY);
+                    }
+
+
 
                     if (gardner->promocion(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                         gardner->nuevaPieza(new Reina(nuevoX, nuevoY, turnoActual, TAMANO_TABLERO));
@@ -595,9 +614,29 @@ void mouseClick(int button, int state, int x, int y) {
                         std::cout << "ACABO EL JUEGO MANIN";
                         exit(0);
                     }
-                    if (baby->detectarJaque(turnoActual)) {
-                        std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
+                    if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                        system("cls");
+                        std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
+                        return;
                     }
+
+
+                    if (piezaSeleccionada->nombreDeClase() == "Rey") {
+                        int posX = 0, posY = 0;
+                        piezaSeleccionada->obtenerPosicion(posX, posY);
+                        piezaSeleccionada->mover(nuevoX, nuevoY);
+                        bool jaque = baby->detectarJaque(turnoActual);
+                        piezaSeleccionada->mover(posX, posY);
+
+                        if (jaque) {
+                            system("cls");
+                            std::cout << "MOVIMIENTO ILEGAL\n";
+                            return;
+                        }
+                        piezaSeleccionada->mover(posX, posY);
+                    }
+
+
 
                     if (baby->promocion(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                         baby->nuevaPieza(new Reina(nuevoX, nuevoY, turnoActual, TAMANO_TABLERO));
