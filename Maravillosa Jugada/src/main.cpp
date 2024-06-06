@@ -314,17 +314,19 @@ void display() {
     renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 3 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Bizarro");
 
     // Dibujar turno actual debajo de los botones
+    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 5.5 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Turno");
     if (turnoActual == BLANCO)
     {
         glColor3f(1.0f, 1.0f, 1.0f);
-        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "B");
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Blanco");
     }
     else
     {
         glColor3f(0.0f, 0.0f, 0.0f);
-        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "N");
+        renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 6 * cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Negro");
     }
 
+    // Dibujar GAME OVER si ocurre Jaque Mate
     if (jaque == 1) {
 
         glColor3f(1.0f,0.0f,0.0f);
