@@ -645,7 +645,9 @@ void keyboard(unsigned char key, int x, int y) {
         glutFullScreen();
         break;
     case 27: // Esc key
-        exit(0);
+        glutReshapeWindow(600, 600);
+        glutPositionWindow((glutGet(GLUT_SCREEN_WIDTH) - 640) / 2,
+            (glutGet(GLUT_SCREEN_HEIGHT) - 480) / 2);
         break;
     default:
         break;
