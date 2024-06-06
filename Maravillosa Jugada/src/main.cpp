@@ -31,7 +31,6 @@ struct Coordenadas {
 
 //variables globales para menu
 GLuint backgroundTexture;
-//valores temporales
 int selectedOption = 0; // 0: ninguno, 1: Gardner, 2: Baby
 ma_engine menu;
 
@@ -243,13 +242,13 @@ void display() {
             glBegin(GL_QUADS);
             if (j == TAMANO_TABLERO) { // Columna de botones
                 if (i == 0) {
-                    glColor3f(0.8f, 0.1f, 0.1f); // Rojo oscuro para el primer botón (Pause)
+                    glColor3f(0.5f, 0.5f, 0.5f); // Rojo oscuro para el primer botón (Pause)
                 }
                 else if (i == 1) {
-                    glColor3f(0.1f, 0.8f, 0.1f); // Verde oscuro para el segundo botón
+                    glColor3f(0.5f, 0.0f, 1.0f); // Verde oscuro para el segundo botón
                 }
                 else {
-                    glColor3f(0.1f, 0.1f, 0.8f); // Azul oscuro para otros botones
+                    glColor3f(0.5f, 0.5f, 0.5f); // Azul oscuro para otros botones
                 }
             }
             else if (bizarreMode) {
@@ -295,12 +294,10 @@ void display() {
     }
 
     // Dibujar el texto "Pause" en el primer botón
+    // Dibujar el texto "Bizarro" en el segundo botón
     glColor3f(1.0f, 1.0f, 1.0f); // Color blanco para el texto
-    glRasterPos2f(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - cellHeight / 2);
-    const char* text = "Pause";
-    for (const char* c = text; *c != '\0'; ++c) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
-    }
+    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Pause");
+    renderBitmapString(-1.0f + TAMANO_TABLERO * cellWidth + cellWidth / 4, 1.0f - 3*cellHeight / 2, GLUT_BITMAP_TIMES_ROMAN_24, "Bizarro");
 
     glutSwapBuffers();
 }
@@ -405,6 +402,7 @@ void mouseClick(int button, int state, int x, int y) {
 
         if (gardner->detectarJaque(turnoActual)) {
             std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
+            display();
             return;
         }
 
