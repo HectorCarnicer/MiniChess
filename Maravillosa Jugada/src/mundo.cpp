@@ -132,8 +132,7 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 						}
 					}
 					return false;
-				}
-
+				}	
 				// Restaurar la posición del rey
 				for (auto& pieza : piezas) {
 					if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {

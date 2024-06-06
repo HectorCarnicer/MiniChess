@@ -72,17 +72,14 @@ void Gardner::nuevaJugada(Color& turnoActual)
 {
 	int eleccion, nuevoX, nuevoY;
 
-	if (detectarJaque(turnoActual)) {
-		std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
-	}
-
-
-	// Mostrar las piezas y pedir al usuario que elija una
-	
 	if (JaqueMate(turnoActual)) {
 		std::cout << "ACABO EL JUEGO MANIN";
 		exit(0);
 	}
+	if (detectarJaque(turnoActual)) {
+		std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
+	}
+
 
 	std::cout << "Turno de " << (turnoActual == BLANCO ? "Blanco" : "Negro") << ". Seleccione una pieza para mover:\n";
 
