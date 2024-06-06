@@ -437,16 +437,15 @@ void mouseClick(int button, int state, int x, int y) {
         int squareHeight = windowHeight / TAMANO_TABLERO;
         int col = x / squareWidth;
         int row = y / squareHeight;
-        switch (selectedOption)
-        {
+        switch (selectedOption) {
         case 0:
         case 1:
-            if (gardner->detectarJaque(turnoActual)) {
+            /*if (gardner && gardner->detectarJaque(turnoActual)) {
                 std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
                 jaque = 1;
                 display();
                 return;
-            }
+            }*/
 
             if (row >= 0 && row < TAMANO_TABLERO) {
                 if (col >= 0 && col < TAMANO_TABLERO) {
@@ -456,6 +455,7 @@ void mouseClick(int button, int state, int x, int y) {
                     if (piezaSeleccionada == nullptr) {
                         // Seleccionar una pieza
                         for (Pieza* pieza : piezas) {
+                            if (!pieza) continue;
                             int px, py;
                             pieza->obtenerPosicion(px, py);
                             if (px == col && py == row) {
@@ -472,14 +472,14 @@ void mouseClick(int button, int state, int x, int y) {
                         int nuevoX = col;
                         int nuevoY = row;
 
-                        if (!gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                        if (gardner && !gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
                             if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                                 piezaSeleccionada = nullptr;
                                 std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
                             }
                         }
-                        else if (gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                        else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
                             piezaSeleccionada->mover(nuevoX, nuevoY);
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;
@@ -499,13 +499,15 @@ void mouseClick(int button, int state, int x, int y) {
                     std::cout << "Click fuera del tablero\n";
                 }
             }
+            break; // Añadido el break para salir del caso 0 y 1
+
         case 2:
-            if (baby->detectarJaque(turnoActual)) {
+            /*if (baby && baby->detectarJaque(turnoActual)) {
                 std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
                 jaque = 1;
                 display();
                 return;
-            }
+            }*/
 
             if (row >= 0 && row < TAMANO_TABLERO) {
                 if (col >= 0 && col < TAMANO_TABLERO) {
@@ -515,6 +517,7 @@ void mouseClick(int button, int state, int x, int y) {
                     if (piezaSeleccionada == nullptr) {
                         // Seleccionar una pieza
                         for (Pieza* pieza : piezas) {
+                            if (!pieza) continue;
                             int px, py;
                             pieza->obtenerPosicion(px, py);
                             if (px == col && py == row) {
@@ -531,14 +534,14 @@ void mouseClick(int button, int state, int x, int y) {
                         int nuevoX = col;
                         int nuevoY = row;
 
-                        if (!baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                        if (baby && !baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
                             if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                                 turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                                 piezaSeleccionada = nullptr;
                                 std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
                             }
                         }
-                        else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
+                        else if (baby && baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY)) {
                             piezaSeleccionada->mover(nuevoX, nuevoY);
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;
@@ -558,6 +561,7 @@ void mouseClick(int button, int state, int x, int y) {
                     std::cout << "Click fuera del tablero\n";
                 }
             }
+            break;
         }
     }
 }

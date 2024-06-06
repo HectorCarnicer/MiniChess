@@ -16,6 +16,7 @@ public:
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
 	bool atacarPieza(Color color,int x, int y);
 	bool detectarJaque(Color& turnoActual);
+	void realizarMovimientoIA(Color colorIA);
 	// Métodos que se sobrescriben aguas abajo
 	virtual bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
 	virtual void inicializa() = 0;
