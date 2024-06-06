@@ -508,6 +508,21 @@ void mouseClick(int button, int state, int x, int y) {
                     int nuevoX = col;
                     int nuevoY = row;
 
+                    if (gardner->JaqueMate(turnoActual)) {
+                        std::cout << "ACABO EL JUEGO MANIN";
+                        exit(0);
+                    }
+                    if (gardner->detectarJaque(turnoActual)) {
+                        std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
+                    }
+
+                    if (gardner->promocion(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+                        gardner->nuevaPieza(new Reina(nuevoX, nuevoY, turnoActual, TAMANO_TABLERO));
+                        turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                        system("cls");
+                        return;
+                    }
+
                     if (gardner && !gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
                         if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
@@ -621,8 +636,7 @@ void inicializarJuego() {
         std::cout << "ha entrado en inicializaJuego gardner\n";
         gardner = new Gardner(piezas);
         gardner->inicializa();
-        gardner->nuevaJugada(turnoActual);
-
+       
     }
     else if (selectedOption == 2) {
         std::cout << "ha entrado en inicializaJuego baby\n";
