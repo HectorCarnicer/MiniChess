@@ -488,145 +488,145 @@ void handleButtonClick(int row) {
 }
 
 void mouseClick(int button, int state, int x, int y) {
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
-        int windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
-        int squareWidth = windowWidth / (TAMANO_TABLERO + 1); // +1 para la columna de botones
-        int squareHeight = windowHeight / TAMANO_TABLERO;
-        int col = x / squareWidth;
-        int row = y / squareHeight;
+    if (!(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)) { return; }
+    int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
+    int windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
+    int squareWidth = windowWidth / (TAMANO_TABLERO + 1); // +1 para la columna de botones
+    int squareHeight = windowHeight / TAMANO_TABLERO;
+    int col = x / squareWidth;
+    int row = y / squareHeight;
 
-        // Switch basado en la opción seleccionada
-        switch (selectedOption) {
-        case 0:
-        case 1:
-            // Lógica para el jugador humano
-            if (row >= 0 && row < TAMANO_TABLERO) {
-                if (col >= 0 && col < TAMANO_TABLERO) {
-                    // Logica para seleccionar y mover piezas en el tablero
-                    Coordenadas clickPos{ col, row };
+    // Switch basado en la opción seleccionada
+    switch (selectedOption) {
+    case 0:
+    case 1:
+        // Lógica para el jugador humano
+        if (row >= 0 && row < TAMANO_TABLERO) {
+            if (col >= 0 && col < TAMANO_TABLERO) {
+                // Logica para seleccionar y mover piezas en el tablero
+                Coordenadas clickPos{ col, row };
 
-                    if (piezaSeleccionada == nullptr) {
-                        // Seleccionar una pieza
-                        for (Pieza* pieza : piezas) {
-                            if (!pieza) continue;
-                            int px, py;
-                            pieza->obtenerPosicion(px, py);
-                            if (px == col && py == row) {
-                                if (pieza->obtenerColor() == turnoActual) {
-                                    piezaSeleccionada = pieza;
-                                    std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
-                                }
-                                break;
+                if (piezaSeleccionada == nullptr) {
+                    // Seleccionar una pieza
+                    for (Pieza* pieza : piezas) {
+                        if (!pieza) continue;
+                        int px, py;
+                        pieza->obtenerPosicion(px, py);
+                        if (px == col && py == row) {
+                            if (pieza->obtenerColor() == turnoActual) {
+                                piezaSeleccionada = pieza;
+                                std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
                             }
+                            break;
                         }
                     }
-                    else {
-                        // Mover la pieza seleccionada
-                        int nuevoX = col;
-                        int nuevoY = row;
-
-                        if (gardner && !gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-                            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
-                                turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                                piezaSeleccionada = nullptr;
-                                std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
-                                clic = 0;
-                                display();
-                            }
-                        }
-                        else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
-                            piezaSeleccionada->mover(nuevoX, nuevoY);
-                            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                            piezaSeleccionada = nullptr;
-                            std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
-                        }
-                        else {
-                            std::cout << "-----Movimiento inválido o posición ocupada-----\n";
-                            clic = 1;
-                            display();
-                        }
-                        glutPostRedisplay();
-                    }
-                }
-                else if (col == TAMANO_TABLERO) {
-                    // Logica para manejar los clics en la columna de botones
-                    handleButtonClick(row);
                 }
                 else {
-                    std::cout << "Click fuera del tablero\n";
-                }
-            }
-            break;
+                    // Mover la pieza seleccionada
+                    int nuevoX = col;
+                    int nuevoY = row;
 
-        case 2:
-        
-            /*if (baby->detectarJaque(turnoActual)) {
-              std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
-              jaque = 1;
-              display();
-              return;
-          }*/
-
-            if (row >= 0 && row < TAMANO_TABLERO) {
-                if (col >= 0 && col < TAMANO_TABLERO) {
-                    // Logica para seleccionar y mover piezas en el tablero
-                    Coordenadas clickPos{ col, row };
-
-                    if (piezaSeleccionada == nullptr) {
-                        // Seleccionar una pieza
-                        for (Pieza* pieza : piezas) {
-                            int px, py;
-                            pieza->obtenerPosicion(px, py);
-                            if (px == col && py == row) {
-                                if (pieza->obtenerColor() == turnoActual) {
-                                    piezaSeleccionada = pieza;
-                                    std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        // Mover la pieza seleccionada
-                        int nuevoX = col;
-                        int nuevoY = row;
-
-                        if (!baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
-                            if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
-                                turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-                                piezaSeleccionada = nullptr;
-                                std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
-                                clic = 0;
-                                display();
-                            }
-                        }
-                        else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
-                            piezaSeleccionada->mover(nuevoX, nuevoY);
+                    if (gardner && !gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                        if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;
-                            std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
-                        }
-                        else {
-                            std::cout << "-----Movimiento inválido o posición ocupada-----\n";
-                            clic = 1;
+                            std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
+                            clic = 0;
                             display();
                         }
-                        glutPostRedisplay();
                     }
-                }
-                else if (col == TAMANO_TABLERO) {
-                    // Logica para manejar los clics en la columna de botones
-                    handleButtonClick(row);
-                }
-                else {
-                    std::cout << "Click fuera del tablero\n";
+                    else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+                        piezaSeleccionada->mover(nuevoX, nuevoY);
+                        turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                        piezaSeleccionada = nullptr;
+                        std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
+                    }
+                    else {
+                        std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                        clic = 1;
+                        display();
+                    }
+                    glutPostRedisplay();
                 }
             }
-     
+            else if (col == TAMANO_TABLERO) {
+                // Logica para manejar los clics en la columna de botones
+                handleButtonClick(row);
+            }
+            else {
+                std::cout << "Click fuera del tablero\n";
+            }
         }
+        break;
+
+    case 2:
+        
+        /*if (baby->detectarJaque(turnoActual)) {
+            std::cout << "-----SE ACABO LA PARTIDA WEY-----\n";
+            jaque = 1;
+            display();
+            return;
+        }*/
+
+        if (row >= 0 && row < TAMANO_TABLERO) {
+            if (col >= 0 && col < TAMANO_TABLERO) {
+                // Logica para seleccionar y mover piezas en el tablero
+                Coordenadas clickPos{ col, row };
+
+                if (piezaSeleccionada == nullptr) {
+                    // Seleccionar una pieza
+                    for (Pieza* pieza : piezas) {
+                        int px, py;
+                        pieza->obtenerPosicion(px, py);
+                        if (px == col && py == row) {
+                            if (pieza->obtenerColor() == turnoActual) {
+                                piezaSeleccionada = pieza;
+                                std::cout << "Pieza seleccionada en (" << col << ", " << row << ")\n";
+                            }
+                            break;
+                        }
+                    }
+                }
+                else {
+                    // Mover la pieza seleccionada
+                    int nuevoX = col;
+                    int nuevoY = row;
+
+                    if (!baby->posicionOcupada(nuevoX, nuevoY) && baby->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                        if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
+                            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                            piezaSeleccionada = nullptr;
+                            std::cout << "Pieza movida a (" << nuevoX << ", " << nuevoY << ")\n";
+                            clic = 0;
+                            display();
+                        }
+                    }
+                    else if (baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+                        piezaSeleccionada->mover(nuevoX, nuevoY);
+                        turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
+                        piezaSeleccionada = nullptr;
+                        std::cout << "Pieza atacada en (" << nuevoX << ", " << nuevoY << ")\n";
+                    }
+                    else {
+                        std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                        clic = 1;
+                        display();
+                    }
+                    glutPostRedisplay();
+                }
+            }
+            else if (col == TAMANO_TABLERO) {
+                // Logica para manejar los clics en la columna de botones
+                handleButtonClick(row);
+            }
+            else {
+                std::cout << "Click fuera del tablero\n";
+            }
+        }
+     
     }
 }
+
 
 
 //cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
