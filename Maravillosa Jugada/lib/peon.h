@@ -3,7 +3,6 @@
 
 #include "Pieza.h"
 #include "Gardner.h"
-#include <cmath> // Incluye la biblioteca cmath para std::abs()
 
 class Peon : public Pieza {
 public:
@@ -17,19 +16,21 @@ public:
         int deltaY = nuevoY - y;
 
         // Mover hacia adelante
-        if (color == BLANCO && deltaY == 1 && deltaX == 0) {
+        if (color == BLANCO && deltaY == -1 && deltaX == 0) {
             return Pieza::mover(nuevoX, nuevoY);
         }
-        else if (color == NEGRO && deltaY == -1 && deltaX == 0) {
+        else if (color == NEGRO && deltaY == 1 && deltaX == 0) {
             return Pieza::mover(nuevoX, nuevoY);
         }
+
 
         // Capturar en diagonal
-        if ((color == BLANCO && deltaY == 1 && std::abs(deltaX) == 1) || // Usa std::abs() en lugar de abs()
-            (color == NEGRO && deltaY == -1 && std::abs(deltaX) == 1)) { // Usa std::abs() en lugar de abs()
+
+        if ((color == BLANCO && deltaY == -1 && abs(deltaX) == 1) ||
+            (color == NEGRO && deltaY == 1 && abs(deltaX) == 1)) {
             return Pieza::mover(nuevoX, nuevoY);
         }
-
+        system("cls");
         // Si no es ninguno de los movimientos válidos, retorna falso
         return false;
     }
