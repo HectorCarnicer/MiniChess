@@ -35,58 +35,7 @@ void Mundo::comerPieza(int x, int y) {
 	}
 }
 
-//bool Mundo::JaqueMate(Color& turnoActual) {
-//
-//	int posX = 0, posY = 0;
-//	int colorPiezaSeleccionada = 0;
-//	for (const auto& pieza : piezas) {
-//		if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
-//			pieza->obtenerPosicion(posX, posY);
-//			colorPiezaSeleccionada = pieza->obtenerColor();
-//			break;
-//		}
-//	}
-//	if (colorPiezaSeleccionada != turnoActual) {
-//		return false;
-//	}
-//
-//	int movimientosPosibles[8][2] = {
-//	  { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },
-//	  { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
-//	};
-//	int jaques = 0;
-//
-//	for (int i = 0; i < 8; ++i) {
-//		int nuevoX = posX + movimientosPosibles[i][0];
-//		int nuevoY = posY + movimientosPosibles[i][1];
-//		if (nuevoX >= 0 && nuevoX < 5 && nuevoY >= 0 && nuevoY < 5) {
-//
-//			for (const auto& pieza : piezas) {
-//				if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
-//					pieza->mover(nuevoX, nuevoY);
-//					break;
-//				}
-//			}
-//			if (detectarJaque(turnoActual)) {
-//				jaques++;
-//			}
-//			for (const auto& pieza : piezas) {
-//				if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
-//					pieza->mover(posX, posY);
-//					break;
-//				}
-//				
-//			}
-//
-//		}
-//	}
-//
-//
-//	if (jaques == 9) {
-//		return true;
-//	}
-//	else return false;
-//}
+
 bool Mundo::JaqueMate(Color& turnoActual) {
 	int posX = 0, posY = 0;
 
