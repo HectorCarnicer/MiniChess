@@ -145,7 +145,7 @@ GLuint loadTexture(const char* filename) {
 }
 
 void loadPieceTextures() {
-    std::vector<std::string> pieces = { "reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
+    std::vector<std::string> pieces = { "Reinab", "Reyb", "Peonb", "Torreb", "Alfilb", "Caballob","Reinan", "Reyn", "Peonn", "Torren", "Alfiln", "Caballon" };
     for (const std::string& piece : pieces) {
         if (bizarreMode) {
             pieceTextures[piece] = loadTexture((piece + "s" + ".png").c_str());
@@ -621,10 +621,8 @@ void inicializarJuego() {
         std::cout << "ha entrado en inicializaJuego gardner\n";
         gardner = new Gardner(piezas);
         gardner->inicializa();
-        while (true) {
-            gardner->imprimirTablero();
-            gardner->nuevaJugada(turnoActual);
-        }
+        gardner->nuevaJugada(turnoActual);
+
     }
     else if (selectedOption == 2) {
         std::cout << "ha entrado en inicializaJuego baby\n";
