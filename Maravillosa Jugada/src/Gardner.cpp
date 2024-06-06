@@ -9,7 +9,7 @@ Gardner::~Gardner()
     piezas.clear();
 }
 
-// Impresor del tablero Gardner
+// Impresor del tablero Gardner en consola
 void Gardner::imprimirTablero()
 {
     // Crear un tablero vacío
@@ -36,7 +36,7 @@ void Gardner::imprimirTablero()
     }
 }
 
-// Inicializador del tablero Gardner
+// Inicializador de las piezas del tablero Gardner
 void Gardner::inicializa()
 {
     // Creación de piezas blancas
