@@ -619,6 +619,22 @@ void cambiarValor(int x) {
     glutPostRedisplay();
 }
 
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+    case 'f':
+    case 'F':
+        glutFullScreen();
+        break;
+    case 27: // Esc key
+        exit(0);
+        break;
+    default:
+        break;
+    }
+}
+
+
+
 int main(int argc, char** argv) {
    
    // std::thread commandThread(ejecutarComandoMovimiento); // Ejecuta los comandos de movimiento en un hilo separado
@@ -634,6 +650,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(displayMenu);
     glutReshapeFunc(reshapeMenu);
     glutMouseFunc(mouseClickMenu);
+    glutKeyboardFunc(keyboard);
         
     glutMainLoop();
     
