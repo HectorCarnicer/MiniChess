@@ -1,16 +1,18 @@
+// Corrección en la definición del macro de inclusión
 #ifndef MUNDO_H
 #define MUNDO_H
 
 #include <vector>
+#include <algorithm>
 #include "pieza.h"
 
 // Interfaz del mundo, de ella heredan los distintos modos de juego
-class Mundo
-{
+class Mundo {
 public:
+
 	// Constructor
 	Mundo(std::vector<Pieza*>& piezas) : piezas(piezas){}
-	// M�todos globales
+	// Métodos globales
 	bool posicionOcupada(int x, int y);
 	void comerPieza(int x, int y);
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
@@ -21,7 +23,7 @@ public:
 	bool JaqueMate(Color& turnoActual);
 
 
-	// M�todos que se sobrescriben aguas abajo
+	// Métodos que se sobrescriben aguas abajo
 	virtual bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
 	virtual void inicializa() = 0;
 	virtual void imprimirTablero() = 0;
@@ -29,8 +31,9 @@ public:
 	virtual ~Mundo() {}
 	virtual void nuevaJugada(Color& turnoActual) = 0;
 
-	// Vector que contiene las piezas
-	std::vector<Pieza*>& piezas;
+
+    // Vector que contiene las piezas
+    std::vector<Pieza*>& piezas;
 };
 
-#endif MUNDO_H
+#endif // MUNDO_H

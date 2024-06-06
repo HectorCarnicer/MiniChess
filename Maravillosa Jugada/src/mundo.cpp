@@ -1,7 +1,14 @@
 #include "../lib/mundo.h"
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+#include <random>
 
-// FunciÛn para verificar si la posiciÛn est· ocupada por otra pieza
+// Funci√≥n para verificar si la posici√≥n est√° ocupada por otra pieza
 bool Mundo::posicionOcupada(int x, int y) {
+
 	for (const auto& pieza : piezas) {
 		int posX, posY;
 		pieza->obtenerPosicion(posX, posY);
@@ -10,9 +17,10 @@ bool Mundo::posicionOcupada(int x, int y) {
 		}
 	}
 	return false;
+
 }
 
-// FunciÛn para "comer" la pieza en la posiciÛn dada
+// Funci√≥n para "comer" la pieza en la posici√≥n dada
 void Mundo::comerPieza(int x, int y) {
 	for (auto it = piezas.begin(); it != piezas.end(); ) {
 		int posX, posY;
@@ -98,7 +106,7 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 		{1, 1}, {1, -1}, {-1, 1}, {-1, -1}
 	};
 
-	// Verificar si alg˙n movimiento del rey lo saca del jaque
+	// Verificar si alg√∫n movimiento del rey lo saca del jaque
 	for (int i = 0; i < 8; ++i) {
 		int nuevoX = posX + movimientosPosibles[i][0];
 		int nuevoY = posY + movimientosPosibles[i][1];
@@ -124,7 +132,7 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 
 				// Verificar si el rey sigue en jaque
 				if (!detectarJaque(turnoActual)) {
-					// Restaurar la posiciÛn del rey y retornar falso ya que el rey puede moverse a un lugar seguro
+					// Restaurar la posici√≥n del rey y retornar falso ya que el rey puede moverse a un lugar seguro
 					for (auto& pieza : piezas) {
 						if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
 							pieza->mover(posX, posY);
@@ -133,7 +141,7 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 					}
 					return false;
 				}	
-				// Restaurar la posiciÛn del rey
+				// Restaurar la posici√≥n del rey
 				for (auto& pieza : piezas) {
 					if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
 						pieza->mover(posX, posY);
@@ -144,7 +152,7 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 		}
 	}
 
-	// Si el rey no puede moverse a ning˙n lugar seguro, est· en jaque mate
+	// Si el rey no puede moverse a ning√∫n lugar seguro, est√° en jaque mate
 	return true;
 }
 bool Mundo::promocion(Color color, int x, int y, Pieza* piezaSeleccionada) {
@@ -189,7 +197,7 @@ bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 
 	std::string nombreClase = piezaSeleccionada->nombreDeClase();
 
-	// Manejar el caso donde la pieza seleccionada no es un peÛn
+	// Manejar el caso donde la pieza seleccionada no es un pe√≥n
 	if (nombreClase != "Peon") {
 		for (const auto& pieza : piezas) {
 			int posXOponente, posYOponente;
@@ -204,7 +212,7 @@ bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 		return false;
 	}
 
-	// Manejar el caso donde la pieza seleccionada es un peÛn
+	// Manejar el caso donde la pieza seleccionada es un pe√≥n
 	if (nombreClase == "Peon") {
 		if (colorPiezaSeleccionada == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
 			for (const auto& pieza : piezas) {
@@ -267,10 +275,10 @@ bool Mundo::detectarJaque(Color& turnoActual) {
 	return false;
 }
 
-// FunciÛn para verificar si el camino est· libre para el movimiento de la pieza
+// Funci√≥n para verificar si el camino est√° libre para el movimiento de la pieza
 bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
-	// Implementar la lÛgica especÌfica para cada tipo de pieza
-	// Por ejemplo, para un peÛn, solo necesitas verificar la casilla final
+	// Implementar la l√≥gica espec√≠fica para cada tipo de pieza
+	// Por ejemplo, para un pe√≥n, solo necesitas verificar la casilla final
 	// Para piezas como la torre, alfil o reina, necesitas verificar todas las casillas en el camino
 	// ...
 
@@ -460,12 +468,12 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 		}
 
 	}
-	return true; // Por defecto, asumimos que el camino est· libre
+	return true; // Por defecto, asumimos que el camino est√° libre
 }
 
 void Mundo::imprimirTablero()
 {
-	// Crear un tablero vacÌo
+	// Crear un tablero vac√≠o
 	std::string tablero[8][8];
 	for (int i = 0; i < 8; ++i) {
 		for (int j = 0; j < 8; ++j) {
@@ -476,7 +484,7 @@ void Mundo::imprimirTablero()
 	// Colocar las iniciales de las piezas en el tablero
 	for (const auto& pieza : piezas) {
 		int x, y;
-		pieza->obtenerPosicion(x, y); // Asumiendo que tienes un mÈtodo para obtener la posiciÛn
+		pieza->obtenerPosicion(x, y); // Asumiendo que tienes un m√©todo para obtener la posici√≥n
 		tablero[y][x] = pieza->nombreDeClase().substr(0, 1); // Usa la primera letra del nombre de la clase
 	}
 
@@ -488,5 +496,46 @@ void Mundo::imprimirTablero()
 		std::cout << std::endl;
 	}
 }
+// Funci√≥n de IA para realizar un movimiento aleatorio
+// Correcci√≥n en la declaraci√≥n de la funci√≥n
+void Mundo::realizarMovimientoIA(Color colorIA, std::vector<Pieza*>& piezas) {
+    if (piezas.empty()) return;
+    std::srand(std::time(nullptr));
+    std::vector<Pieza*> piezasIA;
+    for (auto& pieza : piezas) {
+        if (pieza && pieza->obtenerColor() == colorIA) {
+            piezasIA.push_back(pieza);
+        }
+    }
+    if (piezasIA.empty()) return;
 
+    while (true) {
+        Pieza* piezaSeleccionada = piezasIA[std::rand() % piezasIA.size()];
+        if (!piezaSeleccionada) continue;
 
+        int x, y;
+        piezaSeleccionada->obtenerPosicion(x, y);
+
+        std::vector<std::pair<int, int>> movimientos = {
+            {x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1},
+            {x + 1, y + 1}, {x - 1, y + 1}, {x + 1, y - 1}, {x - 1, y - 1}
+        };
+
+        std::shuffle(movimientos.begin(), movimientos.end(), std::default_random_engine(std::random_device()()));
+
+        for (const auto& movimiento : movimientos) {
+            int nuevoX = movimiento.first;
+            int nuevoY = movimiento.second;
+
+            if (nuevoX >= 0 && nuevoX < 8 && nuevoY >= 0 && nuevoY < 8 && caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                if (atacarPieza(colorIA, nuevoX, nuevoY)) {
+                    piezaSeleccionada->mover(nuevoX, nuevoY);
+                }
+                else if (!posicionOcupada(nuevoX, nuevoY)) {
+                    piezaSeleccionada->mover(nuevoX, nuevoY);
+                }
+                return; // La IA ha movido una ficha, salimos de la funci√≥n
+            }
+        }
+    }
+}

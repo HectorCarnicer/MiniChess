@@ -9,10 +9,10 @@ Gardner::~Gardner()
 	piezas.clear();
 }
 
-// Impresor del tablero Gardner
+// Impresor del tablero Gardner en consola
 void Gardner::imprimirTablero()
 {
-	// Crear un tablero vac韔
+	// Crear un tablero vac铆o
 	std::string tablero[TAMANO_TABLERO][TAMANO_TABLERO];
 	for (int i = 0; i < TAMANO_TABLERO; ++i) {
 		for (int j = 0; j < TAMANO_TABLERO; ++j) {
@@ -23,7 +23,7 @@ void Gardner::imprimirTablero()
 	// Colocar las iniciales de las piezas en el tablero
 	for (const auto& pieza : piezas) {
 		int x, y;
-		pieza->obtenerPosicion(x, y); // Asumiendo que tienes un m閠odo para obtener la posici髇
+		pieza->obtenerPosicion(x, y); // Asumiendo que tienes un m茅todo para obtener la posici贸n
 		tablero[y][x] = pieza->nombreDeClase().substr(0, 1); // Usa la primera letra del nombre de la clase
 	}
 
@@ -36,17 +36,17 @@ void Gardner::imprimirTablero()
 	}
 }
 
-// Inicializador del tablero Gardner
+// Inicializador de las piezas del tablero Gardner
 void Gardner::inicializa()
 {
-	// TODO: A馻dir piezas que faltan
+	// TODO: A帽adir piezas que faltan
 
-	// Creaci髇 de piezas blancas
+	// Creaci贸n de piezas blancas
 	//this->nuevaPieza(new Rey(2, 4, BLANCO, TAMANO_TABLERO));
 	//for (int i = 0; i < TAMANO_TABLERO; ++i) {
 	//   this->nuevaPieza(new Peon(i, 1, BLANCO, TAMANO_TABLERO));
 	//}
-	//// Creaci髇 de piezas negras
+	//// Creaci贸n de piezas negras
 	//this->nuevaPieza(new Rey(3, 0, NEGRO, TAMANO_TABLERO));
 	//for (int i = 0; i < 5; ++i) {
 	//    this->nuevaPieza(new Peon(i, 3, NEGRO, TAMANO_TABLERO));
@@ -64,6 +64,7 @@ void Gardner::inicializa()
 
 	//this->nuevaPieza(new Alfil(0, 2, BLANCO, TAMANO_TABLERO));
 	//this->nuevaPieza(new Reina(3, 4, BLANCO, TAMANO_TABLERO));
+
 
 }
 
@@ -92,7 +93,7 @@ void Gardner::nuevaJugada(Color& turnoActual)
 
 	std::cin >> eleccion;
 
-	// Verificar que la elecci髇 es v醠ida y corresponde al color del turno
+	// Verificar que la elecci贸n es v谩lida y corresponde al color del turno
 
 	if (eleccion > 0 && eleccion <= piezas.size() && piezas[eleccion - 1]->obtenerColor() == turnoActual) {
 
