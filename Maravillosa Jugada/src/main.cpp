@@ -515,7 +515,7 @@ void cambiarValor(int x);
 
 void esperaPostSeleccion() {
     displayMenu(); //para poner a verde el botón
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 void mouseClickMenu(int button, int state, int x, int y) {
