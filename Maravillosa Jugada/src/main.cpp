@@ -401,10 +401,8 @@ void idle() {
             std::this_thread::sleep_for(std::chrono::seconds(10));
             exit(0);
         }
-        if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-            system("cls");
-            std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-            //return;
+        if (gardner->detectarJaque(turnoActual)) {
+            std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
         }
         break;
     case 2:
@@ -416,10 +414,8 @@ void idle() {
             std::this_thread::sleep_for(std::chrono::seconds(10));
             exit(0);
         }
-        if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-            system("cls");
-            std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-           // return;
+        if (baby->detectarJaque(turnoActual)) {
+            std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
         }
         break;
     }
@@ -518,7 +514,8 @@ void mouseClick(int button, int state, int x, int y) {
         if (row >= 0 && row < TAMANO_TABLERO) {
             if (col >= 0 && col < TAMANO_TABLERO) {
                 // Logica para seleccionar y mover piezas en el tablero
-             
+
+
                 Coordenadas clickPos{ col, row };
                 if (piezaSeleccionada == nullptr) {
                     // Seleccionar una pieza
