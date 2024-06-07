@@ -15,10 +15,14 @@ public:
 	// Métodos globales
 	bool posicionOcupada(int x, int y);
 	bool posicionOcupadaRey(Color color,int x, int y);
+	bool posicionOcupadaMenosRey(Color color, int x, int y);
+
 
 	void comerPieza(int x, int y);
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }
 	bool atacarPieza(Color color,int x, int y, Pieza* piezaSeleccionada);
+	bool atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY);
+
 	bool detectarJaque(Color& turnoActual);
 	bool promocion(Color color, int x, int y, Pieza* piezaSeleccionada);
 	bool JaqueMate(Color& turnoActual);
