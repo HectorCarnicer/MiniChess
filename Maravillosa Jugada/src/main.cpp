@@ -402,6 +402,8 @@ void idle() {
             exit(0);
         }
         if (gardner->detectarJaque(turnoActual)) {
+            system("cls");
+
             std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
         }
         break;
@@ -415,6 +417,8 @@ void idle() {
             exit(0);
         }
         if (baby->detectarJaque(turnoActual)) {
+            system("cls");
+
             std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
         }
         break;
