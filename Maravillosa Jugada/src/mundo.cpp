@@ -68,7 +68,6 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 
 	//compruebo que todos los movimientosPosibles son dentro del tablero
 	
-	// Verificar si algún movimiento del rey lo saca del jaque
 	for (int i = 0; i < 8; ++i) {
 		int nuevoX = posX + movimientosPosibles[i][0];
 		int nuevoY = posY + movimientosPosibles[i][1];
@@ -84,7 +83,6 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 				}
 			}
 			if (!ocupada) {
-				// Mover el rey temporalmente
 				for (auto& pieza : piezas) {
 					if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
 						pieza->mover(nuevoX, nuevoY);
@@ -92,9 +90,7 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 					}
 				}
 
-				// Verificar si el rey sigue en jaque
 				if (!detectarJaque(turnoActual)) {
-					// Restaurar la posición del rey y retornar falso ya que el rey puede moverse a un lugar seguro
 					for (auto& pieza : piezas) {
 						if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
 							pieza->mover(posX, posY);
@@ -103,7 +99,6 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 					}
 					return false;
 				}
-				// Restaurar la posición del rey
 				for (auto& pieza : piezas) {
 					if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
 						pieza->mover(posX, posY);
@@ -114,7 +109,6 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 		}
 	}
 
-	// Si el rey no puede moverse a ningún lugar seguro, está en jaque mate
 	return true;
 }
 

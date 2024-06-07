@@ -391,6 +391,21 @@ void displayMenu() {
 void idle() {
     // Actualizar el tablero y redibujar
     tablero = pintarTablero();
+
+
+    if (gardner->JaqueMate(turnoActual)) {
+        std::cout << "ACABO EL JUEGO MANIN";
+        jaque = 1;
+        display();
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        exit(0);
+    }
+    if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+        system("cls");
+        std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
+        return;
+    }
+
     glutPostRedisplay();
 }
 
@@ -469,6 +484,10 @@ void handleButtonClick(int row) {
     }
 }
 
+void detectarLogica() {
+
+}
+
 void mouseClick(int button, int state, int x, int y) {
     if (!(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)) { return; }
     int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
@@ -486,7 +505,18 @@ void mouseClick(int button, int state, int x, int y) {
         if (row >= 0 && row < TAMANO_TABLERO) {
             if (col >= 0 && col < TAMANO_TABLERO) {
                 // Logica para seleccionar y mover piezas en el tablero
+               /* if (gardner->JaqueMate(turnoActual)) {
+                    std::cout << "ACABO EL JUEGO MANIN";
+                    exit(0);
+                }
+                if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                    system("cls");
+                    std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
+                    return;
+                }*/
                 Coordenadas clickPos{ col, row };
+
+              
 
                 if (piezaSeleccionada == nullptr) {
                     // Seleccionar una pieza
@@ -508,15 +538,7 @@ void mouseClick(int button, int state, int x, int y) {
                     int nuevoX = col;
                     int nuevoY = row;
 
-                    if (gardner->JaqueMate(turnoActual)) {
-                        std::cout << "ACABO EL JUEGO MANIN";
-                        exit(0);
-                    }
-                    if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-                        system("cls");
-                        std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-                        return;
-                    }
+                   
 
                     if (piezaSeleccionada->nombreDeClase() == "Rey") {
                         int posX = 0, posY = 0;
@@ -561,8 +583,11 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                     else {
                         std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                        clickPos = {0,0};
+                        piezaSeleccionada = nullptr;
                         clic = 1;
                         display();
+
                     }
                     glutPostRedisplay();
                 }
