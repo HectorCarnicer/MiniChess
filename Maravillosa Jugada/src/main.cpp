@@ -398,28 +398,30 @@ void idle() {
             std::cout << "ACABO EL JUEGO MANIN";
             jaque = 1;
             display();
-            std::this_thread::sleep_for(std::chrono::seconds(2));
+            std::this_thread::sleep_for(std::chrono::seconds(10));
             exit(0);
         }
         if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
             system("cls");
             std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-            return;
+            //return;
         }
+        break;
     case 2:
         if (baby->JaqueMate(turnoActual)) {
 
             std::cout << "ACABO EL JUEGO MANIN";
             jaque = 1;
             display();
-            std::this_thread::sleep_for(std::chrono::seconds(2));
+            std::this_thread::sleep_for(std::chrono::seconds(10));
             exit(0);
         }
         if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
             system("cls");
             std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-            return;
+           // return;
         }
+        break;
     }
     glutPostRedisplay();
 }
