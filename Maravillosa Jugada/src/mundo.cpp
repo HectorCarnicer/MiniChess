@@ -24,8 +24,7 @@ bool Mundo::posicionOcupadaMenosRey(Color color, int x, int y) {
 
 	for (const auto& pieza : piezas) {
 		int posReyX = 0, posReyY = 0;
-		if (pieza->nombreDeClase() == "Rey") {
-			if (pieza->obtenerColor() != color)
+		if (pieza->nombreDeClase() != "Rey") {
 				pieza->obtenerPosicion(posReyX, posReyY);
 			if (posReyX == x && posReyY == y)
 				return true;
@@ -59,6 +58,33 @@ void Mundo::comerPieza(int x, int y) {
 			++it; // Mover al siguiente elemento si no hay coincidencia
 		}
 	}
+}
+
+bool Mundo::promocion(Color color, int x, int y, Pieza* piezaSeleccionada) {
+	int posX, posY;
+	piezaSeleccionada->obtenerPosicion(posX, posY);
+	std::string nombreClase = piezaSeleccionada->nombreDeClase();
+
+	int deltaX = x - posX;
+	int deltaY = y - posY;
+
+	if (nombreClase == "Peon") {
+		if ((color == BLANCO && deltaY == -1 && abs(deltaX) == 1 && y == 0) ||
+			(color == NEGRO && deltaY == 1 && abs(deltaX) == 1 && y == 4)) {
+			if (atacarPieza(piezaSeleccionada->obtenerColor(), x, y, piezaSeleccionada) && posicionOcupada(x, y))
+				piezaSeleccionada->mover(x, y);
+			comerPieza(posX, posY);
+			return true;
+		}
+		else if ((color == BLANCO && deltaY == -1 && deltaX == 0 && y == 0) ||
+			(color == NEGRO && deltaY == 1 && deltaX == 0 && y == 4)) {
+			if (!posicionOcupada(x, y))
+				piezaSeleccionada->mover(x, y);
+			comerPieza(posX, posY);
+			return true;
+		}
+	}
+	return false;
 }
 
 
@@ -127,32 +153,40 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 	return true;
 }
 
-bool Mundo::promocion(Color color, int x, int y, Pieza* piezaSeleccionada) {
-	int posX, posY;
-	piezaSeleccionada->obtenerPosicion(posX, posY);
-	std::string nombreClase = piezaSeleccionada->nombreDeClase();
-
-	int deltaX = x - posX;
-	int deltaY = y - posY;
-
-	if (nombreClase == "Peon") {
-		if ((color == BLANCO && deltaY == -1 && abs(deltaX) == 1 && y == 0) ||
-			(color == NEGRO && deltaY == 1 && abs(deltaX) == 1 && y == 4)) {
-			if (atacarPieza(piezaSeleccionada->obtenerColor(), x, y, piezaSeleccionada) && posicionOcupada(x, y))
-				piezaSeleccionada->mover(x, y);
-			comerPieza(posX, posY);
-			return true;
-		}
-		else if ((color == BLANCO && deltaY == -1 && deltaX == 0 && y == 0) ||
-			(color == NEGRO && deltaY == 1 && deltaX == 0 && y == 4)) {
-			if (!posicionOcupada(x, y))
-				piezaSeleccionada->mover(x, y);
-			comerPieza(posX, posY);
-			return true;
+bool Mundo::detectarJaque(Color& turnoActual) {
+	int posreyx = 0, posreyy = 0;
+	// Obtiene la posicion del rey actual
+	for (const auto& pieza : piezas) {
+		if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
+			pieza->obtenerPosicion(posreyx, posreyy);
+			break;
 		}
 	}
+	// Comprueba que de todas las piezas ninguna toque al rey a traves de caminoLibre
+	for (const auto& pieza : piezas) {
+		if (pieza->obtenerColor() != turnoActual && pieza->nombreDeClase() != "Peon") {
+			if (!caminoLibreRey(pieza, posreyx, posreyy)) {
+				std::cout << pieza->nombreDeClase();
+				return true;
+			}
+		}
+		if (pieza->nombreDeClase() == "Peon") {
+			int x, y;
+			pieza->obtenerPosicion(x, y);
+
+			int deltaX = posreyx - x;
+			int deltaY = posreyy - y;
+			if (pieza->obtenerColor() != turnoActual && abs(deltaY) == 1 && abs(deltaX) == 1) {
+				return true;
+			}
+			else return false;
+		}
+	}
+
 	return false;
 }
+
+
 
 bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 
@@ -216,6 +250,7 @@ bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 }
 
 
+//LEE LAS DIAGONALES O HORIZONTALES HASTA CHOCAR CON EL REY USANDO posicionOcupadaRey
 bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 
 	std::string nombre = pieza->nombreDeClase();
@@ -245,7 +280,7 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		return true;
 	}
 
-	if (nombre == "Alfil") {
+	if (nombre == "Alfil" || nombre=="Reina") {
 		int x, y;
 		pieza->obtenerPosicion(x, y);
 		// esto seria la diagonal arriba derecha
@@ -272,7 +307,7 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		//esto la diagonal abajo izq
 		else if (nuevoX < x && nuevoY < y) {
 			for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j) && !posicionOcupada(i, j))
+				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 					return false;
 			}
 		}
@@ -293,69 +328,8 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		return true;
 	}
 
-	if (nombre == "Reina") {
-		int x, y;
-		pieza->obtenerPosicion(x, y);
-
-		// posiciones a la derecha
-		if (nuevoX > x) {
-			for (int i = x + 1; i <= nuevoX; i++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
-					return false;
-			}
-		}
-		// posiciones a la izq
-		else if (nuevoX < x) {
-			for (int i = x - 1; i >= nuevoX; i--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
-					return false;
-			}
-		}
-		// posiciones encima
-		else if (nuevoY > y) {
-			for (int j = y + 1; j <= nuevoY; j++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
-					return false;
-			}
-		}
-		// posiciones debajo
-		else if (nuevoY < y) {
-			for (int j = y - 1; j >= nuevoY; j--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
-					return false;
-			}
-		}
-		if (nuevoX > x && nuevoY > y) {
-			for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					return false;
-			}
-		}
-		else if (nuevoX < x && nuevoY > y) {
-			for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					return false;
-			}
-		}
-		else if (nuevoX > x && nuevoY < y) {
-			for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					return false;
-			}
-		}
-		else if (nuevoX < x && nuevoY < y) {
-			for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					return false;
-			}
-		}
-
-		return true;
-
-
-	}
-
-	if (nombre == "Torre") {
+	
+	if (nombre == "Torre" || nombre == "Reina") {
 		int x, y;
 		pieza->obtenerPosicion(x, y);
 		if (nuevoX > x) {
@@ -408,38 +382,141 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 
 }
 
-bool Mundo::detectarJaque(Color& turnoActual) {
-	int posreyx = 0, posreyy = 0;
-	// Obtiene la posicion del rey actual
-	for (const auto& pieza : piezas) {
-		if (pieza->obtenerColor() == turnoActual && pieza->nombreDeClase() == "Rey") {
-			pieza->obtenerPosicion(posreyx, posreyy);
-			break;
+//LEE LAS DIAGONALES O HORIZONTALES HASTA CHOCAR CON CUALQUIERCOSA QUE NO SEA REY USANDO posicionOcupadaMenosRey
+
+bool Mundo::atacarPiezaRey2(Pieza* pieza, int nuevoX, int nuevoY) {
+
+	std::string nombre = pieza->nombreDeClase();
+
+	if (nombre == "Peon") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		int deltaX = nuevoX - x;
+		int deltaY = nuevoY - y;
+		if (pieza->obtenerColor() == BLANCO && deltaY == -1 && deltaX == 0) {
+			if (posicionOcupadaMenosRey(pieza->obtenerColor(), nuevoX, nuevoY))
+				return false;
 		}
+		if (pieza->obtenerColor() == NEGRO && deltaY == 1 && deltaX == 0) {
+			if (posicionOcupadaMenosRey(pieza->obtenerColor(), nuevoX, nuevoY))
+				return false;
+		}
+		if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
+			if (posicionOcupadaMenosRey(pieza->obtenerColor(), nuevoX, nuevoY))
+				return false;
+		}
+		if (pieza->obtenerColor() == NEGRO && deltaY == 1 && abs(deltaX) == 1) {
+			if (posicionOcupadaMenosRey(pieza->obtenerColor(), nuevoX, nuevoY))
+				return false;
+		}
+		return true;
 	}
-	// Comprueba que de todas las piezas ninguna toque al rey a traves de caminoLibre
-	for (const auto& pieza : piezas) {
-		if (pieza->obtenerColor() != turnoActual && pieza->nombreDeClase() != "Peon") {
-			if (!caminoLibreRey(pieza, posreyx, posreyy)) {
-				std::cout << pieza->nombreDeClase();
-				return true;
+
+	if (nombre == "Alfil" || nombre == "Reina") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+		// esto seria la diagonal arriba derecha
+		if (nuevoX > x && nuevoY > y) {
+			for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), i, j))
+					return false;
 			}
 		}
-		if (pieza->nombreDeClase() == "Peon") {
-			int x, y;
-			pieza->obtenerPosicion(x, y);
-
-			int deltaX = posreyx - x;
-			int deltaY = posreyy - y;
-			if (pieza->obtenerColor() != turnoActual && abs(deltaY) == 1 && abs(deltaX) == 1) {
-				return true;
+		// esto seria la diagonal izq arriba
+		else if (nuevoX < x && nuevoY > y) {
+			for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), i, j))
+					return false;
 			}
-			else return false;
 		}
+		// esto la diagonal derecha abajo
+		else if (nuevoX > x && nuevoY < y) {
+			for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), i, j))
+					return false;
+			}
+		}
+		//esto la diagonal abajo izq
+		else if (nuevoX < x && nuevoY < y) {
+			for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), i, j))
+					return false;
+			}
+		}
+		return true;
 	}
 
-	return false;
+	if (nombre == "Rey") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		int deltaX = nuevoX - x;
+		int deltaY = nuevoY - y;
+
+		if (abs(deltaX) <= 1 && abs(deltaY) <= 1) {
+			if (posicionOcupadaRey(pieza->obtenerColor(), nuevoX, nuevoY))
+				return false;
+		}
+		return true;
+	}
+
+
+	if (nombre == "Torre" || nombre == "Reina") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+		if (nuevoX > x) {
+			for (int i = x + 1; i <= nuevoX; i++) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), i, y))
+					return false;
+			}
+		}
+		else if (nuevoX < x) {
+			for (int i = x - 1; i >= nuevoX; i--) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), i, y))
+					return false;
+			}
+		}
+		else if (nuevoY > y) {
+			for (int j = y + 1; j <= nuevoY; j++) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), x, j))
+					return false;
+			}
+		}
+		else if (nuevoY < y) {
+			for (int j = y - 1; j >= nuevoY; j--) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), x, j))
+					return false;
+			}
+		}
+		return true;
+	}
+
+	if (nombre == "Caballo") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		int movimientospos[8][2] = { {2,1}, {2,-1}, {1,2}, {1,-2}
+								  ,{-1,2}, {-1,-2}, {-2,1}, {-2,-1} };
+
+		for (int i = 0; i < 8; i++) {
+			//recorre las L del caballo posibles
+			int posposiblex = x + movimientospos[i][0];
+			int posposibley = y + movimientospos[i][1];
+
+			if (posposiblex == nuevoX && posposibley == nuevoY) {
+				if (posicionOcupadaMenosRey(pieza->obtenerColor(), posposiblex, posposibley))
+					return false;
+			}
+		}
+
+	}
+	return true;
+
 }
+
+
+
 
 // Función para verificar si el camino está libre para el movimiento de la pieza
 bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
@@ -475,7 +552,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 		return true;
 	}
 
-	if (nombre == "Alfil") {
+	if (nombre == "Alfil" || nombre == "Reina") {
 		int x, y;
 		pieza->obtenerPosicion(x, y);
 		// esto seria la diagonal arriba derecha
@@ -523,69 +600,9 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 		return true;
 	}
 
-	if (nombre == "Reina") {
-		int x, y;
-		pieza->obtenerPosicion(x, y);
-
-		// posiciones a la derecha
-		if (nuevoX > x) {
-			for (int i = x + 1; i <= nuevoX; i++) {
-				if (posicionOcupada(i, y))
-					return false;
-			}
-		}
-		// posiciones a la izq
-		else if (nuevoX < x) {
-			for (int i = x - 1; i >= nuevoX; i--) {
-				if (posicionOcupada(i, y))
-					return false;
-			}
-		}
-		// posiciones encima
-		else if (nuevoY > y) {
-			for (int j = y + 1; j <= nuevoY; j++) {
-				if (posicionOcupada(x, j))
-					return false;
-			}
-		}
-		// posiciones debajo
-		else if (nuevoY < y) {
-			for (int j = y - 1; j >= nuevoY; j--) {
-				if (posicionOcupada(x, j))
-					return false;
-			}
-		}
-		if (nuevoX > x && nuevoY > y) {
-			for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-				if (posicionOcupada(i, j))
-					return false;
-			}
-		}
-		else if (nuevoX < x && nuevoY > y) {
-			for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
-				if (posicionOcupada(i, j))
-					return false;
-			}
-		}
-		else if (nuevoX > x && nuevoY < y) {
-			for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
-				if (posicionOcupada(i, j))
-					return false;
-			}
-		}
-		else if (nuevoX < x && nuevoY < y) {
-			for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-				if (posicionOcupada(i, j))
-					return false;
-			}
-		}
-
-		return true;
 
 
-	}
-
-	if (nombre == "Torre") {
+	if (nombre == "Torre" || nombre == "Reina") {
 		int x, y;
 		pieza->obtenerPosicion(x, y);
 		if (nuevoX > x) {
@@ -670,7 +687,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		return true;
 	}
 
-	if (nombre == "Alfil") {
+	if (nombre == "Alfil" || nombre=="Reina") {
 		int x, y;
 		pieza->obtenerPosicion(x, y);
 
@@ -678,8 +695,8 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		if (nuevoX > x && nuevoY > y) {
 			for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					if (caminoLibre(pieza, i, j))
-						if (atacarPiezaRey(pieza, i, j))
+					if (!atacarPiezaRey(pieza, i, j))
+						if (atacarPiezaRey2(pieza, i, j))
 							return false;
 			}
 		}
@@ -687,8 +704,8 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		else if (nuevoX < x && nuevoY > y) {
 			for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					if (caminoLibre(pieza, i, j))
-						if (atacarPiezaRey(pieza, i, j))
+					if (!atacarPiezaRey(pieza, i, j))
+						if (atacarPiezaRey2(pieza, i, j))
 							return false;
 			}
 		}
@@ -696,8 +713,8 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		else if (nuevoX > x && nuevoY < y) {
 			for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					if (caminoLibre(pieza, i, j))
-						if (atacarPiezaRey(pieza, i, j))
+					if (!atacarPiezaRey(pieza, i, j))
+						if (atacarPiezaRey2(pieza, i, j))
 							return false;
 			}
 		}
@@ -706,6 +723,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 			for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						if (!atacarPiezaRey(pieza, i, j))
+							if (atacarPiezaRey2(pieza, i, j))
 							return false;
 
 			}
@@ -729,91 +747,15 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		return true;
 	}
 
-	if (nombre == "Reina") {
-		int x, y;
-		pieza->obtenerPosicion(x, y);
-
-		// posiciones a la derecha
-		if (nuevoX > x) {
-			for (int i = x + 1; i <= nuevoX; i++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
-					if (!caminoLibre(pieza, i, y))
-						if (atacarPiezaRey(pieza, i, y))
-							return false;
-			}
-		}
-		// posiciones a la izq
-		else if (nuevoX < x) {
-			for (int i = x - 1; i >= nuevoX; i--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
-					if (!caminoLibre(pieza, i, y))
-						if (atacarPiezaRey(pieza, i, y))
-							return false;
-			}
-		}
-		// posiciones encima
-		else if (nuevoY > y) {
-			for (int j = y + 1; j <= nuevoY; j++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
-					if (!caminoLibre(pieza, x, j))
-						if (atacarPiezaRey(pieza, x, j))
-							return false;
-			}
-		}
-		// posiciones debajo
-		else if (nuevoY < y) {
-			for (int j = y - 1; j >= nuevoY; j--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
-					if (!caminoLibre(pieza, x, j))
-						if (atacarPiezaRey(pieza, x, j))
-							return false;
-			}
-		}
-
-		if (nuevoX > x && nuevoY > y) {
-			for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					if (!caminoLibre(pieza, i, j))
-						if (atacarPiezaRey(pieza, i, j))
-							return false;
-			}
-		}
-		else if (nuevoX < x && nuevoY > y) {
-			for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					if (!caminoLibre(pieza, i, j))
-						if (atacarPiezaRey(pieza, i, j))
-							return false;
-			}
-		}
-		else if (nuevoX > x && nuevoY < y) {
-			for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					if (!caminoLibre(pieza, i, j))
-						if (atacarPiezaRey(pieza, i, j))
-							return false;
-			}
-		}
-		else if (nuevoX < x && nuevoY < y) {
-			for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-				if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
-					if (!caminoLibre(pieza, i, j))
-						if (atacarPiezaRey(pieza, i, j))
-							return false;
-			}
-		}
-		return true;
-	}
-
-	if (nombre == "Torre") {
+	if (nombre == "Torre" || nombre == "Reina") {
 		int x, y;
 		pieza->obtenerPosicion(x, y);
 
 		if (nuevoX > x) {
 			for (int i = x + 1; i <= nuevoX; i++) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
-					if (!caminoLibre(pieza, i, y))
-						if (atacarPiezaRey(pieza, i, y))
+					if (!atacarPiezaRey(pieza, i, y))
+						if (atacarPiezaRey2(pieza, i, y))
 							return false;
 			}
 
@@ -821,8 +763,8 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		else if (nuevoX < x) {
 			for (int i = x - 1; i >= nuevoX; i--) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
-					if (!caminoLibre(pieza, i, y))
-						if (atacarPiezaRey(pieza, i, y))
+					if (!atacarPiezaRey(pieza, i, y))
+						if (atacarPiezaRey2(pieza, i, y))
 							return false;
 			}
 
@@ -830,8 +772,8 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		else if (nuevoY > y) {
 			for (int j = y + 1; j <= nuevoY; j++) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
-					if (!caminoLibre(pieza, x, j))
-						if (atacarPiezaRey(pieza, x, j))
+					if (!atacarPiezaRey(pieza, x, j))
+						if (atacarPiezaRey2(pieza, x, j))
 							return false;
 			}
 		}
@@ -839,8 +781,8 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		else if (nuevoY < y) {
 			for (int j = y - 1; j >= nuevoY; j--) {
 				if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
-					if (atacarPiezaRey(pieza, x, j))
-						if (!caminoLibre(pieza, x, j))
+					if (!atacarPiezaRey(pieza, x, j))
+						if (atacarPiezaRey2(pieza, x, j))
 							return false;
 			}
 		}
