@@ -566,7 +566,7 @@ void mouseClick(int button, int state, int x, int y) {
                         return;
                     }
 
-                    if (gardner && !gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
+                    else if (gardner && !gardner->posicionOcupada(nuevoX, nuevoY) && gardner->caminoLibre(piezaSeleccionada, nuevoX, nuevoY)) {
                         if (piezaSeleccionada->mover(nuevoX, nuevoY)) {
                             turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                             piezaSeleccionada = nullptr;
