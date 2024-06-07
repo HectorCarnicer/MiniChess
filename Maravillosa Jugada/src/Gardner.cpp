@@ -50,14 +50,19 @@ void Gardner::inicializa()
 	}
 
 	// Creación de piezas negras
-	this->nuevaPieza(new Rey(0, 0, NEGRO, TAMANO_TABLERO));
-	this->nuevaPieza(new Reina(1, 0, NEGRO, TAMANO_TABLERO));
+	this->nuevaPieza(new Rey(4, 0, NEGRO, TAMANO_TABLERO));
+	this->nuevaPieza(new Reina(3, 0, NEGRO, TAMANO_TABLERO));
 	this->nuevaPieza(new Alfil(2, 0, NEGRO, TAMANO_TABLERO));
-	this->nuevaPieza(new Caballo(3, 0, NEGRO, TAMANO_TABLERO));
-	this->nuevaPieza(new Torre(4, 0, NEGRO, TAMANO_TABLERO));
+	this->nuevaPieza(new Caballo(1, 0, NEGRO, TAMANO_TABLERO));
+	this->nuevaPieza(new Torre(0, 0, NEGRO, TAMANO_TABLERO));
 	for (int i = 0; i < 5; i++) {
 		this->nuevaPieza(new Peon(i, 1, NEGRO, TAMANO_TABLERO));
 	}
+	
+
+	
+	
+
 }
 
 
