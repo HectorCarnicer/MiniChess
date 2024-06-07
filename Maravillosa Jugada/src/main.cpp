@@ -536,15 +536,18 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                 }
                 //Esta parte es para que solo te deje usar el rey en caso de Jaque
-               /* if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-                    system("cls");
-                    std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
-                    return;
-                }*/
+                
                 else {
                     // Mover la pieza seleccionada
                     int nuevoX = col;
                     int nuevoY = row;
+
+                    if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                        system("cls");
+                        piezaSeleccionada = nullptr;
+                        std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
+                        return;
+                    }
 
                     if (piezaSeleccionada->nombreDeClase() == "Rey") {
                         int posX = 0, posY = 0;
@@ -639,20 +642,20 @@ void mouseClick(int button, int state, int x, int y) {
                         }
                     }
                 }
-                //Esta parte es para que solo te deje usar el rey en caso de Jaque
-                    /*if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-                        system("cls");
-                        std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
-                        clickPos = { 0,0 };
-                        return;
-                    }*/
+                   
 
                 else {
                     // Mover la pieza seleccionada
                     int nuevoX = col;
                     int nuevoY = row;
+                    //Esta parte es para que solo te deje usar el rey en caso de Jaque
 
-
+                    if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                        system("cls");
+                        piezaSeleccionada = nullptr;
+                        std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
+                        return;
+                    }
                     if (piezaSeleccionada->nombreDeClase() == "Rey") {
                         int posX = 0, posY = 0;
                         piezaSeleccionada->obtenerPosicion(posX, posY);
