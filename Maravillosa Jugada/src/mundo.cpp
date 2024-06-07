@@ -6,6 +6,18 @@
 #include <algorithm>
 #include <random>
 
+bool Mundo::posicionOcupadaRey(int x, int y) {
+
+	for (const auto& pieza : piezas) {
+		int posReyX=0, posReyY=0;
+		if (pieza->nombreDeClase() == "Rey") {
+			pieza->obtenerPosicion(posReyX, posReyY);
+			if (posReyX == x && posReyY == y)
+			return true;
+		}
+	}
+	return false;
+}
 
 // Función para verificar si la posición está ocupada por otra pieza
 bool Mundo::posicionOcupada(int x, int y) {
@@ -206,7 +218,8 @@ bool Mundo::detectarJaque(Color& turnoActual) {
 	// Comprueba que de todas las piezas ninguna toque al rey a traves de caminoLibre
 	for (const auto& pieza : piezas) {
 		if (pieza->obtenerColor() != turnoActual && pieza->nombreDeClase() != "Peon") {
-			if (!caminoLibre(pieza, posreyx, posreyy)) {
+			if (!caminoLibreRey(pieza, posreyx, posreyy)) {
+				std::cout << pieza->nombreDeClase();
 				return true;
 			}
 		}
@@ -414,6 +427,220 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 
 			if (posposiblex == nuevoX && posposibley == nuevoY) {
 				if (posicionOcupada(posposiblex, posposibley))
+					return false;
+			}
+		}
+
+	}
+	return true;
+}
+
+bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
+
+	std::string nombre = pieza->nombreDeClase();
+
+	if (nombre == "Peon") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		int deltaX = nuevoX - x;
+		int deltaY = nuevoY - y;
+		if (pieza->obtenerColor() == BLANCO && deltaY == -1 && deltaX == 0) {
+			if (caminoLibre(pieza, nuevoX, nuevoY)) {
+				if (posicionOcupadaRey(nuevoX, nuevoY))
+					return false;
+			}
+		}
+		if (pieza->obtenerColor() == NEGRO && deltaY == 1 && deltaX == 0) {
+			if (caminoLibre(pieza, nuevoX, nuevoY)) {
+				if (posicionOcupadaRey(nuevoX, nuevoY))
+					return false;
+			}
+		}
+		if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
+			if (caminoLibre(pieza, nuevoX, nuevoY)) {
+				if (!posicionOcupadaRey(nuevoX, nuevoY))
+					return false;
+			}
+		}
+		if (pieza->obtenerColor() == NEGRO && deltaY == 1 && abs(deltaX) == 1) {
+			if (caminoLibre(pieza, nuevoX, nuevoY)) {
+				if (!posicionOcupadaRey(nuevoX, nuevoY))
+					return false;
+			}
+		}
+		return true;
+	}
+
+	if (nombre == "Alfil") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+		if (!caminoLibre(pieza, nuevoX, nuevoY)) {
+
+			// esto seria la diagonal arriba derecha
+			if (nuevoX > x && nuevoY > y) {
+				for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
+					if (posicionOcupadaRey(i, j))
+						return false;
+				}
+			}
+			// esto seria la diagonal izq arriba
+			else if (nuevoX < x && nuevoY > y) {
+				for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
+					if (posicionOcupadaRey(i, j))
+						return false;
+				}
+			}
+			// esto la diagonal derecha abajo
+			else if (nuevoX > x && nuevoY < y) {
+				for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
+					if (posicionOcupadaRey(i, j))
+						return false;
+				}
+			}
+			//esto la diagonal abajo izq
+			else if (nuevoX < x && nuevoY < y) {
+				for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
+					if (posicionOcupadaRey(i, j))
+
+						return false;
+
+				}
+			}
+		}
+		return true;
+
+	}
+
+	if (nombre == "Rey") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		int deltaX = nuevoX - x;
+		int deltaY = nuevoY - y;
+
+		if (abs(deltaX) <= 1 && abs(deltaY) <= 1) {
+			if (caminoLibre(pieza, nuevoX, nuevoY)) {
+				if (posicionOcupadaRey(nuevoX, nuevoY))
+					return false;
+			}
+		}
+		return true;
+	}
+
+	if (nombre == "Reina") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		if (!caminoLibre(pieza, nuevoX, nuevoY)) {
+
+			// posiciones a la derecha
+			if (nuevoX > x) {
+				for (int i = x + 1; i <= nuevoX; i++) {
+					if (posicionOcupadaRey(i, y))
+						return false;
+				}
+			}
+			// posiciones a la izq
+			else if (nuevoX < x) {
+				for (int i = x - 1; i >= nuevoX; i--) {
+					if (posicionOcupadaRey(i, y))
+						return false;
+				}
+			}
+			// posiciones encima
+			else if (nuevoY > y) {
+				for (int j = y + 1; j <= nuevoY; j++) {
+					if (posicionOcupadaRey(x, j))
+						return false;
+				}
+			}
+			// posiciones debajo
+			else if (nuevoY < y) {
+				for (int j = y - 1; j >= nuevoY; j--) {
+					if (posicionOcupadaRey(x, j))
+						return false;
+				}
+			}
+			if (nuevoX > x && nuevoY > y) {
+				for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
+					if (posicionOcupadaRey(i, j))
+						return false;
+				}
+			}
+			else if (nuevoX < x && nuevoY > y) {
+				for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
+					if (posicionOcupadaRey(i, j))
+						return false;
+				}
+			}
+			else if (nuevoX > x && nuevoY < y) {
+				for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
+					if (posicionOcupadaRey(i, j))
+						return false;
+				}
+			}
+			else if (nuevoX < x && nuevoY < y) {
+				for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
+					if (posicionOcupadaRey(i, j))
+						return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	if (nombre == "Torre") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		if (!caminoLibre(pieza, nuevoX, nuevoY)) {
+
+			if (nuevoX > x) {
+				for (int i = x + 1; i <= nuevoX; i++) {
+					if (posicionOcupadaRey(i, y))
+						return false;
+				}
+
+			}
+			else if (nuevoX < x) {
+				for (int i = x - 1; i >= nuevoX; i--) {
+					if (posicionOcupadaRey(i, y))
+						return false;
+				}
+
+			}
+			else if (nuevoY > y) {
+				for (int j = y + 1; j <= nuevoY; j++) {
+					if (posicionOcupadaRey(x, j))
+						return false;
+				}
+			}
+		}
+		else if (nuevoY < y) {
+			for (int j = y - 1; j >= nuevoY; j--) {
+				if (posicionOcupadaRey(x, j))
+					return false;
+			}
+		}
+
+		return true;
+	}
+
+	if (nombre == "Caballo") {
+		int x, y;
+		pieza->obtenerPosicion(x, y);
+
+		int movimientospos[8][2] = { {2,1}, {2,-1}, {1,2}, {1,-2}
+								  ,{-1,2}, {-1,-2}, {-2,1}, {-2,-1} };
+
+		for (int i = 0; i < 8; i++) {
+			//recorre las L del caballo posibles
+			int posposiblex = x + movimientospos[i][0];
+			int posposibley = y + movimientospos[i][1];
+
+			if (posposiblex == nuevoX && posposibley == nuevoY) {
+				if (posicionOcupadaRey(posposiblex, posposibley))
 					return false;
 			}
 		}
