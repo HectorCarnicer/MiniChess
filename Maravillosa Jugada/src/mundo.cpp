@@ -6,11 +6,11 @@
 #include <algorithm>
 #include <random>
 
-bool Mundo::posicionOcupadaRey(int x, int y) {
+bool Mundo::posicionOcupadaRey(Color color, int x, int y) {
 
 	for (const auto& pieza : piezas) {
 		int posReyX=0, posReyY=0;
-		if (pieza->nombreDeClase() == "Rey") {
+		if (pieza->nombreDeClase() == "Rey" &&  pieza->obtenerColor() != color ) {
 			pieza->obtenerPosicion(posReyX, posReyY);
 			if (posReyX == x && posReyY == y)
 			return true;
@@ -440,25 +440,25 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 		int deltaY = nuevoY - y;
 		if (pieza->obtenerColor() == BLANCO && deltaY == -1 && deltaX == 0) {
 			if (caminoLibre(pieza, nuevoX, nuevoY)) {
-				if (posicionOcupadaRey(nuevoX, nuevoY))
+				if (posicionOcupadaRey(pieza->obtenerColor(), nuevoX, nuevoY))
 					return false;
 			}
 		}
 		if (pieza->obtenerColor() == NEGRO && deltaY == 1 && deltaX == 0) {
 			if (caminoLibre(pieza, nuevoX, nuevoY)) {
-				if (posicionOcupadaRey(nuevoX, nuevoY))
+				if (posicionOcupadaRey(pieza->obtenerColor(), nuevoX, nuevoY))
 					return false;
 			}
 		}
 		if (pieza->obtenerColor() == BLANCO && deltaY == -1 && abs(deltaX) == 1) {
 			if (caminoLibre(pieza, nuevoX, nuevoY)) {
-				if (!posicionOcupadaRey(nuevoX, nuevoY))
+				if (!posicionOcupadaRey(pieza->obtenerColor(), nuevoX, nuevoY))
 					return false;
 			}
 		}
 		if (pieza->obtenerColor() == NEGRO && deltaY == 1 && abs(deltaX) == 1) {
 			if (caminoLibre(pieza, nuevoX, nuevoY)) {
-				if (!posicionOcupadaRey(nuevoX, nuevoY))
+				if (!posicionOcupadaRey(pieza->obtenerColor(), nuevoX, nuevoY))
 					return false;
 			}
 		}
@@ -473,28 +473,28 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 			// esto seria la diagonal arriba derecha
 			if (nuevoX > x && nuevoY > y) {
 				for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-					if (posicionOcupadaRey(i, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						return false;
 				}
 			}
 			// esto seria la diagonal izq arriba
 			else if (nuevoX < x && nuevoY > y) {
 				for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
-					if (posicionOcupadaRey(i, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						return false;
 				}
 			}
 			// esto la diagonal derecha abajo
 			else if (nuevoX > x && nuevoY < y) {
 				for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
-					if (posicionOcupadaRey(i, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						return false;
 				}
 			}
 			//esto la diagonal abajo izq
 			else if (nuevoX < x && nuevoY < y) {
 				for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-					if (posicionOcupadaRey(i, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 
 						return false;
 
@@ -514,7 +514,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 
 		if (abs(deltaX) <= 1 && abs(deltaY) <= 1) {
 			if (caminoLibre(pieza, nuevoX, nuevoY)) {
-				if (posicionOcupadaRey(nuevoX, nuevoY))
+				if (posicionOcupadaRey(pieza->obtenerColor(), nuevoX, nuevoY))
 					return false;
 			}
 		}
@@ -524,64 +524,66 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	if (nombre == "Reina") {
 		int x, y;
 		pieza->obtenerPosicion(x, y);
-
-		if (!caminoLibre(pieza, nuevoX, nuevoY)) {
-
 			// posiciones a la derecha
 			if (nuevoX > x) {
 				for (int i = x + 1; i <= nuevoX; i++) {
-					if (posicionOcupadaRey(i, y))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
 						return false;
 				}
 			}
 			// posiciones a la izq
 			else if (nuevoX < x) {
 				for (int i = x - 1; i >= nuevoX; i--) {
-					if (posicionOcupadaRey(i, y))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
 						return false;
 				}
 			}
 			// posiciones encima
 			else if (nuevoY > y) {
 				for (int j = y + 1; j <= nuevoY; j++) {
-					if (posicionOcupadaRey(x, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
 						return false;
 				}
 			}
 			// posiciones debajo
 			else if (nuevoY < y) {
 				for (int j = y - 1; j >= nuevoY; j--) {
-					if (posicionOcupadaRey(x, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
 						return false;
 				}
 			}
+
 			if (nuevoX > x && nuevoY > y) {
 				for (int i = x + 1, j = y + 1; i <= nuevoX && j <= nuevoY; i++, j++) {
-					if (posicionOcupadaRey(i, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						return false;
 				}
 			}
 			else if (nuevoX < x && nuevoY > y) {
 				for (int i = x - 1, j = y + 1; i >= nuevoX && j <= nuevoY; i--, j++) {
-					if (posicionOcupadaRey(i, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						return false;
 				}
 			}
 			else if (nuevoX > x && nuevoY < y) {
 				for (int i = x + 1, j = y - 1; i <= nuevoX && j >= nuevoY; i++, j--) {
-					if (posicionOcupadaRey(i, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						return false;
 				}
 			}
 			else if (nuevoX < x && nuevoY < y) {
 				for (int i = x - 1, j = y - 1; i >= nuevoX && j >= nuevoY; i--, j--) {
-					if (posicionOcupadaRey(i, j))
+					if (!caminoLibre(pieza, i, y))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, j))
 						return false;
 				}
+
 			}
-		}
 		return true;
 	}
+
+
+
 
 	if (nombre == "Torre") {
 		int x, y;
@@ -591,28 +593,28 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 
 			if (nuevoX > x) {
 				for (int i = x + 1; i <= nuevoX; i++) {
-					if (posicionOcupadaRey(i, y))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
 						return false;
 				}
 
 			}
 			else if (nuevoX < x) {
 				for (int i = x - 1; i >= nuevoX; i--) {
-					if (posicionOcupadaRey(i, y))
+					if (posicionOcupadaRey(pieza->obtenerColor(), i, y))
 						return false;
 				}
 
 			}
 			else if (nuevoY > y) {
 				for (int j = y + 1; j <= nuevoY; j++) {
-					if (posicionOcupadaRey(x, j))
+					if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
 						return false;
 				}
 			}
 		}
 		else if (nuevoY < y) {
 			for (int j = y - 1; j >= nuevoY; j--) {
-				if (posicionOcupadaRey(x, j))
+				if (posicionOcupadaRey(pieza->obtenerColor(), x, j))
 					return false;
 			}
 		}
@@ -633,7 +635,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 			int posposibley = y + movimientospos[i][1];
 
 			if (posposiblex == nuevoX && posposibley == nuevoY) {
-				if (posicionOcupadaRey(posposiblex, posposibley))
+				if (posicionOcupadaRey(pieza->obtenerColor(), posposiblex, posposibley))
 					return false;
 			}
 		}

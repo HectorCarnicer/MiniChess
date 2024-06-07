@@ -14,7 +14,7 @@ public:
 	Mundo(std::vector<Pieza*>& piezas) : piezas(piezas){}
 	// Métodos globales
 	bool posicionOcupada(int x, int y);
-	bool posicionOcupadaRey(int x, int y);
+	bool posicionOcupadaRey(Color color,int x, int y);
 
 	void comerPieza(int x, int y);
 	void nuevaPieza(Pieza* p) { piezas.push_back(p); }

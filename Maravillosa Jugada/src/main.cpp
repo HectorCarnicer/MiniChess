@@ -398,7 +398,7 @@ void idle() {
             std::cout << "ACABO EL JUEGO MANIN";
             jaque = 1;
             display();
-            std::this_thread::sleep_for(std::chrono::seconds(10));
+            std::this_thread::sleep_for(std::chrono::seconds(2));
             exit(0);
         }
         if (gardner->detectarJaque(turnoActual)) {
@@ -411,7 +411,7 @@ void idle() {
             std::cout << "ACABO EL JUEGO MANIN";
             jaque = 1;
             display();
-            std::this_thread::sleep_for(std::chrono::seconds(10));
+            std::this_thread::sleep_for(std::chrono::seconds(2));
             exit(0);
         }
         if (baby->detectarJaque(turnoActual)) {
