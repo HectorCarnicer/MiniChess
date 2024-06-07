@@ -225,7 +225,6 @@ bool Mundo::detectarJaque(Color& turnoActual) {
 			int deltaY = posreyy - y;
 			if (pieza->obtenerColor() != turnoActual && abs(deltaY) == 1 && abs(deltaX) == 1) {
 				return true;
-
 			}
 			else return false;
 		}

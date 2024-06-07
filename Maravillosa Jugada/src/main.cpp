@@ -241,7 +241,6 @@ void drawPiece(int row, int col, const std::string& piece) {
     glDisable(GL_TEXTURE_2D);
 }
 
-
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     float cellWidth = 2.0f / (TAMANO_TABLERO + 1); // +1 para la columna de botones
@@ -394,6 +393,7 @@ void idle() {
 
 
     if (gardner->JaqueMate(turnoActual)) {
+
         std::cout << "ACABO EL JUEGO MANIN";
         jaque = 1;
         display();
@@ -505,19 +505,8 @@ void mouseClick(int button, int state, int x, int y) {
         if (row >= 0 && row < TAMANO_TABLERO) {
             if (col >= 0 && col < TAMANO_TABLERO) {
                 // Logica para seleccionar y mover piezas en el tablero
-               /* if (gardner->JaqueMate(turnoActual)) {
-                    std::cout << "ACABO EL JUEGO MANIN";
-                    exit(0);
-                }
-                if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-                    system("cls");
-                    std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-                    return;
-                }*/
+             
                 Coordenadas clickPos{ col, row };
-
-              
-
                 if (piezaSeleccionada == nullptr) {
                     // Seleccionar una pieza
                     for (Pieza* pieza : piezas) {
@@ -533,6 +522,9 @@ void mouseClick(int button, int state, int x, int y) {
                         }
                     }
                 }
+               /* if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                    return;
+                }*/
                 else {
                     // Mover la pieza seleccionada
                     int nuevoX = col;
@@ -573,6 +565,7 @@ void mouseClick(int button, int state, int x, int y) {
                             display();
                         }
                     }
+                   
                     else if (gardner && gardner->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                         piezaSeleccionada->mover(nuevoX, nuevoY);
                         turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
@@ -583,12 +576,13 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                     else {
                         std::cout << "-----Movimiento inválido o posición ocupada-----\n";
-                        clickPos = {0,0};
+                        clickPos = { 0,0 };
                         piezaSeleccionada = nullptr;
                         clic = 1;
                         display();
 
                     }
+                   
                     glutPostRedisplay();
                 }
             }
@@ -636,19 +630,6 @@ void mouseClick(int button, int state, int x, int y) {
                     int nuevoX = col;
                     int nuevoY = row;
 
-                    if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-                        system("cls");
-                        std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-                        return;
-                    }
-
-
-                    if (baby->JaqueMate(turnoActual)) {
-                        std::cout << "ACABO EL JUEGO MANIN";
-                        exit(0);
-                    }
-
-                    
 
                     if (piezaSeleccionada->nombreDeClase() == "Rey") {
                         int posX = 0, posY = 0;
@@ -710,8 +691,6 @@ void mouseClick(int button, int state, int x, int y) {
      
     }
 }
-
-
 
 //cuando pulsas boton correctamente, vas aquí e inicializas juego, actualizando variable mainMenuTablero==1
 void inicializarJuego() {
@@ -852,8 +831,6 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     }
 }
-
-
 
 int main(int argc, char** argv) {
    
