@@ -390,22 +390,37 @@ void displayMenu() {
 void idle() {
     // Actualizar el tablero y redibujar
     tablero = pintarTablero();
+    switch (selectedOption)
+    {
+    case 1:
+        if (gardner->JaqueMate(turnoActual)) {
 
+            std::cout << "ACABO EL JUEGO MANIN";
+            jaque = 1;
+            display();
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            exit(0);
+        }
+        if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+            system("cls");
+            std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
+            return;
+        }
+    case 2:
+        if (baby->JaqueMate(turnoActual)) {
 
-    if (gardner->JaqueMate(turnoActual)) {
-
-        std::cout << "ACABO EL JUEGO MANIN";
-        jaque = 1;
-        display();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        exit(0);
+            std::cout << "ACABO EL JUEGO MANIN";
+            jaque = 1;
+            display();
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            exit(0);
+        }
+        if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+            system("cls");
+            std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
+            return;
+        }
     }
-    if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-        system("cls");
-        std::cout << "Eleccion invalida ESTAS EN JAQUE.\n";
-        return;
-    }
-
     glutPostRedisplay();
 }
 
