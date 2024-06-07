@@ -541,7 +541,6 @@ void mouseClick(int button, int state, int x, int y) {
                     system("cls");
                     std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
                     clickPos = { 0,0 };
-                    piezaSeleccionada = nullptr;
                     return;
                 }
                 else {
