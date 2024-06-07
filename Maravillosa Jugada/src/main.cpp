@@ -509,7 +509,6 @@ void mouseClick(int button, int state, int x, int y) {
     int squareHeight = windowHeight / TAMANO_TABLERO;
     int col = x / squareWidth;
     int row = y / squareHeight;
-
     // Switch basado en la opción seleccionada
     switch (selectedOption) {
     case 0:
@@ -537,12 +536,11 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                 }
                 //Esta parte es para que solo te deje usar el rey en caso de Jaque
-                if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+               /* if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
                     system("cls");
                     std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
-                    clickPos = { 0,0 };
                     return;
-                }
+                }*/
                 else {
                     // Mover la pieza seleccionada
                     int nuevoX = col;
@@ -642,12 +640,12 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                 }
                 //Esta parte es para que solo te deje usar el rey en caso de Jaque
-                if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
-                    system("cls");
-                    std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
-                    clickPos = { 0,0 };
-                    return;
-                }
+                    /*if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                        system("cls");
+                        std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
+                        clickPos = { 0,0 };
+                        return;
+                    }*/
 
                 else {
                     // Mover la pieza seleccionada
@@ -698,6 +696,8 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                     else {
                         std::cout << "-----Movimiento inválido o posición ocupada-----\n";
+                        clickPos = { 0,0 };
+                        piezaSeleccionada = nullptr;
                         clic = 1;
                         display();
                     }
