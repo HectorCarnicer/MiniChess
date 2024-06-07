@@ -540,8 +540,6 @@ void mouseClick(int button, int state, int x, int y) {
                     int nuevoX = col;
                     int nuevoY = row;
 
-                   
-
                     if (piezaSeleccionada->nombreDeClase() == "Rey") {
                         int posX = 0, posY = 0;
                         piezaSeleccionada->obtenerPosicion(posX, posY);

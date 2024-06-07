@@ -43,8 +43,8 @@ void Baby::imprimirTablero()
 void Baby::inicializa()
 {
     // Creación de piezas blancas
-    this->nuevaPieza(new Reina(4, 4, BLANCO, TAMANO_TABLERO));
-    this->nuevaPieza(new Rey(3, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Rey(4, 4, BLANCO, TAMANO_TABLERO));
+    this->nuevaPieza(new Reina(3, 4, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Alfil(2, 4, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Caballo(1, 4, BLANCO, TAMANO_TABLERO));
     this->nuevaPieza(new Torre(0, 4, BLANCO, TAMANO_TABLERO));
