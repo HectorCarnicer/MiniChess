@@ -186,8 +186,6 @@ bool Mundo::detectarJaque(Color& turnoActual) {
 	return false;
 }
 
-
-
 bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 
 	int posX, posY;
@@ -248,7 +246,6 @@ bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 
 	return false;
 }
-
 
 //LEE LAS DIAGONALES O HORIZONTALES HASTA CHOCAR CON EL REY USANDO posicionOcupadaRey
 bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
@@ -514,9 +511,6 @@ bool Mundo::atacarPiezaRey2(Pieza* pieza, int nuevoX, int nuevoY) {
 	return true;
 
 }
-
-
-
 
 // Función para verificar si el camino está libre para el movimiento de la pieza
 bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
