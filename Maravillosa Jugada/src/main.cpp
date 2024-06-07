@@ -57,7 +57,7 @@ bool jaque = 0;
 bool clic = 0;
 
 //--------------------------------
-//          Funciones
+//          Funciones GLUT
 //-------------------------------- 
 
 std::vector<std::vector<std::string>> pintarTablero() {
@@ -482,10 +482,6 @@ void handleButtonClick(int row) {
         std::cout << "Botón desconocido\n";
         break;
     }
-}
-
-void detectarLogica() {
-
 }
 
 void mouseClick(int button, int state, int x, int y) {
