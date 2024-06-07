@@ -532,9 +532,10 @@ void mouseClick(int button, int state, int x, int y) {
                         }
                     }
                 }
-               /* if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                    std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
                     return;
-                }*/
+                }
                 else {
                     // Mover la pieza seleccionada
                     int nuevoX = col;
@@ -633,6 +634,11 @@ void mouseClick(int button, int state, int x, int y) {
                         }
                     }
                 }
+                if (baby->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
+                    std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
+                    return;
+                }
+
                 else {
                     // Mover la pieza seleccionada
                     int nuevoX = col;
