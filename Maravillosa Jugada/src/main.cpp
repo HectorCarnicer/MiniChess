@@ -46,7 +46,7 @@ std::vector<Pieza*> piezas;
 Gardner* gardner;
 Baby* baby;
 std::vector<std::vector<std::string>> tablero;
-Color turnoActual = BLANCO; // Comienza el turno de las piezas blancas
+//Color turnoActual = BLANCO; // Comienza el turno de las piezas blancas
 Pieza* piezaSeleccionada = nullptr;
 
 std::unordered_map<std::string, GLuint> pieceTextures;
@@ -403,6 +403,7 @@ void idle() {
         }
         if (gardner->detectarJaque(turnoActual)) {
             system("cls");
+            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
 
             std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
         }
@@ -418,6 +419,7 @@ void idle() {
         }
         if (baby->detectarJaque(turnoActual)) {
             system("cls");
+            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
 
             std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
         }
@@ -513,6 +515,9 @@ void mouseClick(int button, int state, int x, int y) {
     switch (selectedOption) {
     case 0:
     case 1:
+
+        
+
         // Lógica para el jugador humano
         if (row >= 0 && row < TAMANO_TABLERO) {
             if (col >= 0 && col < TAMANO_TABLERO) {
@@ -536,32 +541,40 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                 }
                 //Esta parte es para que solo te deje usar el rey en caso de Jaque
-                
-                else {
+
+           
+            
+
+                if (piezaSeleccionada != nullptr) {
+                    
                     // Mover la pieza seleccionada
                     int nuevoX = col;
                     int nuevoY = row;
+
+              
+
+                    // Detectar movimientos ilegales del rey a una casilla donde estaria en jaque
+                    if (piezaSeleccionada->nombreDeClase() == "Rey" && piezaSeleccionada->obtenerColor() == turnoActual) {
+                        int posX = 0, posY = 0;
+                        piezaSeleccionada->obtenerPosicion(posX, posY);
+                        piezaSeleccionada->mover(nuevoX, nuevoY);
+
+                        if (gardner->detectarJaque(turnoActual)) {
+                            system("cls");
+                            piezaSeleccionada->mover(posX, posY);
+                            std::cout << "MOVIMIENTO ILEGAL\n";
+                            piezaSeleccionada == nullptr;
+                            return;
+                            break;
+                        }
+                    }
 
                     if (gardner->detectarJaque(turnoActual) && piezaSeleccionada->nombreDeClase() != "Rey") {
                         system("cls");
                         piezaSeleccionada = nullptr;
                         std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
                         return;
-                    }
-
-                    if (piezaSeleccionada->nombreDeClase() == "Rey") {
-                        int posX = 0, posY = 0;
-                        piezaSeleccionada->obtenerPosicion(posX, posY);
-                        piezaSeleccionada->mover(nuevoX, nuevoY);
-                        bool jaque = gardner->detectarJaque(turnoActual);
-                        piezaSeleccionada->mover(posX, posY);
-
-                        if (jaque) {
-                            system("cls");
-                            std::cout << "MOVIMIENTO ILEGAL\n";
-                            return;
-                        }
-                        piezaSeleccionada->mover(posX, posY);
+                        break;
                     }
 
 
@@ -621,6 +634,8 @@ void mouseClick(int button, int state, int x, int y) {
             return;
         }*/
 
+     
+
         if (row >= 0 && row < TAMANO_TABLERO) {
             if (col >= 0 && col < TAMANO_TABLERO) {
                 // Logica para seleccionar y mover piezas en el tablero
@@ -648,19 +663,20 @@ void mouseClick(int button, int state, int x, int y) {
                     int nuevoX = col;
                     int nuevoY = row;
 
+                    // Detectar movimientos ilegales del rey a una casilla donde estaria en jaque
+
                     if (piezaSeleccionada->nombreDeClase() == "Rey" && piezaSeleccionada->obtenerColor()==turnoActual) {
                         int posX = 0, posY = 0;
                         piezaSeleccionada->obtenerPosicion(posX, posY);
                         piezaSeleccionada->mover(nuevoX, nuevoY);
-                        bool jaque = baby->detectarJaque(turnoActual);
 
-                        if (jaque) {
+                        if (baby->detectarJaque(turnoActual)) {
                             system("cls");
+                            piezaSeleccionada->mover(posX, posY);
                             std::cout << "MOVIMIENTO ILEGAL\n";
                             piezaSeleccionada == nullptr;
                             return;
                         }
-                        piezaSeleccionada->mover(posX, posY);
                     }
 
                     //Esta parte es para que solo te deje usar el rey en caso de Jaque
@@ -669,6 +685,7 @@ void mouseClick(int button, int state, int x, int y) {
                         system("cls");
                         piezaSeleccionada = nullptr;
                         std::cout << "INVALIDO ESTAS EN JAQUE, ELIGE OTRA PIEZA";
+                        break;
                         return;
                     }
                    
@@ -677,6 +694,7 @@ void mouseClick(int button, int state, int x, int y) {
                         baby->nuevaPieza(new Reina(nuevoX, nuevoY, turnoActual, TAMANO_TABLERO));
                         turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                         system("cls");
+                        break;
                         return;
                     }
 

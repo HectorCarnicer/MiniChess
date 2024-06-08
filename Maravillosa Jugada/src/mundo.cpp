@@ -7,9 +7,8 @@
 #include <random>
 
 bool Mundo::posicionOcupadaRey(Color color, int x, int y) {
-
+	int posReyX = 0, posReyY = 0;
 	for (const auto& pieza : piezas) {
-		int posReyX = 0, posReyY = 0;
 		if (pieza->nombreDeClase() == "Rey") {
 			if (pieza->obtenerColor() != color)
 				pieza->obtenerPosicion(posReyX, posReyY);
@@ -21,9 +20,9 @@ bool Mundo::posicionOcupadaRey(Color color, int x, int y) {
 }
 
 bool Mundo::posicionOcupadaMenosRey(Color color, int x, int y) {
+	int posReyX = 0, posReyY = 0;
 
 	for (const auto& pieza : piezas) {
-		int posReyX = 0, posReyY = 0;
 		if (pieza->nombreDeClase() != "Rey") {
 				pieza->obtenerPosicion(posReyX, posReyY);
 			if (posReyX == x && posReyY == y)
@@ -35,8 +34,9 @@ bool Mundo::posicionOcupadaMenosRey(Color color, int x, int y) {
 
 // Función para verificar si la posición está ocupada por otra pieza
 bool Mundo::posicionOcupada(int x, int y) {
+	int posX=0, posY=0;
+
 	for (const auto& pieza : piezas) {
-		int posX, posY;
 		pieza->obtenerPosicion(posX, posY);
 		if (posX == x && posY == y) {
 			return true;
@@ -108,15 +108,15 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 	};
 
 	//compruebo que todos los movimientosPosibles son dentro del tablero
-
+	int x = 0, y = 0;
+	bool ocupada = false;
 	for (int i = 0; i < 8; ++i) {
 		int nuevoX = posX + movimientosPosibles[i][0];
 		int nuevoY = posY + movimientosPosibles[i][1];
 
 		if (nuevoX >= 0 && nuevoX < 5 && nuevoY >= 0 && nuevoY < 5) {
-			bool ocupada = false;
 			for (const auto& pieza : piezas) {
-				int x, y;
+				ocupada = false;
 				pieza->obtenerPosicion(x, y);
 				if (x == nuevoX && y == nuevoY && pieza->obtenerColor() == turnoActual) {
 					ocupada = true;
@@ -171,7 +171,7 @@ bool Mundo::detectarJaque(Color& turnoActual) {
 			}
 		}
 		if (pieza->nombreDeClase() == "Peon") {
-			int x, y;
+			int x=0, y=0;
 			pieza->obtenerPosicion(x, y);
 
 			int deltaX = posreyx - x;
