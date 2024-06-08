@@ -9,8 +9,7 @@
 bool Mundo::posicionOcupadaRey(Color color, int x, int y) {
 	int posReyX = 0, posReyY = 0;
 	for (const auto& pieza : piezas) {
-		if (pieza->nombreDeClase() == "Rey") {
-			if (pieza->obtenerColor() != color)
+		if (pieza->nombreDeClase() == "Rey" && pieza->obtenerColor()!=color) {
 				pieza->obtenerPosicion(posReyX, posReyY);
 			if (posReyX == x && posReyY == y)
 				return true;
@@ -87,7 +86,6 @@ bool Mundo::promocion(Color color, int x, int y, Pieza* piezaSeleccionada) {
 	return false;
 }
 
-
 bool Mundo::JaqueMate(Color& turnoActual) {
 	int posX = 0, posY = 0;
 
@@ -110,9 +108,11 @@ bool Mundo::JaqueMate(Color& turnoActual) {
 	//compruebo que todos los movimientosPosibles son dentro del tablero
 	int x = 0, y = 0;
 	bool ocupada = false;
+	int nuevoX = 0, nuevoY = 0;
 	for (int i = 0; i < 8; ++i) {
-		int nuevoX = posX + movimientosPosibles[i][0];
-		int nuevoY = posY + movimientosPosibles[i][1];
+
+		nuevoX = posX + movimientosPosibles[i][0];
+		nuevoY = posY + movimientosPosibles[i][1];
 
 		if (nuevoX >= 0 && nuevoX < 5 && nuevoY >= 0 && nuevoY < 5) {
 			for (const auto& pieza : piezas) {
@@ -248,12 +248,13 @@ bool Mundo::atacarPieza(Color color, int x, int y, Pieza* piezaSeleccionada) {
 }
 
 //LEE LAS DIAGONALES O HORIZONTALES HASTA CHOCAR CON EL REY USANDO posicionOcupadaRey
+
 bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 
 	std::string nombre = pieza->nombreDeClase();
 
 	if (nombre == "Peon") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -278,7 +279,7 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Alfil" || nombre=="Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 		// esto seria la diagonal arriba derecha
 		if (nuevoX > x && nuevoY > y) {
@@ -312,7 +313,7 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Rey") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -327,7 +328,7 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 
 	
 	if (nombre == "Torre" || nombre == "Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 		if (nuevoX > x) {
 			for (int i = x + 1; i <= nuevoX; i++) {
@@ -357,7 +358,7 @@ bool Mundo::atacarPiezaRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Caballo") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int movimientospos[8][2] = { {2,1}, {2,-1}, {1,2}, {1,-2}
@@ -386,7 +387,7 @@ bool Mundo::atacarPiezaRey2(Pieza* pieza, int nuevoX, int nuevoY) {
 	std::string nombre = pieza->nombreDeClase();
 
 	if (nombre == "Peon") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -411,7 +412,7 @@ bool Mundo::atacarPiezaRey2(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Alfil" || nombre == "Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 		// esto seria la diagonal arriba derecha
 		if (nuevoX > x && nuevoY > y) {
@@ -445,7 +446,7 @@ bool Mundo::atacarPiezaRey2(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Rey") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -460,7 +461,7 @@ bool Mundo::atacarPiezaRey2(Pieza* pieza, int nuevoX, int nuevoY) {
 
 
 	if (nombre == "Torre" || nombre == "Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 		if (nuevoX > x) {
 			for (int i = x + 1; i <= nuevoX; i++) {
@@ -490,7 +491,7 @@ bool Mundo::atacarPiezaRey2(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Caballo") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int movimientospos[8][2] = { {2,1}, {2,-1}, {1,2}, {1,-2}
@@ -522,7 +523,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 	std::string nombre = pieza->nombreDeClase();
 
 	if (nombre == "Peon") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -547,7 +548,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Alfil" || nombre == "Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 		// esto seria la diagonal arriba derecha
 		if (nuevoX > x && nuevoY > y) {
@@ -581,7 +582,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Rey") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -594,10 +595,8 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 		return true;
 	}
 
-
-
 	if (nombre == "Torre" || nombre == "Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 		if (nuevoX > x) {
 			for (int i = x + 1; i <= nuevoX; i++) {
@@ -627,7 +626,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Caballo") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int movimientospos[8][2] = { {2,1}, {2,-1}, {1,2}, {1,-2}
@@ -645,6 +644,7 @@ bool Mundo::caminoLibre(Pieza* pieza, int nuevoX, int nuevoY) {
 		}
 
 	}
+
 	return true;
 }
 
@@ -653,7 +653,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	std::string nombre = pieza->nombreDeClase();
 
 	if (nombre == "Peon") {
-		int x, y;
+		int x=0, y=0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -682,7 +682,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Alfil" || nombre=="Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		// esto seria la diagonal arriba derecha
@@ -727,7 +727,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Rey") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int deltaX = nuevoX - x;
@@ -742,7 +742,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Torre" || nombre == "Reina") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		if (nuevoX > x) {
@@ -784,7 +784,7 @@ bool Mundo::caminoLibreRey(Pieza* pieza, int nuevoX, int nuevoY) {
 	}
 
 	if (nombre == "Caballo") {
-		int x, y;
+		int x = 0, y = 0;
 		pieza->obtenerPosicion(x, y);
 
 		int movimientospos[8][2] = { {2,1}, {2,-1}, {1,2}, {1,-2}

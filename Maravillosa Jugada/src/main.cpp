@@ -46,7 +46,7 @@ std::vector<Pieza*> piezas;
 Gardner* gardner;
 Baby* baby;
 std::vector<std::vector<std::string>> tablero;
-//Color turnoActual = BLANCO; // Comienza el turno de las piezas blancas
+Color turnoActual = BLANCO; // Comienza el turno de las piezas blancas
 Pieza* piezaSeleccionada = nullptr;
 
 std::unordered_map<std::string, GLuint> pieceTextures;
@@ -403,12 +403,17 @@ void idle() {
         }
         if (gardner->detectarJaque(turnoActual)) {
             system("cls");
-            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
 
             std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
         }
         break;
     case 2:
+
+        if (baby->detectarJaque(turnoActual)) {
+            system("cls");
+
+            std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
+        }
         if (baby->JaqueMate(turnoActual)) {
 
             std::cout << "ACABO EL JUEGO MANIN";
@@ -417,12 +422,7 @@ void idle() {
             std::this_thread::sleep_for(std::chrono::seconds(2));
             exit(0);
         }
-        if (baby->detectarJaque(turnoActual)) {
-            system("cls");
-            turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
-
-            std::cout << "-----JACQUE AL REY " << (turnoActual == BLANCO ? "BLANCO" : "NEGRO") << "-----\n";
-        }
+       
         break;
     }
     glutPostRedisplay();
@@ -504,6 +504,7 @@ void handleButtonClick(int row) {
 }
 
 void mouseClick(int button, int state, int x, int y) {
+
     if (!(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)) { return; }
     int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
     int windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
@@ -515,9 +516,7 @@ void mouseClick(int button, int state, int x, int y) {
     switch (selectedOption) {
     case 0:
     case 1:
-
         
-
         // Lógica para el jugador humano
         if (row >= 0 && row < TAMANO_TABLERO) {
             if (col >= 0 && col < TAMANO_TABLERO) {
@@ -543,9 +542,8 @@ void mouseClick(int button, int state, int x, int y) {
                 //Esta parte es para que solo te deje usar el rey en caso de Jaque
 
            
-            
 
-                if (piezaSeleccionada != nullptr) {
+                else {
                     
                     // Mover la pieza seleccionada
                     int nuevoX = col;
@@ -634,8 +632,8 @@ void mouseClick(int button, int state, int x, int y) {
             return;
         }*/
 
-     
 
+        piezaSeleccionada == nullptr;
         if (row >= 0 && row < TAMANO_TABLERO) {
             if (col >= 0 && col < TAMANO_TABLERO) {
                 // Logica para seleccionar y mover piezas en el tablero
@@ -665,7 +663,8 @@ void mouseClick(int button, int state, int x, int y) {
 
                     // Detectar movimientos ilegales del rey a una casilla donde estaria en jaque
 
-                    if (piezaSeleccionada->nombreDeClase() == "Rey" && piezaSeleccionada->obtenerColor()==turnoActual) {
+
+                    if (piezaSeleccionada->nombreDeClase() == "Rey" && piezaSeleccionada->obtenerColor() == turnoActual) {
                         int posX = 0, posY = 0;
                         piezaSeleccionada->obtenerPosicion(posX, posY);
                         piezaSeleccionada->mover(nuevoX, nuevoY);
@@ -677,6 +676,8 @@ void mouseClick(int button, int state, int x, int y) {
                             piezaSeleccionada == nullptr;
                             return;
                         }
+                        piezaSeleccionada->mover(posX, posY);
+
                     }
 
                     //Esta parte es para que solo te deje usar el rey en caso de Jaque
@@ -690,7 +691,7 @@ void mouseClick(int button, int state, int x, int y) {
                     }
                    
 
-                    if (baby->promocion(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
+                    else  if (baby->promocion(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                         baby->nuevaPieza(new Reina(nuevoX, nuevoY, turnoActual, TAMANO_TABLERO));
                         turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;
                         system("cls");
@@ -707,6 +708,8 @@ void mouseClick(int button, int state, int x, int y) {
                             display();
                         }
                     }
+
+
                     else if (baby && baby->atacarPieza(piezaSeleccionada->obtenerColor(), nuevoX, nuevoY, piezaSeleccionada)) {
                         piezaSeleccionada->mover(nuevoX, nuevoY);
                         turnoActual = (turnoActual == BLANCO) ? NEGRO : BLANCO;

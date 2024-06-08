@@ -61,6 +61,7 @@ void Baby::inicializa()
     for (int i = 0; i < 5; i++) {
         this->nuevaPieza(new Peon(i, 1, NEGRO, TAMANO_TABLERO));
     }
+
 }
 
 // Nueva Jugada
