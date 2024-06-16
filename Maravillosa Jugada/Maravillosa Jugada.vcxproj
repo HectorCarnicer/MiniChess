@@ -19,31 +19,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="alfil.cpp" />
+    <ClCompile Include="caballo.cpp" />
+    <ClCompile Include="peon.cpp" />
+    <ClCompile Include="reina.cpp" />
+    <ClCompile Include="rey.cpp" />
     <ClCompile Include="src\baby.cpp" />
     <ClCompile Include="src\gardner.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mundo.cpp" />
     <ClCompile Include="src\pieza.cpp" />
     <ClCompile Include="src\principal.cpp" />
-    <ClCompile Include="src\prueba_main_tablero.cpp" />
-    <ClCompile Include="src\prueba_peon.cpp" />
-    <ClCompile Include="src\prueba_pieza .cpp" />
-    <ClCompile Include="src\pueba_rey.cpp" />
+    <ClCompile Include="torre.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lib\alfil.h" />
     <ClInclude Include="lib\baby.h" />
-    <ClInclude Include="lib\caballo.h" />
     <ClInclude Include="lib\ETSIDI.h" />
     <ClInclude Include="lib\freeglut.h" />
     <ClInclude Include="lib\gardner.h" />
     <ClInclude Include="lib\graficos.h" />
     <ClInclude Include="lib\mundo.h" />
-    <ClInclude Include="lib\peon.h" />
-    <ClInclude Include="lib\pieza.h" />
-    <ClInclude Include="lib\reina.h" />
-    <ClInclude Include="lib\rey.h" />
-    <ClInclude Include="lib\torre.h" />
+    <ClInclude Include="lib\piezas\alfil.h" />
+    <ClInclude Include="lib\piezas\caballo.h" />
+    <ClInclude Include="lib\piezas\peon.h" />
+    <ClInclude Include="lib\piezas\pieza.h" />
+    <ClInclude Include="lib\piezas\reina.h" />
+    <ClInclude Include="lib\piezas\rey.h" />
+    <ClInclude Include="lib\piezas\torre.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\ETSIDI.lib" />
@@ -55,6 +57,7 @@
     <ProjectGuid>{648ded11-7f3b-4ca5-8832-e29a8c8b9485}</ProjectGuid>
     <RootNamespace>MaravillosaJugada</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Maravillosa Jugada v2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -1,14 +1,21 @@
 #include <iostream>
-#include "../lib/Pieza.h"
+#include "../lib/piezas/Pieza.h"
 
 
 
 // Implementación del método mover de Pieza
-bool Pieza::mover(int nuevoX, int nuevoY) {
-    if (nuevoX >= 0 && nuevoX < TAMANO_TABLERO && nuevoY >= 0 && nuevoY < TAMANO_TABLERO) {
-        x = nuevoX;
-        y = nuevoY;
-        return true;
+bool Pieza::mover(Coord nueva_pos) {
+    if (nueva_pos.coordValid(tam_x, tam_y)) {
+        if (pos_posibles[nueva_pos.x, nueva_pos.y])
+        {
+            this->pos = nueva_pos;
+            return true;
+        }
+        else
+        {
+            std::cout << "Movimiento invalido: la posicion no esta en pos_posibles" << std::endl;
+            return false;
+        }
     }
     else {
         system("cls");
@@ -17,25 +24,6 @@ bool Pieza::mover(int nuevoX, int nuevoY) {
     }
 }
 
-// Implementación del método mostrarPosicion de Pieza
-void Pieza::mostrarPosicion() {
-    std::cout << "Posicion actual: (" << x << ", " << y << ")" << std::endl;
-}
-
 // Función para mover la pieza con entrada del usuario
-void Pieza::moverPiezaUsuario() {
-    int nuevoX, nuevoY;
-    std::cout << "Ingrese la nueva posicion X (0 a " << TAMANO_TABLERO - 1 << "): ";
-    std::cin >> nuevoX;
-    std::cout << "Ingrese la nueva posicion Y (0 a " << TAMANO_TABLERO - 1 << "): ";
-    std::cin >> nuevoY;
+void Pieza::moverPiezaUsuario() {}
 
-    if (!mover(nuevoX, nuevoY)) {
-        system("cls");
-        std::cout << "Movimiento no realizado. Intente de nuevo." << std::endl;
-    }
-}
-// Método para obtener el color de la pieza
-Color Pieza::obtenerColor() const {
-    return color;
-}

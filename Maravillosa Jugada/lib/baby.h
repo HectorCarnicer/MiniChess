@@ -2,15 +2,17 @@
 #define _BABY_H_
 
 #include "mundo.h"
+#include "../lib/piezas/rey.h"
+#include "../lib/piezas/pieza.h"
+#include "../lib/piezas/peon.h"
+#include "../lib/piezas/alfil.h"
+#include "../lib/piezas/torre.h"
+#include "../lib/piezas/caballo.h"
+#include "../lib/piezas/reina.h"
 
-#include "../lib/rey.h"
-#include "../lib/pieza.h"
-#include "../lib/peon.h"
-#include "alfil.h"
-#include "../lib/alfil.h"
-#include "torre.h"
-#include "caballo.h"
-#include "reina.h"
+// Tamaño del baby
+#define TAM_X 5
+#define TAM_Y 5
 
 
 class Baby : public Mundo
@@ -18,7 +20,7 @@ class Baby : public Mundo
 
 public:
 	// Constructor
-	Baby(std::vector<Pieza*>& piezas) : Mundo(piezas) {}
+	Baby(std::vector<Pieza*>& piezas) : Mundo(piezas, TAM_X, TAM_Y) {}
 
 	// Destructor
 	~Baby();
@@ -28,16 +30,6 @@ public:
 
 	// Impresor
 	void imprimirTablero() override;
-	//bool caminoLibre(Pieza* pieza, int xFinal, int yFinal);
-
-	// Getter de tamaño
-	int getTam() { return TAMANO_TABLERO; }
-
-	//Nueva Jugada
-	void nuevaJugada(Color& turnoActual) override;
-private:
-	// El tamaño del tablero Baby
-	static const int TAMANO_TABLERO = 5;
 };
 
 #endif
